@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حكايتنا | الديمو التجريبي - HeartCode</title>
+    
+    <!-- خطوط عربية عصرية -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&family=Readex+Pro:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        // إجبار المتصفح على الرجوع لأول الصفحة عند التحديث
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+    </script>
+
+    <style>
+        /* إعدادات الثيم الدارك */
+        :root {
+            --bg-dark: #09090b; 
+            --accent-glow: #e11d48; 
+            --surface: #18181b;
+        }
+
+        body {
+            font-family: 'Readex Pro', sans-serif;
+            background-color: var(--bg-dark);
+            color: #f4f4f5;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .no-scroll {
+            height: 100dvh;
+            overflow: hidden !important;
+        }
+
+        h1, h2, h3, .title-font {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 10px; }
+
+        .glass {
+            background: rgba(24, 24, 27, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px) scale(0.95);
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .glow-bg {
+            position: absolute;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(225,29,72,0.15) 0%, rgba(9,9,11,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            animation: pulse-glow 8s infinite alternate;
+        }
+        @keyframes pulse-glow {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(1.2); opacity: 1; }
+        }
+
+        /* معرض الصور المتجاوب */
+        .horizontal-scroll {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 2rem;
+            padding-bottom: 2rem;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+        }
+        .horizontal-scroll::-webkit-scrollbar { display: none; }
+        .snap-card {
+            scroll-snap-align: center;
+            width: 85vw; 
+            height: 85vw; 
+            max-width: 450px;
+            max-height: 450px;
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease;
+        }
+
+        /* تصميم التايم لاين */
+        .timeline-container { position: relative; padding-right: 40px; }
+        .timeline-line {
+            position: absolute; right: 0; top: 0; bottom: 0; width: 4px;
+            background: linear-gradient(to bottom, transparent, #e11d48, transparent);
+            border-radius: 4px;
+        }
+        .timeline-node {
+            position: absolute; right: -12px; width: 28px; height: 28px;
+            background: var(--bg-dark); border: 6px solid #e11d48;
+            border-radius: 50%; box-shadow: 0 0 20px rgba(225,29,72,0.8); z-index: 2;
+        }
+
+        /* كروت 3D */
+        .flip-card { background-color: transparent; height: 320px; perspective: 1000px; }
+        .flip-card-inner {
+            position: relative; width: 100%; height: 100%;
+            transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d; cursor: pointer;
+        }
+        .flip-card:hover .flip-card-inner, .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back {
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+            border-radius: 1.5rem; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; padding: 2rem; text-align: center;
+        }
+        .flip-card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, rgba(225,29,72,0.2), rgba(24,24,27,0.9));
+            border: 1px solid rgba(225,29,72,0.4);
+        }
+
+        /* الجواب الرومانسي العملاق 3D (تعديل المقاسات لتكون أكبر) */
+        .envelope-wrapper {
+            position: relative;
+            width: 400px; 
+            height: 260px; 
+            margin: 0 auto;
+            cursor: pointer;
+            perspective: 1500px;
+            transform-style: preserve-3d;
+            transition: transform 0.4s ease;
+        }
+        /* ضبط المقاس للموبايل عشان مفيش حاجة تتقص */
+        .envelope-scaler {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        @media (max-width: 450px) {
+            .envelope-wrapper { transform: scale(0.85); }
+            .envelope-wrapper.open { transform: scale(0.85) translateY(10px) !important; }
+        }
+        @media (max-width: 360px) {
+            .envelope-wrapper { transform: scale(0.75); }
+            .envelope-wrapper.open { transform: scale(0.75) translateY(10px) !important; }
+        }
+
+        .envelope-back {
+            position: absolute; inset: 0; background: #881337; 
+            border-radius: 10px; z-index: 1; box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+        }
+        .envelope-front {
+            position: absolute; inset: 0; z-index: 3; pointer-events: none; overflow: hidden; border-radius: 10px;
+        }
+        .envelope-front::before {
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+            border-left: 200px solid transparent; border-right: 200px solid transparent;
+            border-bottom: 160px solid #be123c; 
+        }
+        .envelope-front::after {
+            content: ''; position: absolute; top: 0; bottom: 0; left: 0; right: 0;
+            border-left: 200px solid #9f1239; border-right: 200px solid #9f1239;
+            border-top: 130px solid transparent; border-bottom: 130px solid transparent;
+        }
+        .flap {
+            position: absolute; top: 0; left: 0; right: 0;
+            border-left: 200px solid transparent; border-right: 200px solid transparent;
+            border-top: 160px solid #e11d48;
+            transform-origin: top;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.1s;
+            z-index: 4; filter: drop-shadow(0 8px 15px rgba(0,0,0,0.5));
+        }
+        .letter {
+            position: absolute; top: 15px; bottom: 15px; left: 15px; right: 15px;
+            background: #fff; border-radius: 8px; padding: 25px 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.1s 0.3s;
+            z-index: 2; display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .envelope-wrapper.open .flap { 
+            transform: rotateX(180deg); 
+            z-index: 1; 
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.1s 0.3s;
+        }
+        .envelope-wrapper.open .letter { 
+            transform: translateY(-180px); 
+            z-index: 5; 
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s, z-index 0.1s 0.3s;
+        }
+
+        .spin-slow { animation: spin 4s linear infinite; }
+        .spin-paused { animation-play-state: paused; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* مشغل المزيكا (Draggable) */
+        #musicWidget {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            z-index: 9999;
+            cursor: grab;
+            user-select: none;
+            touch-action: none; /* مهم للموبايل عشان ما يعلقش */
+        }
+        #musicWidget:active { cursor: grabbing; }
+
+        .particles {
+            position: absolute; inset: 0; pointer-events: none; z-index: 1;
+            background-image: radial-gradient(circle at center, rgba(225,29,72,0.5) 2px, transparent 2px);
+            background-size: 60px 60px; opacity: 0.15; animation: drift 25s linear infinite;
+        }
+        @keyframes drift { 0% { background-position: 0 0; } 100% { background-position: 120px 120px; } }
+
+    </style>
+</head>
+<body class="antialiased no-scroll"> 
+
+    <!-- شاشة التحميل الثابتة -->
+    <div id="loader" class="fixed inset-0 z-[10000] bg-[#09090b] flex flex-col items-center justify-center w-full h-[100dvh] transition-opacity duration-700">
+        <div class="relative w-32 h-32 flex items-center justify-center">
+            <div class="absolute inset-0 rounded-full border-t-4 border-l-4 border-[#e11d48] animate-spin"></div>
+            <i data-lucide="heart" class="w-12 h-12 text-[#e11d48] animate-pulse fill-current"></i>
+        </div>
+        <h2 class="mt-8 text-2xl font-bold text-white title-font tracking-wide">بنجيب أحلى الذكريات...</h2>
+        <button id="startBtn" class="mt-10 px-12 py-4 text-xl bg-[#e11d48] text-white rounded-full font-bold shadow-[0_0_30px_rgba(225,29,72,0.6)] hover:scale-110 active:scale-95 hidden opacity-0 transition-all duration-500 z-50">
+            ابدأ الحكاية
+        </button>
+    </div>
+
+    <!-- مشغل المزيكا الاحترافي (قابل للسحب Drag & Drop) -->
+    <div id="musicWidget" class="glass rounded-full p-2.5 flex items-center gap-4 shadow-2xl border border-gray-700/80 backdrop-blur-xl">
+        <div class="relative w-12 h-12 rounded-full bg-gray-900 border-2 border-gray-600 flex items-center justify-center spin-slow spin-paused pointer-events-none" id="musicDisk">
+            <div class="w-4 h-4 rounded-full bg-gray-900 border-2 border-gray-600 z-10 pointer-events-none"></div>
+            <i data-lucide="music" class="w-5 h-5 text-[#e11d48] absolute pointer-events-none"></i>
+        </div>
+        
+        <div class="flex items-center gap-3 pl-3 border-r border-gray-600 pr-3">
+            <button id="playPauseBtn" class="text-white hover:text-[#e11d48] transition-colors p-2 relative w-8 h-8 flex justify-center items-center">
+                <div id="iconPlay" class="absolute pointer-events-none"><i data-lucide="play" class="w-7 h-7 fill-current"></i></div>
+                <div id="iconPause" class="absolute hidden pointer-events-none"><i data-lucide="pause" class="w-7 h-7 fill-current"></i></div>
+            </button>
+            <button id="muteBtn" class="text-[#e11d48] hover:text-white transition-colors p-2 relative w-8 h-8 flex justify-center items-center">
+                <div id="iconUnmute" class="absolute pointer-events-none"><i data-lucide="volume-2" class="w-7 h-7"></i></div>
+                <div id="iconMute" class="absolute hidden pointer-events-none"><i data-lucide="volume-x" class="w-7 h-7"></i></div>
+            </button>
+        </div>
+        
+        <audio id="bgMusic" loop>
+            <source src="music.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- 1. الهيرو (شاشة البداية) -->
+    <header class="relative min-h-[100dvh] flex flex-col justify-center items-center text-center px-6 overflow-hidden">
+        <div class="particles"></div>
+        <div class="absolute inset-0 z-0">
+            <img src="hero-bg.webp" alt="خلفية الحكاية" class="w-full h-full object-cover opacity-20 mix-blend-luminosity">
+            <div class="absolute inset-0 bg-gradient-to-b from-[#09090b]/40 via-[#09090b]/80 to-[#09090b]"></div>
+        </div>
+
+        <div class="glow-bg top-[-10%] right-[-10%] w-[600px] h-[600px]"></div>
+        <div class="glow-bg bottom-[-10%] left-[-10%] w-[600px] h-[600px]"></div>
+        
+        <div class="z-10 fade-up">
+            <span class="inline-block py-2 px-6 rounded-full border border-[#e11d48]/40 bg-[#e11d48]/10 text-[#e11d48] text-lg font-bold mb-8 backdrop-blur-md shadow-[0_0_20px_rgba(225,29,72,0.3)]">
+                ١٤ فبراير ٢٠٢٤
+            </span>
+            <h1 class="text-7xl md:text-9xl font-extrabold text-white mb-6 title-font tracking-tight drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]">
+                عمر <span class="text-[#e11d48] font-light">&</span> نور
+            </h1>
+            <p class="text-2xl md:text-3xl text-gray-300 mt-6 max-w-2xl mx-auto leading-relaxed">
+                في يوم عادي جداً، بدأت أحلى حكاية.. ودي شوية ملامح وتفاصيل من حكايتنا.
+            </p>
+        </div>
+
+        <div class="absolute bottom-16 flex flex-col items-center gap-3 text-gray-400 animate-bounce z-10">
+            <span class="text-lg font-bold tracking-widest">اسحب لفوق</span>
+            <i data-lucide="chevron-down" class="w-8 h-8 text-[#e11d48]"></i>
+        </div>
+    </header>
+
+    <!-- 2. التايم لاين -->
+    <section class="py-32 px-6 relative">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-5xl font-bold text-center text-white mb-24 title-font drop-shadow-2xl">إزاي بدأت؟</h2>
+            
+            <div class="timeline-container">
+                <div class="timeline-line"></div>
+                
+                <!-- محطة 1 -->
+                <div class="relative fade-up mb-20 pl-8 md:pl-10">
+                    <div class="timeline-node top-10"></div>
+                    <div class="glass p-8 md:p-10 rounded-[2rem] border border-gray-700/60 hover:border-[#e11d48]/60 transition-colors shadow-2xl">
+                        <span class="text-[#e11d48] text-sm md:text-base font-bold tracking-wider uppercase bg-[#e11d48]/10 px-4 py-2 rounded-full mb-4 inline-block">أول نظرة</span>
+                        <h3 class="text-3xl md:text-4xl font-bold text-white mb-4 title-font">صدفة الكافيه</h3>
+                        <p class="text-gray-300 text-lg md:text-xl leading-relaxed mb-8">يوم ما شوفتك بالصدفة، حسيت إن الوقت وقف. كنتي بتطلبي قهوتك ومندمجة أوي، ومن ساعتها وأنا عارف ومستعد أحلف إنك غير أي حد شوفته في حياتي.</p>
+                        <!-- تصحيح مقاس الصورة (aspect-video) عشان متتقصش بشكل وحش -->
+                        <div class="w-full aspect-video md:aspect-[16/9] bg-gray-900 rounded-3xl overflow-hidden relative group shadow-inner">
+                            <img src="story-1.webp" class="w-full h-full object-cover object-center transition-transform duration-1000 group-hover:scale-110" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 600 400\'%3E%3Crect width=\'600\' height=\'400\' fill=\'%2318181b\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' fill=\'%2352525b\' text-anchor=\'middle\' dy=\'.3em\' font-size=\'20\'%3Estory-1.webp%3C/text%3E%3C/svg%3E'">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- محطة 2 -->
+                <div class="relative fade-up mb-20 pl-8 md:pl-10">
+                    <div class="timeline-node top-10"></div>
+                    <div class="glass p-8 md:p-10 rounded-[2rem] border border-gray-700/60 hover:border-[#e11d48]/60 transition-colors shadow-2xl">
+                        <span class="text-[#e11d48] text-sm md:text-base font-bold tracking-wider uppercase bg-[#e11d48]/10 px-4 py-2 rounded-full mb-4 inline-block">أول خروجة</span>
+                        <h3 class="text-3xl md:text-4xl font-bold text-white mb-4 title-font">مشينا بالساعات</h3>
+                        <p class="text-gray-300 text-lg md:text-xl leading-relaxed mb-8">مكناش عارفين نروح فين، بس فضلنا نتمشى بالساعات ونتكلم في كل حاجة وأي حاجة. الغريب إني محسيتش بملل لحظة واحدة وكأننا نعرف بعض من سنين.</p>
+                        <!-- تصحيح مقاس الصورة (aspect-video) -->
+                        <div class="w-full aspect-video md:aspect-[16/9] bg-gray-900 rounded-3xl overflow-hidden relative group shadow-inner">
+                            <img src="story-2.webp" class="w-full h-full object-cover object-center transition-transform duration-1000 group-hover:scale-110" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 600 400\'%3E%3Crect width=\'600\' height=\'400\' fill=\'%2318181b\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' fill=\'%2352525b\' text-anchor=\'middle\' dy=\'.3em\' font-size=\'20\'%3Estory-2.webp%3C/text%3E%3C/svg%3E'">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. معرض الصور (مربع 1:1 لعدم القص) -->
+    <section class="py-32 overflow-hidden fade-up relative max-w-[1400px] mx-auto">
+        <div class="px-6 mb-12 text-right flex justify-between items-end">
+            <div>
+                <h2 class="text-5xl font-bold text-white title-font drop-shadow-2xl">لقطات متتنسيش</h2>
+                <p class="text-gray-400 text-lg mt-3 block md:hidden">اسحب يمين وشمال عشان تشوف الصور <i data-lucide="arrow-left-right" class="inline w-5 h-5 ml-1"></i></p>
+            </div>
+            <!-- أسهم الكنترول للكمبيوتر -->
+            <div class="hidden md:flex gap-4" dir="ltr">
+                <button id="nextBtn" class="w-14 h-14 rounded-full glass border border-gray-600 flex items-center justify-center hover:bg-[#e11d48] hover:border-[#e11d48] hover:scale-110 transition-all text-white shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+                    <i data-lucide="chevron-left" class="w-8 h-8 pointer-events-none"></i>
+                </button>
+                <button id="prevBtn" class="w-14 h-14 rounded-full glass border border-gray-600 flex items-center justify-center hover:bg-[#e11d48] hover:border-[#e11d48] hover:scale-110 transition-all text-white shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+                    <i data-lucide="chevron-right" class="w-8 h-8 pointer-events-none"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="relative px-6">
+            <div class="horizontal-scroll" id="galleryContainer">
+                <!-- كارت 1 -->
+                <div class="snap-card gallery-item relative rounded-[2.5rem] overflow-hidden group border border-gray-700 shrink-0 shadow-2xl">
+                    <img src="gallery-1.webp" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 500 500\'%3E%3Crect width=\'500\' height=\'500\' fill=\'%2318181b\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' fill=\'%2352525b\' text-anchor=\'middle\' font-size=\'24\'%3Egallery-1.webp%3C/text%3E%3C/svg%3E'">
+                    <!-- التدرج اللوني ثابت ومبيختفيش -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-80"></div>
+                    <div class="absolute bottom-0 left-0 w-full p-8 md:p-10 translate-y-0">
+                        <p class="text-white font-bold text-3xl md:text-4xl title-font drop-shadow-md">أحلى ضحكة</p>
+                    </div>
+                </div>
+                <!-- كارت 2 -->
+                <div class="snap-card gallery-item relative rounded-[2.5rem] overflow-hidden group border border-gray-700 shrink-0 shadow-2xl">
+                    <img src="gallery-2.webp" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 500 500\'%3E%3Crect width=\'500\' height=\'500\' fill=\'%2318181b\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' fill=\'%2352525b\' text-anchor=\'middle\' font-size=\'24\'%3Egallery-2.webp%3C/text%3E%3C/svg%3E'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-80"></div>
+                    <div class="absolute bottom-0 left-0 w-full p-8 md:p-10 translate-y-0">
+                        <p class="text-white font-bold text-3xl md:text-4xl title-font drop-shadow-md">يوم عيد ميلادك</p>
+                    </div>
+                </div>
+                <!-- كارت 3 -->
+                <div class="snap-card gallery-item relative rounded-[2.5rem] overflow-hidden group border border-gray-700 shrink-0 shadow-2xl">
+                    <img src="gallery-3.webp" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 500 500\'%3E%3Crect width=\'500\' height=\'500\' fill=\'%2318181b\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' fill=\'%2352525b\' text-anchor=\'middle\' font-size=\'24\'%3Egallery-3.webp%3C/text%3E%3C/svg%3E'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-80"></div>
+                    <div class="absolute bottom-0 left-0 w-full p-8 md:p-10 translate-y-0">
+                        <p class="text-white font-bold text-3xl md:text-4xl title-font drop-shadow-md">عالبحر وقت الغروب</p>
+                    </div>
+                </div>
+                <!-- كارت 4 -->
+                <div class="snap-card gallery-item relative rounded-[2.5rem] overflow-hidden group border border-gray-700 shrink-0 shadow-2xl">
+                    <img src="gallery-4.webp" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 500 500\'%3E%3Crect width=\'500\' height=\'500\' fill=\'%2318181b\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' fill=\'%2352525b\' text-anchor=\'middle\' font-size=\'24\'%3Egallery-4.webp%3C/text%3E%3C/svg%3E'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-80"></div>
+                    <div class="absolute bottom-0 left-0 w-full p-8 md:p-10 translate-y-0">
+                        <p class="text-white font-bold text-3xl md:text-4xl title-font drop-shadow-md">مجانين سوا</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. أسباب الحب (كروت 3D مقلوبة) -->
+    <section class="py-32 px-6 max-w-7xl mx-auto fade-up">
+        <h2 class="text-5xl font-bold text-center text-white mb-24 title-font drop-shadow-2xl">ليه إنتي؟</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <!-- كارت 1 -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front glass border border-gray-600/50 shadow-2xl">
+                        <div class="w-20 h-20 rounded-full bg-[#e11d48]/20 flex items-center justify-center mb-6 text-[#e11d48]">
+                            <i data-lucide="smile" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-white title-font">عشان ضحكتك</h3>
+                        <p class="text-gray-400 text-base mt-4">اضغط عشان تقرأ <i data-lucide="hand-pointer" class="inline w-4 h-4 mr-1 animate-pulse"></i></p>
+                    </div>
+                    <div class="flip-card-back shadow-[0_0_40px_rgba(225,29,72,0.3)]">
+                        <h3 class="text-2xl font-bold text-white mb-4 title-font border-b border-[#e11d48]/30 pb-3 w-full">عشان ضحكتك</h3>
+                        <p class="text-gray-200 text-lg leading-relaxed mt-2">هي الحاجه الوحيدة اللي بتفصلني عن دوشة يومي، بتنسيني همومي وتخليني أشوف الدنيا أحلى.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- كارت 2 -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front glass border border-gray-600/50 shadow-2xl">
+                        <div class="w-20 h-20 rounded-full bg-[#e11d48]/20 flex items-center justify-center mb-6 text-[#e11d48]">
+                            <i data-lucide="shield" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-white title-font">عشان جدعنتك</h3>
+                        <p class="text-gray-400 text-base mt-4">اضغط عشان تقرأ <i data-lucide="hand-pointer" class="inline w-4 h-4 mr-1 animate-pulse"></i></p>
+                    </div>
+                    <div class="flip-card-back shadow-[0_0_40px_rgba(225,29,72,0.3)]">
+                        <h3 class="text-2xl font-bold text-white mb-4 title-font border-b border-[#e11d48]/30 pb-3 w-full">عشان جدعنتك</h3>
+                        <p class="text-gray-200 text-lg leading-relaxed mt-2">وقفتك جنبي في المواقف الصعبة قبل الحلوة. إنتي مش بس حبيبتي، إنتي ضهري والسند الحقيقي ليا.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- كارت 3 -->
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front glass border border-gray-600/50 shadow-2xl">
+                        <div class="w-20 h-20 rounded-full bg-[#e11d48]/20 flex items-center justify-center mb-6 text-[#e11d48]">
+                            <i data-lucide="heart" class="w-10 h-10 fill-current"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-white title-font">عشان إنتي روحي</h3>
+                        <p class="text-gray-400 text-base mt-4">اضغط عشان تقرأ <i data-lucide="hand-pointer" class="inline w-4 h-4 mr-1 animate-pulse"></i></p>
+                    </div>
+                    <div class="flip-card-back shadow-[0_0_40px_rgba(225,29,72,0.3)]">
+                        <h3 class="text-2xl font-bold text-white mb-4 title-font border-b border-[#e11d48]/30 pb-3 w-full">عشان إنتي روحي</h3>
+                        <p class="text-gray-200 text-lg leading-relaxed mt-2">ببساطة، مش متخيل أيامي من غيرك. إنتي الروح اللي بتكملني وتخليني أحسن نسخة من نفسي كل يوم.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. قسم العداد اللايف (Dynamic Counter) -->
+    <section class="py-24 px-6 bg-gradient-to-b from-[#09090b] via-[#18181b]/80 to-[#09090b] border-y border-gray-800/80 relative fade-up" id="numbersSection">
+        <div class="max-w-5xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6 title-font drop-shadow-lg">كل ثانية معاكي بحساب</h2>
+            <p class="text-xl text-gray-400 mb-16">من يوم ما عرفتك والوقت مبقاش مجرد أرقام..</p>
+            
+            <div class="flex flex-wrap justify-center gap-4 md:gap-8 text-center text-white" dir="ltr">
+                <div class="glass p-6 rounded-3xl w-28 md:w-36 shadow-[0_0_30px_rgba(225,29,72,0.1)] hover:-translate-y-2 transition-transform">
+                    <span id="daysCount" class="block text-5xl md:text-6xl font-extrabold text-[#e11d48] mb-2 drop-shadow-md">0</span>
+                    <span class="text-base md:text-lg text-gray-300 font-bold">يوم</span>
+                </div>
+                <div class="glass p-6 rounded-3xl w-28 md:w-36 shadow-[0_0_30px_rgba(225,29,72,0.1)] hover:-translate-y-2 transition-transform">
+                    <span id="hoursCount" class="block text-5xl md:text-6xl font-extrabold text-[#e11d48] mb-2 drop-shadow-md">0</span>
+                    <span class="text-base md:text-lg text-gray-300 font-bold">ساعة</span>
+                </div>
+                <div class="glass p-6 rounded-3xl w-28 md:w-36 shadow-[0_0_30px_rgba(225,29,72,0.1)] hover:-translate-y-2 transition-transform">
+                    <span id="minutesCount" class="block text-5xl md:text-6xl font-extrabold text-[#e11d48] mb-2 drop-shadow-md">0</span>
+                    <span class="text-base md:text-lg text-gray-300 font-bold">دقيقة</span>
+                </div>
+                <div class="glass p-6 rounded-3xl w-28 md:w-36 shadow-[0_0_30px_rgba(225,29,72,0.1)] hover:-translate-y-2 transition-transform">
+                    <span id="secondsCount" class="block text-5xl md:text-6xl font-extrabold text-[#e11d48] mb-2 drop-shadow-md">0</span>
+                    <span class="text-base md:text-lg text-gray-300 font-bold">ثانية</span>
+                </div>
+            </div>
+            <div class="mt-8 inline-block px-6 py-2 rounded-full bg-gray-900 border border-gray-700 text-sm text-gray-500">
+                بدأت الحكاية في: ٩ يونيو ٢٠٢٤
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. الرسالة الختامية (الجواب العملاق المقفول صح) -->
+    <section class="relative py-40 px-6 text-center overflow-hidden min-h-[800px] flex flex-col items-center justify-center">
+        <div class="glow-bg top-[20%] left-[50%] -translate-x-1/2 w-[800px] h-[800px] opacity-20"></div>
+        
+        <h2 class="text-4xl md:text-5xl font-bold text-white mb-24 title-font fade-up relative z-10 drop-shadow-2xl">عندي ليكي رسالة أخيرة.. اضغطي ع الجواب</h2>
+        
+        <!-- حاوية لتظبيط المقاس ع الموبايل عشان مفيش حواف تتقص -->
+        <div class="fade-up relative z-20 w-full flex justify-center mt-12 envelope-scaler">
+            <div class="envelope-wrapper hover:scale-[1.03] transition-transform duration-500" id="envelope" onclick="openEnvelope()">
+                <!-- ظهر الجواب -->
+                <div class="envelope-back"></div>
+                
+                <!-- الرسالة الورقية (مقاسات وتنسيق الخطوط متظبط عشان مفيش حاجة تخرج بره) -->
+                <div class="letter text-right text-gray-900 border-2 border-gray-100">
+                    <div>
+                        <span class="text-[#e11d48] font-bold text-lg block mb-3 title-font border-b border-gray-200 pb-2">حبيبة قلبي،</span>
+                        <p class="text-base md:text-lg leading-relaxed font-bold font-['Cairo'] text-gray-800">
+                            كل سنة وإحنا مع بعض، وكل يوم بحبك أكتر من اللي قبله. ربنا يخليكي ليا يا أحلى صدفة وأجمل هدية نورت حياتي وعمري كله. بحبك جداً!
+                        </p>
+                    </div>
+                    <div class="text-left mt-2 flex justify-between items-end">
+                        <span class="text-gray-600 font-extrabold text-sm md:text-base">عمرك حبيبك</span>
+                        <i data-lucide="heart" class="w-8 h-8 text-[#e11d48] fill-current inline-block animate-pulse"></i>
+                    </div>
+                </div>
+                
+                <!-- وش الجواب -->
+                <div class="envelope-front"></div>
+                
+                <!-- غطاء الجواب -->
+                <div class="flap flex justify-center items-end pb-8">
+                    <div class="w-14 h-14 bg-[#881337] rounded-full border-4 border-[#e11d48]/50 shadow-[0_5px_15px_rgba(0,0,0,0.5)] flex justify-center items-center">
+                        <i data-lucide="heart" class="w-6 h-6 text-white fill-current"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer class="text-center py-10 text-gray-500 text-sm border-t border-gray-900 pb-32 relative z-10 bg-[#09090b]">
+        صُنع بحب بواسطة <a href="https://HeartCode.site" target="_blank" class="text-[#e11d48] font-bold text-base ml-1 hover:underline transition-all">HeartCode</a>
+    </footer>
+
+    <!-- سكربتات التفاعل -->
+    <script>
+        lucide.createIcons();
+
+        // 1. إدارة التحميل والمزيكا
+        const loader = document.getElementById('loader');
+        const startBtn = document.getElementById('startBtn');
+        const bgMusic = document.getElementById('bgMusic');
+        
+        const musicDisk = document.getElementById('musicDisk');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const iconPlay = document.getElementById('iconPlay');
+        const iconPause = document.getElementById('iconPause');
+        
+        const muteBtn = document.getElementById('muteBtn');
+        const iconUnmute = document.getElementById('iconUnmute');
+        const iconMute = document.getElementById('iconMute');
+
+        setTimeout(() => {
+            startBtn.classList.remove('hidden');
+            setTimeout(() => startBtn.classList.remove('opacity-0'), 50);
+        }, 1500);
+
+        startBtn.addEventListener('click', () => {
+            loader.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.display = 'none';
+                document.body.classList.remove('no-scroll'); 
+            }, 700);
+            
+            bgMusic.play().then(() => {
+                musicDisk.classList.remove('spin-paused');
+                iconPlay.classList.add('hidden');
+                iconPause.classList.remove('hidden');
+            }).catch(e => console.log("المتصفح منع التشغيل التلقائي"));
+        });
+
+        playPauseBtn.addEventListener('click', () => {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                musicDisk.classList.remove('spin-paused');
+                iconPlay.classList.add('hidden');
+                iconPause.classList.remove('hidden');
+            } else {
+                bgMusic.pause();
+                musicDisk.classList.add('spin-paused');
+                iconPause.classList.add('hidden');
+                iconPlay.classList.remove('hidden');
+            }
+        });
+
+        muteBtn.addEventListener('click', () => {
+            if (bgMusic.muted) {
+                bgMusic.muted = false;
+                iconMute.classList.add('hidden');
+                iconUnmute.classList.remove('hidden');
+                muteBtn.classList.add('text-[#e11d48]');
+                muteBtn.classList.remove('text-gray-400');
+            } else {
+                bgMusic.muted = true;
+                iconUnmute.classList.add('hidden');
+                iconMute.classList.remove('hidden');
+                muteBtn.classList.remove('text-[#e11d48]');
+                muteBtn.classList.add('text-gray-400');
+            }
+        });
+
+        // كود سحب (Drag) البلاير عشان يكون "متحرك"
+        const widget = document.getElementById('musicWidget');
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        widget.addEventListener("touchstart", dragStart, {passive: false});
+        widget.addEventListener("touchend", dragEnd, false);
+        widget.addEventListener("touchmove", drag, {passive: false});
+        widget.addEventListener("mousedown", dragStart, false);
+        document.addEventListener("mouseup", dragEnd, false);
+        document.addEventListener("mousemove", drag, false);
+
+        function dragStart(e) {
+            if (e.target.closest('button')) return; // عشان الزراير تشتغل
+            initialX = e.type === "touchstart" ? e.touches[0].clientX - xOffset : e.clientX - xOffset;
+            initialY = e.type === "touchstart" ? e.touches[0].clientY - yOffset : e.clientY - yOffset;
+            if (e.target === widget || widget.contains(e.target)) {
+                isDragging = true;
+            }
+        }
+        function dragEnd(e) {
+            initialX = currentX;
+            initialY = currentY;
+            isDragging = false;
+        }
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = e.type === "touchmove" ? e.touches[0].clientX - initialX : e.clientX - initialX;
+                currentY = e.type === "touchmove" ? e.touches[0].clientY - initialY : e.clientY - initialY;
+                xOffset = currentX;
+                yOffset = currentY;
+                setTranslate(currentX, currentY, widget);
+            }
+        }
+        function setTranslate(xPos, yPos, el) {
+            el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+        }
+
+
+        // 2. حركات التمرير 
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, observerOptions);
+        document.querySelectorAll('.fade-up').forEach((el) => { observer.observe(el); });
+
+        // 3. أسهم تقليب الجاليري
+        const galleryContainer = document.getElementById('galleryContainer');
+        const nextBtn = document.getElementById('nextBtn'); 
+        const prevBtn = document.getElementById('prevBtn'); 
+        
+        if(nextBtn && prevBtn) {
+            nextBtn.addEventListener('click', () => {
+                const card = document.querySelector('.gallery-item');
+                const cardWidth = card.offsetWidth + 32; 
+                galleryContainer.scrollBy({ left: -cardWidth, behavior: 'smooth' }); 
+            });
+            prevBtn.addEventListener('click', () => {
+                const card = document.querySelector('.gallery-item');
+                const cardWidth = card.offsetWidth + 32; 
+                galleryContainer.scrollBy({ left: cardWidth, behavior: 'smooth' }); 
+            });
+        }
+
+        // 4. تقليب الكروت 3D 
+        document.querySelectorAll('.flip-card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('flipped');
+            });
+        });
+
+        // 5. العداد الديناميك المباشر (تاريخ البداية: 9 يونيو 2024)
+        const startDate = new Date("2024-06-09T00:00:00").getTime();
+        const daysEl = document.getElementById('daysCount');
+        const hoursEl = document.getElementById('hoursCount');
+        const minutesEl = document.getElementById('minutesCount');
+        const secondsEl = document.getElementById('secondsCount');
+
+        function updateTimer() {
+            const now = new Date().getTime();
+            const distance = now - startDate;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            if(daysEl) {
+                daysEl.innerText = days;
+                hoursEl.innerText = hours;
+                minutesEl.innerText = minutes;
+                secondsEl.innerText = seconds;
+            }
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer(); 
+
+        // 6. فتح الجواب
+        function openEnvelope() {
+            const envelope = document.getElementById('envelope');
+            envelope.classList.toggle('open');
+            // عمل فوكس زووم بسيط لما الجواب يفتح
+            if(envelope.classList.contains('open')){
+                envelope.style.transform = "scale(1.05) translateY(10px)";
+            } else {
+                envelope.style.transform = "scale(1) translateY(0)";
+            }
+        }
+    </script>
+</body>
+</html>
