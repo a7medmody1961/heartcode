@@ -5,7 +5,7 @@
   },
   "settings": {
     "pageTitle": "حكايتنا | هديتك الخاصة",
-    "pinCode": "0906",
+    "pinCode": "1906",
     "bgMusic": "music.mp3"
   },
   "loaderScreen": {
@@ -14,7 +14,7 @@
   },
   "pinScreen": {
     "title": "هديتك الخاصة",
-    "subtitle": "عشان تفتح الديمو، جرب تكتب الباسورد المخصص ليك"
+    "subtitle": "عشان تفتح الديمو، اكتب الباسورد 1906"
   },
   "hero": {
     "dateBadge": "14 فبراير 2024",
