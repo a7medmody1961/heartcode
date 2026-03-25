@@ -4,161 +4,205 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HeartCode | هديتك في لينك</title>
-    <!-- خطوط عربية -->
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS -->
+    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&family=Readex+Pro:wght@300;500;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons للملفات والايقونات -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
+        :root {
+            --bg-dark: #09090b; 
+            --accent-glow: #e11d48; 
+            --surface: #18181b;
+        }
+
         body {
-            font-family: 'Tajawal', sans-serif;
+            font-family: 'Readex Pro', sans-serif;
+            background-color: var(--bg-dark);
+            color: #f4f4f5;
             scroll-behavior: smooth;
+            overflow-x: hidden;
         }
-        
-        /* تأثيرات الخلفية في الهيرو */
-        .hero-bg {
-            background: linear-gradient(135deg, #fff0f3 0%, #ffeaa7 100%);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .blob {
-            position: absolute;
-            filter: blur(80px);
-            z-index: 0;
-            opacity: 0.6;
-        }
-        .blob-1 { top: -10%; right: -10%; width: 400px; height: 400px; background: #ff7675; border-radius: 50%; }
-        .blob-2 { bottom: -10%; left: -10%; width: 500px; height: 500px; background: #fdcb6e; border-radius: 50%; }
 
-        /* حركات التمرير (Scroll Reveal) */
-        .reveal {
+        h1, h2, h3, .title-font {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 10px; }
+
+        /* تأثير الجلاس مورفيزم */
+        .glass {
+            background: rgba(24, 24, 27, 0.5);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        /* حركات التمرير */
+        .fade-up {
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease-out;
+            transform: translateY(40px) scale(0.95);
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .reveal.active {
+        .fade-up.visible {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
 
-        /* كروت الباقات */
+        /* خلفيات مضيئة */
+        .glow-bg {
+            position: absolute;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(225,29,72,0.12) 0%, rgba(9,9,11,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            animation: pulse-glow 8s infinite alternate;
+        }
+        @keyframes pulse-glow {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(1.2); opacity: 1; }
+        }
+
+        /* جزيئات متطايرة */
+        .particles {
+            position: absolute; inset: 0; pointer-events: none; z-index: 1;
+            background-image: radial-gradient(circle at center, rgba(225,29,72,0.4) 2px, transparent 2px);
+            background-size: 80px 80px; opacity: 0.1; animation: drift 30s linear infinite;
+        }
+        @keyframes drift { 0% { background-position: 0 0; } 100% { background-position: 160px 160px; } }
+
+        /* كروت الأسعار */
+        .pricing-card {
+            transition: all 0.4s ease;
+        }
         .pricing-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: rgba(225, 29, 72, 0.5);
+            box-shadow: 0 20px 40px -10px rgba(225, 29, 72, 0.2);
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 antialiased">
+<body class="antialiased selection:bg-[#e11d48] selection:text-white">
 
-    <!-- شريط التنقل (Navbar) -->
-    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
+    <nav class="fixed w-full z-50 glass border-b border-gray-800/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
-                <div class="flex items-center gap-2">
-                    <i data-lucide="code" class="text-rose-500 w-8 h-8"></i>
-                    <span class="font-bold text-2xl tracking-tight text-gray-900">Heart<span class="text-rose-500">Code</span></span>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-[#e11d48]/20 flex items-center justify-center border border-[#e11d48]/30">
+                        <i data-lucide="code" class="text-[#e11d48] w-6 h-6"></i>
+                    </div>
+                    <span class="font-bold text-2xl tracking-tight text-white title-font">Heart<span class="text-[#e11d48]">Code</span></span>
                 </div>
                 <div class="hidden md:flex space-x-8 space-x-reverse">
-                    <a href="#how-it-works" class="text-gray-600 hover:text-rose-500 font-medium transition">إزاي بنشتغل؟</a>
-                    <a href="#features" class="text-gray-600 hover:text-rose-500 font-medium transition">المميزات</a>
-                    <a href="#demo" class="text-gray-600 hover:text-rose-500 font-medium transition">النماذج</a>
-                    <a href="#pricing" class="text-gray-600 hover:text-rose-500 font-medium transition">الباقات</a>
+                    <a href="#how-it-works" class="text-gray-300 hover:text-[#e11d48] font-medium transition">إزاي بنشتغل؟</a>
+                    <a href="#demo" class="text-gray-300 hover:text-[#e11d48] font-medium transition">النماذج</a>
+                    <a href="#pricing" class="text-gray-300 hover:text-[#e11d48] font-medium transition">الباقات</a>
                 </div>
                 <div>
-                    <a href="#contact" class="bg-gray-900 hover:bg-gray-800 text-white px-6 py-2.5 rounded-full font-bold transition">اطلب هديتك</a>
+                    <a href="#contact" class="bg-[#e11d48] hover:bg-rose-700 text-white px-6 py-2.5 rounded-full font-bold transition shadow-[0_0_15px_rgba(225,29,72,0.4)] hover:shadow-[0_0_25px_rgba(225,29,72,0.6)]">اطلب هديتك</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- القسم الرئيسي (Hero Section) -->
-    <section class="hero-bg min-h-screen flex items-center pt-20">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
+    <section class="relative min-h-[100dvh] flex items-center justify-center pt-20 overflow-hidden">
+        <div class="particles"></div>
+        <div class="glow-bg top-[-10%] right-[-10%]"></div>
+        <div class="glow-bg bottom-[-10%] left-[-10%]"></div>
         
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <span class="inline-block py-1 px-3 rounded-full bg-rose-100 text-rose-600 font-bold text-sm mb-6 border border-rose-200">
-                🚀 فكرة جديدة للهدايا الديجيتال
-            </span>
-            <h1 class="text-5xl md:text-7xl font-extrabold text-gray-900 mb-6 flex flex-col items-center gap-4 md:gap-10">
-                <span>وثق حكايتك في</span>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-orange-400 pb-2">صفحة متتنسيش</span>
-            </h1>
-            <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto mb-10">
-                بدل الهدايا التقليدية، اعمل صفحة ويب تفاعلية تجمع صوركم، ذكرياتكم، والأغنية اللي بتعبر عنكم في لينك واحد يفضل معاكم دايماً.
-            </p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="#demo" class="px-8 py-4 bg-rose-500 text-white rounded-full font-bold text-lg hover:bg-rose-600 shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 flex items-center justify-center gap-2">
-                    <i data-lucide="eye" class="w-5 h-5"></i> شوف نموذج حي
-                </a>
-                <a href="#pricing" class="px-8 py-4 bg-white text-gray-900 border-2 border-gray-200 rounded-full font-bold text-lg hover:border-gray-900 transition flex items-center justify-center gap-2">
-                    <i data-lucide="tag" class="w-5 h-5"></i> الأسعار والباقات
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- قسم الخطوات (How it works) -->
-    <section id="how-it-works" class="py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 reveal">
-                <h2 class="text-3xl font-bold text-gray-900">الموضوع بسيط جداً</h2>
-                <p class="mt-4 text-gray-600">٣ خطوات بس وتستلم هديتك جاهزة للمشاركة</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <!-- خطوة 1 -->
-                <div class="bg-gray-50 p-8 rounded-3xl text-center reveal">
-                    <div class="w-16 h-16 mx-auto bg-rose-100 text-rose-500 rounded-2xl flex items-center justify-center mb-6">
-                        <i data-lucide="file-text" class="w-8 h-8"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">١. املأ البيانات</h3>
-                    <p class="text-gray-600">هتبعتلنا الأسماء، التواريخ المهمة، الصور، ورسالتك الخاصة اللي حابب تختم بيها.</p>
-                </div>
-                <!-- خطوة 2 -->
-                <div class="bg-gray-50 p-8 rounded-3xl text-center reveal" style="transition-delay: 100ms;">
-                    <div class="w-16 h-16 mx-auto bg-orange-100 text-orange-500 rounded-2xl flex items-center justify-center mb-6">
-                        <i data-lucide="monitor-smartphone" class="w-8 h-8"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">٢. إحنا هنبرمج</h3>
-                    <p class="text-gray-600">هنحول داتا بتاعتك لصفحة ويب تفاعلية بتصميم عصري وحركات أنميشن مبهجة.</p>
-                </div>
-                <!-- خطوة 3 -->
-                <div class="bg-gray-50 p-8 rounded-3xl text-center reveal" style="transition-delay: 200ms;">
-                    <div class="w-16 h-16 mx-auto bg-green-100 text-green-500 rounded-2xl flex items-center justify-center mb-6">
-                        <i data-lucide="share-2" class="w-8 h-8"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">٣. استلم اللينك</h3>
-                    <p class="text-gray-600">هنبعتلك لينك خاص بيك (مثال: heartcode.online/You) تقدر تبعته كهدية في أي وقت.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- قسم النموذج (Demo) -->
-    <section id="demo" class="py-24 bg-gray-900 text-white relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="flex flex-col md:flex-row items-center gap-12">
-                <div class="md:w-1/2 reveal">
-                    <h2 class="text-4xl font-bold mb-6">لسه متخيلتش الفكرة؟</h2>
-                    <p class="text-gray-300 text-lg mb-8 leading-relaxed">
-                        عشان تعرف إحنا بنقدم إيه بالظبط، عملنا صفحة تجريبية . ادخل جرب الصفحة بنفسك وشوف إزاي الصور بتتحرك، المزيكا بتشتغل، والذكريات بتتعرض بشكل يشد الانتباه.
-                    </p>
-                    <a href="index.html" target="_blank" class="inline-flex items-center gap-2 px-8 py-4 bg-rose-500 text-white rounded-full font-bold text-lg hover:bg-rose-400 transition">
-                        <i data-lucide="external-link" class="w-5 h-5"></i> لينك الصفحة التجريبية
+            <div class="fade-up">
+                <span class="inline-block py-2 px-6 rounded-full border border-[#e11d48]/40 bg-[#e11d48]/10 text-[#e11d48] text-sm font-bold mb-8 backdrop-blur-md shadow-[0_0_20px_rgba(225,29,72,0.2)]">
+                    🚀 فكرة جديدة للهدايا الديجيتال
+                </span>
+                <h1 class="text-6xl md:text-8xl font-extrabold text-white mb-6 flex flex-col items-center gap-6 md:gap-12 title-font drop-shadow-2xl">
+                    <span>وثق حكايتك في</span>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#e11d48] to-rose-400 pb-4">صفحة متتنسيش</span>
+                </h1>
+                <p class="mt-6 text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed">
+                    بدل الهدايا التقليدية، اعمل صفحة ويب تفاعلية تجمع صوركم، ذكرياتكم، والأغنية اللي بتعبر عنكم في لينك واحد يفضل معاكم دايماً.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-5">
+                    <a href="https://heartcode.site/demo/" target="_blank" class="px-8 py-4 bg-[#e11d48] text-white rounded-full font-bold text-lg hover:scale-105 transition-all shadow-[0_0_30px_rgba(225,29,72,0.4)] flex items-center justify-center gap-3">
+                        <i data-lucide="eye" class="w-6 h-6"></i> شوف نموذج حي
+                    </a>
+                    <a href="#pricing" class="px-8 py-4 glass text-white border border-gray-600 hover:border-[#e11d48] rounded-full font-bold text-lg hover:bg-white/5 transition-all flex items-center justify-center gap-3">
+                        <i data-lucide="tag" class="w-6 h-6"></i> الباقات والمميزات
                     </a>
                 </div>
-                <div class="md:w-1/2 reveal" style="transition-delay: 200ms;">
-                    <!-- شكل توضيحي لموبايل -->
-                    <div class="relative mx-auto border-gray-800 dark:border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[500px] w-[250px] shadow-2xl">
-                        <div class="w-[120px] h-[18px] bg-gray-800 top-0 rounded-b-[1rem] left-1/2 -translate-x-1/2 absolute"></div>
-                        <div class="rounded-[2rem] overflow-hidden w-full h-full bg-white relative">
-                            <!-- محتوى الموبايل التخيلي -->
-                            <div class="w-full h-full bg-[#fff5f6] flex flex-col items-center justify-center text-center p-4">
-                                <div class="text-rose-500 animate-pulse mb-4"><i data-lucide="heart" class="w-12 h-12 fill-current"></i></div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 flex flex-col items-center gap-2 text-gray-500 animate-bounce z-10">
+            <i data-lucide="chevron-down" class="w-8 h-8 text-[#e11d48]"></i>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="py-32 relative border-t border-gray-800/50 bg-[#09090b]/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-20 fade-up">
+                <h2 class="text-4xl md:text-5xl font-bold text-white title-font drop-shadow-lg">الموضوع بسيط جداً</h2>
+                <p class="mt-4 text-lg text-gray-400">٣ خطوات بس وتستلم هديتك جاهزة للمشاركة</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass p-10 rounded-[2rem] text-center fade-up border-gray-700/50 hover:border-[#e11d48]/50 transition-colors">
+                    <div class="w-20 h-20 mx-auto bg-[#e11d48]/20 text-[#e11d48] rounded-2xl flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(225,29,72,0.2)]">
+                        <i data-lucide="file-text" class="w-10 h-10"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-white title-font">١. املأ البيانات</h3>
+                    <p class="text-gray-400 leading-relaxed">هتبعتلنا الأسماء، التواريخ المهمة، الصور، ورسالتك الخاصة اللي حابب تختم بيها.</p>
+                </div>
+                <div class="glass p-10 rounded-[2rem] text-center fade-up border-gray-700/50 hover:border-orange-500/50 transition-colors" style="transition-delay: 100ms;">
+                    <div class="w-20 h-20 mx-auto bg-orange-500/20 text-orange-500 rounded-2xl flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(249,115,22,0.2)]">
+                        <i data-lucide="monitor-smartphone" class="w-10 h-10"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-white title-font">٢. إحنا هنبرمج</h3>
+                    <p class="text-gray-400 leading-relaxed">هنحول الداتا بتاعتك لصفحة ويب تفاعلية بتصميم عصري وحركات أنميشن مبهجة و3D.</p>
+                </div>
+                <div class="glass p-10 rounded-[2rem] text-center fade-up border-gray-700/50 hover:border-emerald-500/50 transition-colors" style="transition-delay: 200ms;">
+                    <div class="w-20 h-20 mx-auto bg-emerald-500/20 text-emerald-500 rounded-2xl flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+                        <i data-lucide="share-2" class="w-10 h-10"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-white title-font">٣. استلم اللينك</h3>
+                    <p class="text-gray-400 leading-relaxed">هنبعتلك لينك خاص بيك (مثال: heartcode.site/You) تقدر تبعته كهدية في أي وقت.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="demo" class="py-32 relative overflow-hidden">
+        <div class="glow-bg top-[10%] left-[50%] -translate-x-1/2 opacity-30"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row items-center gap-16">
+                <div class="md:w-1/2 fade-up">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white mb-6 title-font">لسه متخيلتش الفكرة؟</h2>
+                    <p class="text-gray-400 text-lg md:text-xl mb-10 leading-relaxed">
+                        عشان تعرف إحنا بنقدم إيه بالظبط وبجودة عاملة إزاي، عملنا صفحة تجريبية. ادخل جرب الصفحة بنفسك وشوف إزاي الصور بتتحرك 3D، المزيكا، والجواب الرومانسي التفاعلي.
+                    </p>
+                    <a href="https://heartcode.site/demo/" target="_blank" class="inline-flex items-center gap-3 px-8 py-4 bg-[#e11d48] text-white rounded-full font-bold text-lg hover:scale-105 transition-all shadow-[0_0_25px_rgba(225,29,72,0.4)]">
+                        <i data-lucide="external-link" class="w-6 h-6"></i> جرب الديمو بنفسك
+                    </a>
+                </div>
+                <div class="md:w-1/2 fade-up flex justify-center" style="transition-delay: 200ms;">
+                    <div class="relative border-gray-700 bg-gray-800 border-[12px] rounded-[3rem] h-[550px] w-[270px] shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
+                        <div class="w-[120px] h-[20px] bg-gray-700 top-0 rounded-b-[1rem] left-1/2 -translate-x-1/2 absolute z-20"></div>
+                        <div class="rounded-[2.2rem] overflow-hidden w-full h-full bg-[#09090b] relative flex flex-col">
+                            <div class="flex-1 flex flex-col items-center justify-center p-6 bg-gradient-to-b from-[#18181b] to-[#09090b] relative">
+                                <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(225,29,72,0.2)_0,transparent_60%)]"></div>
+                                <div class="w-16 h-16 rounded-full bg-[#e11d48]/20 flex items-center justify-center mb-6 relative z-10 shadow-[0_0_20px_rgba(225,29,72,0.5)]">
+                                    <i data-lucide="heart" class="w-8 h-8 text-[#e11d48] fill-current animate-pulse"></i>
+                                </div>
+                                <h4 class="text-white font-bold text-2xl mb-3 title-font relative z-10">حكايتنا</h4>
+                                <div class="w-3/4 h-2 bg-gray-800 rounded-full mb-4 relative z-10"></div>
+                                <div class="w-1/2 h-2 bg-gray-800 rounded-full relative z-10"></div>
                             </div>
                         </div>
                     </div>
@@ -167,84 +211,113 @@
         </div>
     </section>
 
-    <!-- قسم الأسعار (Pricing) -->
-    <section id="pricing" class="py-24 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 reveal">
-                <h2 class="text-3xl font-bold text-gray-900">اختار الباقة المناسبة ليك</h2>
-                <p class="mt-4 text-gray-600">أسعار واضحة بدون أي تكاليف مخفية</p>
+    <section id="pricing" class="py-32 border-t border-gray-800/50 bg-[#09090b]/50 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-20 fade-up">
+                <h2 class="text-4xl md:text-5xl font-bold text-white title-font drop-shadow-lg">اختار الباقة المناسبة ليك</h2>
+                <p class="mt-4 text-lg text-gray-400">باقات مصممة عشان توثق حكايتك بأفضل شكل يناسبك</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <!-- الباقة الأساسية -->
-                <div class="bg-white rounded-3xl p-8 border border-gray-200 pricing-card transition duration-300 reveal">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-2">الباقة الأساسية</h3>
-                    <p class="text-gray-500 mb-6">سريعة واقتصادية، بتستخدم القالب الأساسي بتاعنا.</p>
-                    <div class="text-4xl font-extrabold text-gray-900 mb-6">250<span class="text-lg text-gray-500 font-normal"> جنيه</span></div>
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center gap-3 text-gray-700"><i data-lucide="check-circle-2" class="w-5 h-5 text-green-500"></i> صفحة مخصصة بأسماءكم</li>
-                        <li class="flex items-center gap-3 text-gray-700"><i data-lucide="check-circle-2" class="w-5 h-5 text-green-500"></i> رفع لحد ١٥ صورة</li>
-                        <li class="flex items-center gap-3 text-gray-700"><i data-lucide="check-circle-2" class="w-5 h-5 text-green-500"></i> تشغيل أغنية في الخلفية</li>
-                        <li class="flex items-center gap-3 text-gray-700"><i data-lucide="check-circle-2" class="w-5 h-5 text-green-500"></i> صفحة مدتها سنة كاملة</li>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
+                <div class="glass rounded-[2rem] p-10 border border-gray-700 pricing-card fade-up flex flex-col">
+                    <div class="mb-8">
+                        <h3 class="text-3xl font-bold text-white mb-3 title-font">باقة اللحظات الحلوة</h3>
+                        <p class="text-gray-400 text-lg">سريعة واقتصادية، بتوثق أجمل ذكرياتكم في صفحة شيك.</p>
+                    </div>
+                    
+                    <ul class="space-y-5 mb-10 flex-1">
+                        <li class="flex items-center gap-4 text-gray-300 text-lg">
+                            <i data-lucide="lock" class="w-6 h-6 text-emerald-500"></i> شاشة قفل بكلمة سر خاصة
+                        </li>
+                        <li class="flex items-center gap-4 text-gray-300 text-lg">
+                            <i data-lucide="clock" class="w-6 h-6 text-emerald-500"></i> عداد تفاعلي للذكريات (أيام وساعات)
+                        </li>
+                        <li class="flex items-center gap-4 text-gray-300 text-lg">
+                            <i data-lucide="star" class="w-6 h-6 text-emerald-500"></i> خريطة النجوم ليومكم المميز
+                        </li>
+                        <li class="flex items-center gap-4 text-gray-300 text-lg">
+                            <i data-lucide="image" class="w-6 h-6 text-emerald-500"></i> مساحة لـ 10 صور و 3 مواقف
+                        </li>
+                        <li class="flex items-center gap-4 text-gray-300 text-lg">
+                            <i data-lucide="music" class="w-6 h-6 text-emerald-500"></i> تشغيل أغنية في الخلفية
+                        </li>
+                        <li class="flex items-center gap-4 text-gray-300 text-lg">
+                            <i data-lucide="mail" class="w-6 h-6 text-emerald-500"></i> جواب رومانسي 3D
+                        </li>
                     </ul>
-                    <a href="#contact" class="block w-full py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-900 font-bold text-center rounded-xl transition">اطلب الآن</a>
+                    <a href="#contact" class="mt-auto block w-full py-4 px-6 bg-gray-800 hover:bg-gray-700 border border-gray-600 text-white font-bold text-center rounded-2xl transition-all text-lg">اطلب دلوقتي</a>
                 </div>
 
-                <!-- الباقة المخصصة -->
-                <div class="bg-gray-900 rounded-3xl p-8 border border-gray-800 pricing-card transition duration-300 relative reveal" style="transition-delay: 100ms;">
-                    <div class="absolute top-0 right-8 transform -translate-y-1/2">
-                        <span class="bg-gradient-to-r from-rose-500 to-orange-400 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">الأكثر طلباً</span>
+                <div class="glass rounded-[2rem] p-10 border-2 border-[#e11d48] pricing-card relative fade-up shadow-[0_0_30px_rgba(225,29,72,0.15)] hover:shadow-[0_0_50px_rgba(225,29,72,0.3)] flex flex-col" style="transition-delay: 100ms;">
+                    <div class="absolute top-0 right-10 transform -translate-y-1/2">
+                        <span class="bg-gradient-to-r from-[#e11d48] to-rose-400 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">الأكثر طلباً</span>
                     </div>
-                    <h3 class="text-2xl font-bold text-white mb-2">الباقة المميزة (VIP)</h3>
-                    <p class="text-gray-400 mb-6">تصميم بألوانك المفضلة وتفاصيل أكتر بكتير.</p>
-                    <div class="text-4xl font-extrabold text-white mb-6">400<span class="text-lg text-gray-400 font-normal"> جنيه</span></div>
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center gap-3 text-gray-300"><i data-lucide="check-circle-2" class="w-5 h-5 text-rose-500"></i> كل مميزات الباقة الأساسية</li>
-                        <li class="flex items-center gap-3 text-gray-300"><i data-lucide="check-circle-2" class="w-5 h-5 text-rose-500"></i> اختيار ألوان مخصصة للصفحة</li>
-                        <li class="flex items-center gap-3 text-gray-300"><i data-lucide="check-circle-2" class="w-5 h-5 text-rose-500"></i> إضافة فيديو ختامي للهدية</li>
-                        <li class="flex items-center gap-3 text-gray-300"><i data-lucide="check-circle-2" class="w-5 h-5 text-rose-500"></i> دومين فرعي مميز (yourname.heartcode.online)</li>
+                    <div class="mb-8">
+                        <h3 class="text-3xl font-bold text-[#e11d48] mb-3 title-font">باقة الحكاية الكاملة (VIP)</h3>
+                        <p class="text-gray-400 text-lg">كل التفاصيل والمفاجآت التفاعلية اللي تخطف القلب.</p>
+                    </div>
+                    
+                    <ul class="space-y-5 mb-10 flex-1">
+                        <li class="flex items-center gap-4 text-gray-200 text-lg font-bold">
+                            <i data-lucide="check-circle-2" class="w-6 h-6 text-[#e11d48]"></i> كل مميزات الباقة الأساسية
+                        </li>
+                        <li class="flex items-center gap-4 text-gray-200 text-lg">
+                            <i data-lucide="mic" class="w-6 h-6 text-[#e11d48]"></i> <span class="text-white font-bold">رسايل صوتية تحت كل صورة
+                        </li>
+                        <li class="flex items-center gap-4 text-gray-200 text-lg">
+                            <i data-lucide="calendar-clock" class="w-6 h-6 text-[#e11d48]"></i> <span class="text-white font-bold">رسايل الأسبوع (مفاجآت بعداد تنازلي)
+                        </li>
+                        <li class="flex items-center gap-4 text-gray-200 text-lg">
+                            <i data-lucide="map" class="w-6 h-6 text-[#e11d48]"></i> <span class="text-white font-bold">خريطة تفاعلية لأهم أماكنكم
+                        </li>
+                        <li class="flex items-center gap-4 text-gray-200 text-lg">
+                            <i data-lucide="qr-code" class="w-6 h-6 text-[#e11d48]"></i> <span class="text-white font-bold">كارت إهداء QR Code للطباعة
+                        </li>
+                        <li class="flex items-center gap-4 text-gray-200 text-lg">
+                            <i data-lucide="layout-grid" class="w-6 h-6 text-[#e11d48]"></i> مساحة  (20 صورة و 7 مواقف)
+                        </li>
+                        <li class="flex items-center gap-4 text-gray-200 text-lg">
+                            <i data-lucide="palette" class="w-6 h-6 text-[#e11d48]"></i> تخصيص ألوان الصفحة بالكامل
+                        </li>
                     </ul>
-                    <a href="#contact" class="block w-full py-3 px-4 bg-rose-500 hover:bg-rose-400 text-white font-bold text-center rounded-xl transition shadow-[0_0_15px_rgba(244,63,94,0.4)]">اطلب الآن</a>
+                    <a href="#contact" class="mt-auto block w-full py-4 px-6 bg-[#e11d48] hover:bg-rose-700 text-white font-bold text-center rounded-2xl transition-all shadow-[0_0_20px_rgba(225,29,72,0.4)] text-lg">اطلب دلوقتي</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- الفوتر والتواصل -->
-    <footer id="contact" class="bg-white border-t border-gray-200 py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">جاهز تبدأ؟ كلمنا على واتساب</h2>
-            <a href="https://wa.me/2011110210770" target="_blank" class="inline-flex items-center gap-2 px-8 py-4 bg-green-500 text-white rounded-full font-bold text-lg hover:bg-green-600 transition shadow-lg mb-12">
-                <i data-lucide="message-circle" class="w-6 h-6"></i> تواصل معنا الآن
+    <footer id="contact" class="border-t border-gray-800 py-16 relative overflow-hidden bg-[#09090b]">
+        <div class="glow-bg bottom-0 left-[50%] -translate-x-1/2 opacity-20"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <h2 class="text-3xl font-bold text-white mb-8 title-font">جاهز تبدأ؟ كلمنا على واتساب</h2>
+            <a href="https://wa.me/2011110210770" target="_blank" class="inline-flex items-center gap-3 px-10 py-5 bg-emerald-600 text-white rounded-full font-bold text-xl hover:bg-emerald-500 transition-all shadow-[0_0_25px_rgba(5,150,105,0.4)] hover:scale-105 mb-16">
+                <i data-lucide="message-circle" class="w-7 h-7"></i> تواصل معنا الآن
             </a>
             
-            <div class="flex items-center justify-center gap-2 text-gray-400">
+            <div class="flex items-center justify-center gap-2 text-gray-500 text-sm">
                 <i data-lucide="code" class="w-5 h-5"></i>
-                <span>جميع الحقوق محفوظة لـ HeartCode &copy; 2026</span>
+                <span>جميع الحقوق محفوظة لـ <span class="text-[#e11d48] font-bold">HeartCode</span> &copy; 2026</span>
             </div>
         </div>
     </footer>
 
-    <!-- تفعيل الأيقونات وحركات التمرير -->
     <script>
-        // تفعيل مكتبة Lucide للأيقونات
         lucide.createIcons();
 
-        // حركات التمرير (Scroll Reveal)
-        function revealElements() {
-            var reveals = document.querySelectorAll(".reveal");
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().top;
-                var elementVisible = 100;
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add("active");
+        // حركات التمرير (Intersection Observer) لظهور العناصر بنعومة
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); 
                 }
-            }
-        }
-        window.addEventListener("scroll", revealElements);
-        // تشغيلها مرة عند تحميل الصفحة
-        revealElements();
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach((el) => {
+            observer.observe(el);
+        });
     </script>
 </body>
 </html>

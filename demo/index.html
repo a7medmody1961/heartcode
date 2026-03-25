@@ -3,18 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حكايتنا | الديمو التجريبي - HeartCode</title>
+    <title id="docTitle">حكايتنا | هديتك الخاصة</title>
     
     <!-- خطوط عربية عصرية -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&family=Readex+Pro:wght@300;500;700&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
     <script>
-        // إجبار المتصفح على الرجوع لأول الصفحة عند التحديث
         if ('scrollRestoration' in history) {
             history.scrollRestoration = 'manual';
         }
@@ -22,7 +25,6 @@
     </script>
 
     <style>
-        /* إعدادات الثيم الدارك */
         :root {
             --bg-dark: #09090b; 
             --accent-glow: #e11d48; 
@@ -37,15 +39,8 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        .no-scroll {
-            height: 100dvh;
-            overflow: hidden !important;
-        }
-
-        h1, h2, h3, .title-font {
-            font-family: 'Cairo', sans-serif;
-        }
-
+        .no-scroll { height: 100dvh; overflow: hidden !important; }
+        h1, h2, h3, .title-font { font-family: 'Cairo', sans-serif; }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-dark); }
         ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 10px; }
@@ -63,18 +58,12 @@
             transform: translateY(40px) scale(0.95);
             transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .fade-up.visible {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
+        .fade-up.visible { opacity: 1; transform: translateY(0) scale(1); }
 
         .glow-bg {
-            position: absolute;
-            width: 500px; height: 500px;
+            position: absolute; width: 500px; height: 500px;
             background: radial-gradient(circle, rgba(225,29,72,0.15) 0%, rgba(9,9,11,0) 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: -1;
+            border-radius: 50%; pointer-events: none; z-index: -1;
             animation: pulse-glow 8s infinite alternate;
         }
         @keyframes pulse-glow {
@@ -82,33 +71,23 @@
             100% { transform: scale(1.2); opacity: 1; }
         }
 
-        /* معرض الصور المتجاوب */
+        /* الجاليري */
         .horizontal-scroll {
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            gap: 2rem;
-            padding-bottom: 2rem;
-            -webkit-overflow-scrolling: touch;
-            scroll-behavior: smooth;
+            display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+            gap: 2rem; padding-bottom: 2rem; scroll-behavior: smooth;
         }
         .horizontal-scroll::-webkit-scrollbar { display: none; }
         .snap-card {
-            scroll-snap-align: center;
-            width: 85vw; 
-            height: 85vw; 
-            max-width: 450px;
-            max-height: 450px;
-            transform-style: preserve-3d;
-            transition: transform 0.3s ease;
+            scroll-snap-align: center; width: 85vw; height: 85vw; 
+            max-width: 450px; max-height: 450px;
+            transform-style: preserve-3d; transition: transform 0.3s ease;
         }
 
-        /* تصميم التايم لاين */
+        /* التايم لاين */
         .timeline-container { position: relative; padding-right: 40px; }
         .timeline-line {
             position: absolute; right: 0; top: 0; bottom: 0; width: 4px;
-            background: linear-gradient(to bottom, transparent, #e11d48, transparent);
-            border-radius: 4px;
+            background: linear-gradient(to bottom, transparent, #e11d48, transparent); border-radius: 4px;
         }
         .timeline-node {
             position: absolute; right: -12px; width: 28px; height: 28px;
@@ -116,95 +95,43 @@
             border-radius: 50%; box-shadow: 0 0 20px rgba(225,29,72,0.8); z-index: 2;
         }
 
-        /* كروت 3D */
-        .flip-card { background-color: transparent; height: 320px; perspective: 1000px; }
-        .flip-card-inner {
-            position: relative; width: 100%; height: 100%;
-            transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
-            transform-style: preserve-3d; cursor: pointer;
-        }
-        .flip-card:hover .flip-card-inner, .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
-        .flip-card-front, .flip-card-back {
-            position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
-            border-radius: 1.5rem; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; padding: 2rem; text-align: center;
-        }
-        .flip-card-back {
-            transform: rotateY(180deg);
-            background: linear-gradient(135deg, rgba(225,29,72,0.2), rgba(24,24,27,0.9));
-            border: 1px solid rgba(225,29,72,0.4);
-        }
-
-        /* الجواب الرومانسي العملاق 3D - مقاسات محكمة للموبايل والديسك توب */
+        /* الجواب */
         .envelope-wrapper {
-            position: relative;
-            width: 320px; /* مقاس مثالي ومضمون للموبايل */
-            height: 220px; 
-            margin: 0 auto;
-            cursor: pointer;
-            perspective: 1500px;
-            transform-style: preserve-3d;
+            position: relative; width: 280px; height: 200px; margin: 0 auto;
+            cursor: pointer; perspective: 1500px; transform-style: preserve-3d;
             transition: transform 0.4s ease;
         }
-        
-        /* التكبير لشاشات الكمبيوتر فقط */
-        @media (min-width: 768px) {
-            .envelope-scale-wrapper {
-                transform: scale(1.3);
-                margin-top: 40px;
-            }
-        }
-
-        /* أنيميشن الهوفر والفتح بالـ CSS لمنع التقطيع */
+        @media (min-width: 768px) { .envelope-scale-wrapper { transform: scale(1.2); margin-top: 60px; } }
         .envelope-wrapper:hover { transform: scale(1.03); }
         .envelope-wrapper.open { transform: scale(1.05) translateY(10px); }
-
-        .envelope-back {
-            position: absolute; inset: 0; background: #881337; 
-            border-radius: 10px; z-index: 1; box-shadow: 0 25px 50px rgba(0,0,0,0.8);
-        }
-        .envelope-front {
-            position: absolute; inset: 0; z-index: 3; pointer-events: none; overflow: hidden; border-radius: 10px;
-        }
+        .envelope-back { position: absolute; inset: 0; background: #881337; border-radius: 10px; z-index: 1; box-shadow: 0 25px 50px rgba(0,0,0,0.8); }
+        .envelope-front { position: absolute; inset: 0; z-index: 3; pointer-events: none; overflow: hidden; border-radius: 10px; }
         .envelope-front::before {
             content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-            border-left: 160px solid transparent; border-right: 160px solid transparent;
-            border-bottom: 130px solid #be123c; 
+            border-left: 140px solid transparent; border-right: 140px solid transparent;
+            border-bottom: 120px solid #be123c; 
         }
         .envelope-front::after {
             content: ''; position: absolute; top: 0; bottom: 0; left: 0; right: 0;
-            border-left: 160px solid #9f1239; border-right: 160px solid #9f1239;
-            border-top: 110px solid transparent; border-bottom: 110px solid transparent;
+            border-left: 140px solid #9f1239; border-right: 140px solid #9f1239;
+            border-top: 100px solid transparent; border-bottom: 100px solid transparent;
         }
         .flap {
             position: absolute; top: 0; left: 0; right: 0;
-            border-left: 160px solid transparent; border-right: 160px solid transparent;
-            border-top: 130px solid #e11d48;
-            transform-origin: top;
+            border-left: 140px solid transparent; border-right: 140px solid transparent;
+            border-top: 120px solid #e11d48; transform-origin: top;
             transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.1s;
             z-index: 4; filter: drop-shadow(0 8px 15px rgba(0,0,0,0.5));
         }
         .letter {
-            position: absolute; top: 15px; bottom: 15px; left: 15px; right: 15px;
+            position: absolute; top: 20px; bottom: 20px; left: 15px; right: 15px; 
             background: #fff; border-radius: 8px; padding: 20px;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
             transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.1s 0.3s;
             z-index: 2; display: flex; flex-direction: column; justify-content: space-between;
         }
-        .envelope-wrapper.open .flap { 
-            transform: rotateX(180deg); 
-            z-index: 1; 
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.1s 0.3s;
-        }
-        .envelope-wrapper.open .letter { 
-            transform: translateY(-150px); 
-            z-index: 5; 
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s, z-index 0.1s 0.3s;
-        }
-
-        .spin-slow { animation: spin 4s linear infinite; }
-        .spin-paused { animation-play-state: paused; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .envelope-wrapper.open .flap { transform: rotateX(180deg); z-index: 1; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.1s 0.3s; }
+        .envelope-wrapper.open .letter { transform: translateY(-130px); z-index: 5; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s, z-index 0.1s 0.3s; }
 
         .particles {
             position: absolute; inset: 0; pointer-events: none; z-index: 1;
@@ -213,29 +140,127 @@
         }
         @keyframes drift { 0% { background-position: 0 0; } 100% { background-position: 120px 120px; } }
 
+        /* شاشة القفل (PIN) */
+        .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e11d48; transition: all 0.3s ease; }
+        .pin-dot.filled { background-color: #e11d48; box-shadow: 0 0 10px #e11d48; }
+        .pin-btn {
+            width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; font-weight: bold; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.2s; cursor: pointer;
+        }
+        .pin-btn:active { background: rgba(225, 29, 72, 0.3); transform: scale(0.95); }
+        .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake { 10%, 90% { transform: translate3d(-2px, 0, 0); } 20%, 80% { transform: translate3d(4px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-8px, 0, 0); } 40%, 60% { transform: translate3d(8px, 0, 0); } }
+
+        /* سما السما */
+        .star-map-circle {
+            width: 300px; height: 300px; border-radius: 50%;
+            background: radial-gradient(circle at bottom, #1e1b4b 0%, #000000 100%);
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 0 30px rgba(225,29,72,0.3);
+            position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;
+        }
+        .stars-bg {
+            position: absolute; inset: 0;
+            background-image: radial-gradient(1px 1px at 20px 30px, #ffffff, rgba(0,0,0,0)), radial-gradient(1px 1px at 40px 70px, #ffffff, rgba(0,0,0,0)), radial-gradient(1.5px 1.5px at 90px 40px, #ffffff, rgba(0,0,0,0)), radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.8), rgba(0,0,0,0)), radial-gradient(1px 1px at 220px 80px, #ffffff, rgba(0,0,0,0)), radial-gradient(1px 1px at 260px 180px, #ffffff, rgba(0,0,0,0)), radial-gradient(1.5px 1.5px at 110px 240px, #ffffff, rgba(0,0,0,0));
+            animation: rotateStars 150s linear infinite;
+        }
+        @keyframes rotateStars { 100% { transform: rotate(360deg); } }
+
+        /* Voice Notes */
+        .voice-note-player {
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); border-radius: 30px; padding: 8px 16px;
+            display: inline-flex; align-items: center; gap: 12px; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; transition: all 0.3s ease;
+        }
+        .voice-note-player:hover { border-color: #e11d48; background: rgba(225,29,72,0.1); }
+        .waves-container { display: flex; align-items: center; gap: 3px; height: 20px; }
+        .wave-bar { width: 3px; background-color: #e11d48; border-radius: 3px; height: 4px; transition: height 0.2s; }
+        .voice-note-player.playing .wave-bar { animation: sound-wave 1s ease-in-out infinite alternate; }
+        .voice-note-player.playing .wave-bar:nth-child(1) { animation-delay: 0.1s; }
+        .voice-note-player.playing .wave-bar:nth-child(2) { animation-delay: 0.3s; }
+        .voice-note-player.playing .wave-bar:nth-child(3) { animation-delay: 0.5s; }
+        .voice-note-player.playing .wave-bar:nth-child(4) { animation-delay: 0.2s; }
+        .voice-note-player.playing .wave-bar:nth-child(5) { animation-delay: 0.4s; }
+        @keyframes sound-wave { 0% { height: 4px; } 100% { height: 20px; } }
+
+        /* الخريطة */
+        #interactiveMap { width: 100%; height: 450px; border-radius: 2rem; z-index: 10; }
+        .leaflet-container { background: #09090b !important; font-family: 'Readex Pro', sans-serif; }
+        .custom-map-marker { background: #e11d48; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 15px #e11d48; animation: pulse-marker 2s infinite; }
+        @keyframes pulse-marker { 0% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(225, 29, 72, 0); } 100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); } }
+        .leaflet-control-attribution { display: none !important; }
+
+        /* كروت 3D */
+        .flip-card { background-color: transparent; height: 320px; perspective: 1000px; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; cursor: pointer; }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); -webkit-transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 1.5rem; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; text-align: center; }
+        .flip-card-back { transform: rotateY(180deg); -webkit-transform: rotateY(180deg); background: linear-gradient(135deg, rgba(225,29,72,0.2), rgba(24,24,27,0.9)); border: 1px solid rgba(225,29,72,0.4); }
+
+        /* Modal الجواب */
+        #letterFullscreenModal { transition: opacity 0.4s ease, transform 0.4s ease; }
+        #letterFullscreenModal.hidden-modal { opacity: 0; pointer-events: none; transform: scale(0.95); }
+
+        /* شاشة جلب البيانات */
+        #dataLoader {
+            position: fixed; inset: 0; z-index: 20000; background: #09090b;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
     </style>
 </head>
 <body class="antialiased no-scroll"> 
 
-    <!-- شاشة التحميل الثابتة -->
-    <div id="loader" class="fixed inset-0 z-[10000] bg-[#09090b] flex flex-col items-center justify-center w-full h-[100dvh] transition-opacity duration-700">
+    <!-- جاري تحميل البيانات -->
+    <div id="dataLoader">
+        <div class="w-16 h-16 border-4 border-gray-700 border-t-[#e11d48] rounded-full animate-spin"></div>
+        <p class="mt-4 text-gray-400 font-bold">جاري تجهيز الهدية...</p>
+    </div>
+
+    <!-- شاشة القفل -->
+    <div id="pinScreen" class="fixed inset-0 z-[10001] bg-[#09090b]/90 backdrop-blur-xl flex flex-col items-center justify-center w-full h-[100dvh] transition-opacity duration-700 hidden">
+        <div class="mb-8 flex flex-col items-center">
+            <div class="w-20 h-20 rounded-full bg-gray-800 border-2 border-gray-600 mb-4 flex items-center justify-center overflow-hidden shadow-lg">
+                <i data-lucide="lock" class="w-8 h-8 text-gray-400"></i>
+            </div>
+            <h2 id="pinTitle" class="text-2xl font-bold text-white title-font"></h2>
+            <p id="pinSubtitle" class="text-sm text-gray-400 mt-2 text-center max-w-[250px]"></p>
+        </div>
+        <div id="pinDots" class="flex gap-4 mb-10">
+            <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+        </div>
+        <div class="grid grid-cols-3 gap-6" dir="ltr">
+            <button class="pin-btn text-white" onclick="enterPin('1')">1</button>
+            <button class="pin-btn text-white" onclick="enterPin('2')">2</button>
+            <button class="pin-btn text-white" onclick="enterPin('3')">3</button>
+            <button class="pin-btn text-white" onclick="enterPin('4')">4</button>
+            <button class="pin-btn text-white" onclick="enterPin('5')">5</button>
+            <button class="pin-btn text-white" onclick="enterPin('6')">6</button>
+            <button class="pin-btn text-white" onclick="enterPin('7')">7</button>
+            <button class="pin-btn text-white" onclick="enterPin('8')">8</button>
+            <button class="pin-btn text-white" onclick="enterPin('9')">9</button>
+            <div></div>
+            <button class="pin-btn text-white" onclick="enterPin('0')">0</button>
+            <button class="pin-btn text-gray-400 !bg-transparent !border-transparent hover:text-white" onclick="deletePin()">
+                <i data-lucide="delete" class="w-8 h-8"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- شاشة التحميل -->
+    <div id="loader" class="fixed inset-0 z-[10000] bg-[#09090b] flex flex-col items-center justify-center w-full h-[100dvh] transition-opacity duration-700 hidden">
         <div class="relative w-32 h-32 flex items-center justify-center">
             <div class="absolute inset-0 rounded-full border-t-4 border-l-4 border-[#e11d48] animate-spin"></div>
             <i data-lucide="heart" class="w-12 h-12 text-[#e11d48] animate-pulse fill-current"></i>
         </div>
-        <h2 class="mt-8 text-2xl font-bold text-white title-font tracking-wide">بنجيب أحلى الذكريات...</h2>
-        <button id="startBtn" class="mt-10 px-12 py-4 text-xl bg-[#e11d48] text-white rounded-full font-bold shadow-[0_0_30px_rgba(225,29,72,0.6)] hover:scale-110 active:scale-95 hidden opacity-0 transition-all duration-500 z-50">
-            ابدأ الحكاية
-        </button>
+        <h2 id="loaderText" class="mt-8 text-2xl font-bold text-white title-font tracking-wide"></h2>
+        <button id="startBtn" class="mt-10 px-12 py-4 text-xl bg-[#e11d48] text-white rounded-full font-bold shadow-[0_0_30px_rgba(225,29,72,0.6)] hover:scale-110 active:scale-95 hidden opacity-0 transition-all duration-500 z-50"></button>
     </div>
 
-    <!-- مشغل المزيكا الاحترافي (ثابت وبيتحرك مع السكرول) -->
-    <div id="musicWidget" class="fixed bottom-8 right-6 md:right-10 md:bottom-12 z-[90] glass rounded-full p-2.5 flex items-center gap-4 shadow-2xl border border-gray-700/80 backdrop-blur-xl">
+    <!-- مشغل المزيكا -->
+    <div id="musicWidget" class="fixed bottom-8 right-6 md:right-10 md:bottom-12 z-[90] glass rounded-full p-2.5 flex items-center gap-4 shadow-2xl border border-gray-700/80 backdrop-blur-xl hidden">
         <div class="relative w-12 h-12 rounded-full bg-gray-900 border-2 border-gray-600 flex items-center justify-center spin-slow spin-paused pointer-events-none" id="musicDisk">
             <div class="w-4 h-4 rounded-full bg-gray-900 border-2 border-gray-600 z-10 pointer-events-none"></div>
             <i data-lucide="music" class="w-5 h-5 text-[#e11d48] absolute pointer-events-none"></i>
         </div>
-        
         <div class="flex items-center gap-3 pl-3 border-r border-gray-600 pr-3">
             <button id="playPauseBtn" class="text-white hover:text-[#e11d48] transition-colors p-2 relative w-8 h-8 flex justify-center items-center cursor-pointer">
                 <div id="iconPlay" class="absolute"><i data-lucide="play" class="w-7 h-7 fill-current"></i></div>
@@ -246,37 +271,27 @@
                 <div id="iconMute" class="absolute hidden"><i data-lucide="volume-x" class="w-7 h-7"></i></div>
             </button>
         </div>
-        
-        <audio id="bgMusic" loop>
-            <source src="music.mp3" type="audio/mpeg">
-        </audio>
+        <audio id="bgMusic" loop></audio>
     </div>
 
-    <!-- 1. الهيرو (شاشة البداية) -->
+    <!-- 1. الهيرو -->
     <header class="relative min-h-[100dvh] flex flex-col justify-center items-center text-center px-6 overflow-hidden">
         <div class="particles"></div>
         <div class="absolute inset-0 z-0">
-            <img src="hero-bg.webp" alt="خلفية الحكاية" class="w-full h-full object-cover opacity-20 mix-blend-luminosity">
+            <img src="hero-bg.webp" class="w-full h-full object-cover opacity-20 mix-blend-luminosity" onerror="this.style.display='none'">
             <div class="absolute inset-0 bg-gradient-to-b from-[#09090b]/40 via-[#09090b]/80 to-[#09090b]"></div>
         </div>
-
         <div class="glow-bg top-[-10%] right-[-10%] w-[600px] h-[600px]"></div>
         <div class="glow-bg bottom-[-10%] left-[-10%] w-[600px] h-[600px]"></div>
         
         <div class="z-10 fade-up">
-            <span class="inline-block py-2 px-6 rounded-full border border-[#e11d48]/40 bg-[#e11d48]/10 text-[#e11d48] text-lg font-bold mb-8 backdrop-blur-md shadow-[0_0_20px_rgba(225,29,72,0.3)]">
-                ١٤ فبراير ٢٠٢٤
-            </span>
-            <h1 class="text-7xl md:text-9xl font-extrabold text-white mb-6 title-font tracking-tight drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]">
-                عمر <span class="text-[#e11d48] font-light">&</span> نور
-            </h1>
-            <p class="text-2xl md:text-3xl text-gray-300 mt-6 max-w-2xl mx-auto leading-relaxed">
-                في يوم عادي جداً، بدأت أحلى حكاية.. ودي شوية ملامح وتفاصيل من حكايتنا.
-            </p>
+            <span id="heroBadge" class="inline-block py-2 px-6 rounded-full border border-[#e11d48]/40 bg-[#e11d48]/10 text-[#e11d48] text-lg font-bold mb-8 backdrop-blur-md shadow-[0_0_20px_rgba(225,29,72,0.3)]"></span>
+            <h1 id="heroNames" class="text-7xl md:text-9xl font-extrabold text-white mb-6 title-font tracking-tight drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]"></h1>
+            <p id="heroDesc" class="text-2xl md:text-3xl text-gray-300 mt-6 max-w-2xl mx-auto leading-relaxed"></p>
         </div>
 
         <div class="absolute bottom-16 flex flex-col items-center gap-3 text-gray-400 animate-bounce z-10">
-            <span class="text-lg font-bold tracking-widest">اسحب لفوق</span>
+            <span id="scrollHint" class="text-lg font-bold tracking-widest"></span>
             <i data-lucide="chevron-down" class="w-8 h-8 text-[#e11d48]"></i>
         </div>
     </header>
@@ -284,50 +299,65 @@
     <!-- 2. التايم لاين -->
     <section class="py-32 px-6 relative">
         <div class="max-w-4xl mx-auto">
-            <h2 class="text-5xl font-bold text-center text-white mb-24 title-font drop-shadow-2xl">إزاي بدأت؟</h2>
-            
-            <div class="timeline-container">
+            <h2 id="timelineMainTitle" class="text-5xl font-bold text-center text-white mb-24 title-font drop-shadow-2xl"></h2>
+            <div class="timeline-container" id="timelineContainer">
                 <div class="timeline-line"></div>
-                
-                <!-- محطة 1 -->
-                <div class="relative fade-up mb-20 pl-8 md:pl-10">
-                    <div class="timeline-node top-10"></div>
-                    <div class="glass p-8 md:p-10 rounded-[2rem] border border-gray-700/60 hover:border-[#e11d48]/60 transition-colors shadow-2xl">
-                        <span class="text-[#e11d48] text-sm md:text-base font-bold tracking-wider uppercase bg-[#e11d48]/10 px-4 py-2 rounded-full mb-4 inline-block">أول نظرة</span>
-                        <h3 class="text-3xl md:text-4xl font-bold text-white mb-4 title-font">صدفة الكافيه</h3>
-                        <p class="text-gray-300 text-lg md:text-xl leading-relaxed mb-8">يوم ما شوفتك بالصدفة، حسيت إن الوقت وقف. كنتي بتطلبي قهوتك ومندمجة أوي، ومن ساعتها وأنا عارف ومستعد أحلف إنك غير أي حد شوفته في حياتي.</p>
-                        <!-- الصورة متجاوبة ولا تقص -->
-                        <div class="w-full aspect-square md:max-w-md bg-gray-900 rounded-[2rem] overflow-hidden relative group shadow-inner mx-auto">
-                            <img src="story-1.webp" class="w-full h-full object-cover object-center transition-transform duration-1000 group-hover:scale-110" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 500 500\'%3E%3Crect width=\'500\' height=\'500\' fill=\'%2318181b\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' fill=\'%2352525b\' text-anchor=\'middle\' dy=\'.3em\' font-size=\'20\'%3Estory-1.webp%3C/text%3E%3C/svg%3E'">
-                        </div>
-                    </div>
-                </div>
+                <!-- سيتم حقن المحتوى ديناميكياً هنا -->
+            </div>
+        </div>
+    </section>
 
-                <!-- محطة 2 -->
-                <div class="relative fade-up mb-20 pl-8 md:pl-10">
-                    <div class="timeline-node top-10"></div>
-                    <div class="glass p-8 md:p-10 rounded-[2rem] border border-gray-700/60 hover:border-[#e11d48]/60 transition-colors shadow-2xl">
-                        <span class="text-[#e11d48] text-sm md:text-base font-bold tracking-wider uppercase bg-[#e11d48]/10 px-4 py-2 rounded-full mb-4 inline-block">أول خروجة</span>
-                        <h3 class="text-3xl md:text-4xl font-bold text-white mb-4 title-font">مشينا بالساعات</h3>
-                        <p class="text-gray-300 text-lg md:text-xl leading-relaxed mb-8">مكناش عارفين نروح فين، بس فضلنا نتمشى بالساعات ونتكلم في كل حاجة وأي حاجة. الغريب إني محسيتش بملل لحظة واحدة وكأننا نعرف بعض من سنين.</p>
-                        <!-- الصورة متجاوبة ولا تقص -->
-                        <div class="w-full aspect-square md:max-w-md bg-gray-900 rounded-[2rem] overflow-hidden relative group shadow-inner mx-auto">
-                            <img src="story-2.webp" class="w-full h-full object-cover object-center transition-transform duration-1000 group-hover:scale-110" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 500 500\'%3E%3Crect width=\'500\' height=\'500\' fill=\'%2318181b\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' fill=\'%2352525b\' text-anchor=\'middle\' dy=\'.3em\' font-size=\'20\'%3Estory-2.webp%3C/text%3E%3C/svg%3E'">
-                        </div>
+    <!-- 3. سما السما -->
+    <section class="py-24 px-6 relative overflow-hidden fade-up">
+        <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12 bg-[#18181b]/50 rounded-[3rem] p-8 md:p-16 border border-gray-800 shadow-2xl">
+            <div class="flex-1 text-center md:text-right">
+                <span id="starMapBadge" class="text-[#e11d48] font-bold tracking-wider mb-2 block"></span>
+                <h2 id="starMapTitle" class="text-4xl md:text-5xl font-bold text-white mb-6 title-font drop-shadow-2xl"></h2>
+                <p id="starMapDesc" class="text-gray-400 text-lg leading-relaxed mb-6"></p>
+                <div class="inline-flex items-center gap-2 bg-gray-900 px-4 py-2 rounded-full border border-gray-700 text-sm text-gray-300">
+                    <i data-lucide="map-pin" class="w-4 h-4 text-[#e11d48]"></i>
+                    <span id="starMapLocation"></span>
+                </div>
+            </div>
+            <div class="flex-1 flex justify-center">
+                <div class="star-map-circle">
+                    <div class="stars-bg"></div>
+                    <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none mix-blend-screen opacity-50">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Constellation_map.svg/1024px-Constellation_map.svg.png" class="w-[180%] h-[180%] max-w-none object-cover object-center opacity-30" alt="">
+                    </div>
+                    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-center z-20 w-full">
+                        <p id="starMapDateLabel" class="text-white font-serif text-sm opacity-80 uppercase tracking-widest"></p>
+                        <p id="starMapDateValue" class="text-[#e11d48] text-xs mt-1 font-bold"></p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 3. معرض الصور (مربع 1:1) -->
+    <!-- 4. خريطة ذكرياتنا -->
+    <section class="py-24 px-6 fade-up relative z-10">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 id="mapMainTitle" class="text-4xl md:text-5xl font-bold text-white mb-4 title-font"></h2>
+                <p id="mapMainDesc" class="text-gray-400 text-lg mb-8"></p>
+                <div id="mapButtonsContainer" class="flex flex-wrap justify-center gap-4 mb-8">
+                    <!-- سيتم حقن الزراير ديناميكياً هنا -->
+                </div>
+            </div>
+            <div dir="ltr" class="p-2 glass rounded-[2.5rem] shadow-2xl border border-gray-700/50">
+                <div id="interactiveMap"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. معرض الصور -->
     <section class="py-32 overflow-hidden fade-up relative max-w-[1400px] mx-auto">
         <div class="px-6 mb-12 text-right flex justify-between items-end">
             <div>
-                <h2 class="text-5xl font-bold text-white title-font drop-shadow-2xl">لقطات متتنسيش</h2>
+                <h2 id="galleryMainTitle" class="text-5xl font-bold text-white title-font drop-shadow-2xl"></h2>
                 <p class="text-gray-400 text-lg mt-3 block md:hidden">اسحب يمين وشمال عشان تشوف الصور <i data-lucide="arrow-left-right" class="inline w-5 h-5 ml-1"></i></p>
+                <p id="galleryHint" class="text-[#e11d48] text-sm mt-1 font-bold"></p>
             </div>
-            <!-- أسهم الكنترول للكمبيوتر -->
             <div class="hidden md:flex gap-4" dir="ltr">
                 <button id="nextBtn" class="w-14 h-14 rounded-full glass border border-gray-600 flex items-center justify-center hover:bg-[#e11d48] hover:border-[#e11d48] hover:scale-110 transition-all text-white shadow-[0_0_20px_rgba(0,0,0,0.5)]">
                     <i data-lucide="chevron-left" class="w-8 h-8 pointer-events-none"></i>
@@ -337,168 +367,63 @@
                 </button>
             </div>
         </div>
-        
         <div class="relative px-6">
             <div class="horizontal-scroll" id="galleryContainer">
-                <!-- كارت 1 -->
-                <div class="snap-card gallery-item relative rounded-[2.5rem] overflow-hidden group border border-gray-700 shrink-0 shadow-2xl">
-                    <img src="gallery-1.webp" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 500 500\'%3E%3Crect width=\'500\' height=\'500\' fill=\'%2318181b\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' fill=\'%2352525b\' text-anchor=\'middle\' font-size=\'24\'%3Egallery-1.webp%3C/text%3E%3C/svg%3E'">
-                    <!-- التدرج اللوني ثابت ومبيختفيش -->
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-80"></div>
-                    <div class="absolute bottom-0 left-0 w-full p-8 md:p-10 translate-y-0">
-                        <p class="text-white font-bold text-3xl md:text-4xl title-font drop-shadow-md">أحلى ضحكة</p>
-                    </div>
-                </div>
-                <!-- كارت 2 -->
-                <div class="snap-card gallery-item relative rounded-[2.5rem] overflow-hidden group border border-gray-700 shrink-0 shadow-2xl">
-                    <img src="gallery-2.webp" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 500 500\'%3E%3Crect width=\'500\' height=\'500\' fill=\'%2318181b\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' fill=\'%2352525b\' text-anchor=\'middle\' font-size=\'24\'%3Egallery-2.webp%3C/text%3E%3C/svg%3E'">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-80"></div>
-                    <div class="absolute bottom-0 left-0 w-full p-8 md:p-10 translate-y-0">
-                        <p class="text-white font-bold text-3xl md:text-4xl title-font drop-shadow-md">يوم عيد ميلادك</p>
-                    </div>
-                </div>
-                <!-- كارت 3 -->
-                <div class="snap-card gallery-item relative rounded-[2.5rem] overflow-hidden group border border-gray-700 shrink-0 shadow-2xl">
-                    <img src="gallery-3.webp" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 500 500\'%3E%3Crect width=\'500\' height=\'500\' fill=\'%2318181b\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' fill=\'%2352525b\' text-anchor=\'middle\' font-size=\'24\'%3Egallery-3.webp%3C/text%3E%3C/svg%3E'">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-80"></div>
-                    <div class="absolute bottom-0 left-0 w-full p-8 md:p-10 translate-y-0">
-                        <p class="text-white font-bold text-3xl md:text-4xl title-font drop-shadow-md">عالبحر وقت الغروب</p>
-                    </div>
-                </div>
-                <!-- كارت 4 -->
-                <div class="snap-card gallery-item relative rounded-[2.5rem] overflow-hidden group border border-gray-700 shrink-0 shadow-2xl">
-                    <img src="gallery-4.webp" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 500 500\'%3E%3Crect width=\'500\' height=\'500\' fill=\'%2318181b\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' fill=\'%2352525b\' text-anchor=\'middle\' font-size=\'24\'%3Egallery-4.webp%3C/text%3E%3C/svg%3E'">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-80"></div>
-                    <div class="absolute bottom-0 left-0 w-full p-8 md:p-10 translate-y-0">
-                        <p class="text-white font-bold text-3xl md:text-4xl title-font drop-shadow-md">مجانين سوا</p>
-                    </div>
-                </div>
+                <!-- سيتم حقن الصور ديناميكياً هنا -->
             </div>
         </div>
     </section>
 
-    <!-- 4. أسباب الحب (كروت 3D مقلوبة) -->
+    <!-- 6. رسايل الأسبوع -->
+    <section class="py-24 px-6 relative fade-up">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 id="messagesMainTitle" class="text-4xl md:text-5xl font-bold text-white mt-4 title-font"></h2>
+                <p id="messagesMainDesc" class="text-gray-400 mt-4 max-w-xl mx-auto"></p>
+            </div>
+            <div id="messagesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+                <!-- سيتم حقن الرسايل ديناميكياً هنا -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. أسباب الحب -->
     <section class="py-32 px-6 max-w-7xl mx-auto fade-up">
-        <h2 class="text-5xl font-bold text-center text-white mb-24 title-font drop-shadow-2xl">ليه إنتي؟</h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <!-- كارت 1 -->
-            <div class="flip-card">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front glass border border-gray-600/50 shadow-2xl">
-                        <div class="w-20 h-20 rounded-full bg-[#e11d48]/20 flex items-center justify-center mb-6 text-[#e11d48]">
-                            <i data-lucide="smile" class="w-10 h-10"></i>
-                        </div>
-                        <h3 class="text-3xl font-bold text-white title-font">عشان ضحكتك</h3>
-                        <p class="text-gray-400 text-base mt-4">اضغط عشان تقرأ <i data-lucide="hand-pointer" class="inline w-4 h-4 mr-1 animate-pulse"></i></p>
-                    </div>
-                    <div class="flip-card-back shadow-[0_0_40px_rgba(225,29,72,0.3)]">
-                        <h3 class="text-2xl font-bold text-white mb-4 title-font border-b border-[#e11d48]/30 pb-3 w-full">عشان ضحكتك</h3>
-                        <p class="text-gray-200 text-lg leading-relaxed mt-2">هي الحاجه الوحيدة اللي بتفصلني عن دوشة يومي، بتنسيني همومي وتخليني أشوف الدنيا أحلى.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- كارت 2 -->
-            <div class="flip-card">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front glass border border-gray-600/50 shadow-2xl">
-                        <div class="w-20 h-20 rounded-full bg-[#e11d48]/20 flex items-center justify-center mb-6 text-[#e11d48]">
-                            <i data-lucide="shield" class="w-10 h-10"></i>
-                        </div>
-                        <h3 class="text-3xl font-bold text-white title-font">عشان جدعنتك</h3>
-                        <p class="text-gray-400 text-base mt-4">اضغط عشان تقرأ <i data-lucide="hand-pointer" class="inline w-4 h-4 mr-1 animate-pulse"></i></p>
-                    </div>
-                    <div class="flip-card-back shadow-[0_0_40px_rgba(225,29,72,0.3)]">
-                        <h3 class="text-2xl font-bold text-white mb-4 title-font border-b border-[#e11d48]/30 pb-3 w-full">عشان جدعنتك</h3>
-                        <p class="text-gray-200 text-lg leading-relaxed mt-2">وقفتك جنبي في المواقف الصعبة قبل الحلوة. إنتي مش بس حبيبتي، إنتي ضهري والسند الحقيقي ليا.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- كارت 3 -->
-            <div class="flip-card">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front glass border border-gray-600/50 shadow-2xl">
-                        <div class="w-20 h-20 rounded-full bg-[#e11d48]/20 flex items-center justify-center mb-6 text-[#e11d48]">
-                            <i data-lucide="heart" class="w-10 h-10 fill-current"></i>
-                        </div>
-                        <h3 class="text-3xl font-bold text-white title-font">عشان إنتي روحي</h3>
-                        <p class="text-gray-400 text-base mt-4">اضغط عشان تقرأ <i data-lucide="hand-pointer" class="inline w-4 h-4 mr-1 animate-pulse"></i></p>
-                    </div>
-                    <div class="flip-card-back shadow-[0_0_40px_rgba(225,29,72,0.3)]">
-                        <h3 class="text-2xl font-bold text-white mb-4 title-font border-b border-[#e11d48]/30 pb-3 w-full">عشان إنتي روحي</h3>
-                        <p class="text-gray-200 text-lg leading-relaxed mt-2">ببساطة، مش متخيل أيامي من غيرك. إنتي الروح اللي بتكملني وتخليني أحسن نسخة من نفسي كل يوم.</p>
-                    </div>
-                </div>
-            </div>
+        <h2 id="reasonsMainTitle" class="text-5xl font-bold text-center text-white mb-24 title-font drop-shadow-2xl"></h2>
+        <div id="reasonsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <!-- سيتم حقن الأسباب ديناميكياً هنا -->
         </div>
     </section>
 
-    <!-- 5. قسم العداد اللايف -->
-    <section class="py-24 px-6 bg-gradient-to-b from-[#09090b] via-[#18181b]/80 to-[#09090b] border-y border-gray-800/80 relative fade-up" id="numbersSection">
+    <!-- 8. العداد اللايف المتقدم -->
+    <section class="py-24 px-6 bg-gradient-to-b from-[#09090b] via-[#18181b]/80 to-[#09090b] border-y border-gray-800/80 relative fade-up">
         <div class="max-w-5xl mx-auto text-center">
-            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6 title-font drop-shadow-lg">كل ثانية معاكي بحساب</h2>
-            <p class="text-xl text-gray-400 mb-16">من يوم ما عرفتك والوقت مبقاش مجرد أرقام..</p>
+            <h2 id="counterMainTitle" class="text-4xl md:text-5xl font-bold text-white mb-6 title-font drop-shadow-lg"></h2>
+            <p id="counterMainDesc" class="text-xl text-gray-400 mb-16"></p>
             
-            <div class="flex flex-wrap justify-center gap-4 md:gap-8 text-center text-white" dir="ltr">
-                <div class="glass p-6 rounded-3xl w-28 md:w-36 shadow-[0_0_30px_rgba(225,29,72,0.1)] hover:-translate-y-2 transition-transform">
-                    <span id="daysCount" class="block text-5xl md:text-6xl font-extrabold text-[#e11d48] mb-2 drop-shadow-md">0</span>
-                    <span class="text-base md:text-lg text-gray-300 font-bold">يوم</span>
-                </div>
-                <div class="glass p-6 rounded-3xl w-28 md:w-36 shadow-[0_0_30px_rgba(225,29,72,0.1)] hover:-translate-y-2 transition-transform">
-                    <span id="hoursCount" class="block text-5xl md:text-6xl font-extrabold text-[#e11d48] mb-2 drop-shadow-md">0</span>
-                    <span class="text-base md:text-lg text-gray-300 font-bold">ساعة</span>
-                </div>
-                <div class="glass p-6 rounded-3xl w-28 md:w-36 shadow-[0_0_30px_rgba(225,29,72,0.1)] hover:-translate-y-2 transition-transform">
-                    <span id="minutesCount" class="block text-5xl md:text-6xl font-extrabold text-[#e11d48] mb-2 drop-shadow-md">0</span>
-                    <span class="text-base md:text-lg text-gray-300 font-bold">دقيقة</span>
-                </div>
-                <div class="glass p-6 rounded-3xl w-28 md:w-36 shadow-[0_0_30px_rgba(225,29,72,0.1)] hover:-translate-y-2 transition-transform">
-                    <span id="secondsCount" class="block text-5xl md:text-6xl font-extrabold text-[#e11d48] mb-2 drop-shadow-md">0</span>
-                    <span class="text-base md:text-lg text-gray-300 font-bold">ثانية</span>
-                </div>
+            <!-- سيتم حقن المربعات هنا (سنين، شهور، الخ) بشكل متناسق ومقلوب RTL -->
+            <div id="counterBoxes" class="flex flex-wrap justify-center gap-4 md:gap-8 text-center text-white" dir="rtl">
             </div>
+
             <div class="mt-8 inline-block px-6 py-2 rounded-full bg-gray-900 border border-gray-700 text-sm text-gray-500">
-                بدأت الحكاية في: ٩ يونيو ٢٠٢٤
+                <span id="startDateLabel"></span> <span id="startDateDisplay"></span>
             </div>
         </div>
     </section>
 
-    <!-- 6. الرسالة الختامية (مسافات واسعة ومقاس محكم للجواب) -->
+    <!-- 9. الرسالة الختامية والجواب -->
     <section class="relative py-40 px-6 text-center overflow-hidden min-h-[800px] flex flex-col items-center justify-center">
         <div class="glow-bg top-[20%] left-[50%] -translate-x-1/2 w-[800px] h-[800px] opacity-20"></div>
-        
-        <!-- تعديل المسافات بين السطور وتنسيق الجملة -->
-        <h2 class="text-3xl md:text-5xl font-bold text-white mb-16 title-font fade-up relative z-10 drop-shadow-2xl leading-[1.7] md:leading-normal max-w-sm md:max-w-3xl mx-auto px-4">
-            عندي ليكي رسالة أخيرة..<br class="md:hidden"> اضغطي ع الجواب
+        <h2 id="finalLetterHint" class="text-3xl md:text-5xl font-bold text-white mb-16 title-font fade-up relative z-10 drop-shadow-2xl leading-[1.7] md:leading-normal max-w-sm md:max-w-3xl mx-auto px-4">
+            <!-- سيتم حقنه ديناميكياً -->
         </h2>
-        
         <div class="fade-up relative z-20 w-full flex justify-center mt-12 envelope-scale-wrapper transition-transform">
             <div class="envelope-wrapper" id="envelope" onclick="openEnvelope()">
-                <!-- ظهر الجواب -->
                 <div class="envelope-back"></div>
-                
-                <!-- الرسالة الورقية -->
-                <div class="letter text-right text-gray-900 border-2 border-gray-100">
-                    <div class="flex flex-col h-full justify-between">
-                        <div>
-                            <span class="text-[#e11d48] font-bold text-base md:text-lg block mb-2 title-font border-b border-gray-200 pb-2">حبيبة قلبي،</span>
-                            <p class="text-sm md:text-base leading-relaxed font-bold font-['Cairo'] text-gray-800 mt-2">
-                                كل سنة وإحنا مع بعض، وكل يوم بحبك أكتر من اللي قبله. ربنا يخليكي ليا يا أحلى صدفة وأجمل هدية نورت حياتي وعمري كله. بحبك جداً!
-                            </p>
-                        </div>
-                        <div class="flex justify-between items-end">
-                            <span class="text-gray-600 font-extrabold text-sm">عمرك حبيبك</span>
-                            <i data-lucide="heart" class="w-6 h-6 text-[#e11d48] fill-current animate-pulse"></i>
-                        </div>
-                    </div>
+                <div class="letter text-right text-gray-900 border-2 border-gray-100 flex items-center justify-center bg-gray-50">
+                    <i data-lucide="heart" class="w-8 h-8 text-[#e11d48] opacity-50"></i>
                 </div>
-                
-                <!-- وش الجواب -->
                 <div class="envelope-front"></div>
-                
-                <!-- غطاء الجواب -->
                 <div class="flap flex justify-center items-end pb-6">
                     <div class="w-12 h-12 bg-[#881337] rounded-full border-4 border-[#e11d48]/50 shadow-[0_5px_15px_rgba(0,0,0,0.5)] flex justify-center items-center">
                         <i data-lucide="heart" class="w-5 h-5 text-white fill-current"></i>
@@ -508,144 +433,545 @@
         </div>
     </section>
 
+    <!-- Modal الرسالة الختامية -->
+    <div id="letterFullscreenModal" class="hidden-modal fixed inset-0 z-[99999] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 md:p-10">
+        <div class="bg-white text-gray-900 w-full max-w-3xl h-[80vh] md:h-[auto] md:min-h-[60vh] rounded-3xl p-8 md:p-16 relative shadow-[0_0_50px_rgba(225,29,72,0.4)] flex flex-col justify-between overflow-y-auto">
+            <button onclick="closeLetter()" class="absolute top-4 right-4 md:top-6 md:right-6 w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors">
+                <i data-lucide="x" class="w-6 h-6 text-gray-600"></i>
+            </button>
+            <div class="mt-8 md:mt-0 text-right">
+                <span id="letterGreeting" class="text-[#e11d48] font-bold text-2xl md:text-3xl block mb-6 title-font border-b-2 border-gray-200 pb-4 inline-block"></span>
+                <p id="letterBody" class="text-xl md:text-2xl leading-[2] font-bold font-['Cairo'] text-gray-800 mt-4"></p>
+            </div>
+            <div class="flex justify-end items-end mt-12">
+                <div class="text-center">
+                    <i data-lucide="heart" class="w-12 h-12 text-[#e11d48] fill-current animate-pulse mx-auto mb-2"></i>
+                    <span id="letterSignature" class="text-gray-600 font-extrabold text-xl font-['Cairo']"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- الفوتر -->
     <footer class="text-center py-10 text-gray-500 text-sm border-t border-gray-900 pb-32 relative z-10 bg-[#09090b]">
-        صُنع بحب بواسطة <a href="https://HeartCode.site" target="_blank" class="text-[#e11d48] font-bold text-base ml-1 hover:underline transition-all">HeartCode</a>
+        صُنع بحب بواسطة <a id="footerLink" target="_blank" class="text-[#e11d48] font-bold text-base ml-1 hover:underline transition-all"></a>
     </footer>
 
-    <!-- سكربتات التفاعل -->
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- السكريبت الجبار (المحرك الديناميكي) -->
     <script>
-        lucide.createIcons();
+        let siteData = null;
 
-        // 1. إدارة التحميل والمزيكا
-        const loader = document.getElementById('loader');
-        const startBtn = document.getElementById('startBtn');
-        const bgMusic = document.getElementById('bgMusic');
-        
-        const musicDisk = document.getElementById('musicDisk');
-        const playPauseBtn = document.getElementById('playPauseBtn');
-        const iconPlay = document.getElementById('iconPlay');
-        const iconPause = document.getElementById('iconPause');
-        
-        const muteBtn = document.getElementById('muteBtn');
-        const iconUnmute = document.getElementById('iconUnmute');
-        const iconMute = document.getElementById('iconMute');
+        // 1. جلب البيانات من ملف JSON وبناء الصفحة
+        async function fetchAndBuild() {
+            try {
+                const response = await fetch('data.json');
+                siteData = await response.json();
+                
+                buildPageElements();
+                
+                document.getElementById('dataLoader').style.display = 'none';
+                document.getElementById('pinScreen').classList.remove('hidden');
+                
+            } catch (error) {
+                console.error("حدث خطأ أثناء تحميل الداتا:", error);
+                document.getElementById('dataLoader').innerHTML = `<p class="text-red-500">حدث خطأ. تأكد من فتح الملف باستخدام Live Server</p>`;
+            }
+        }
 
-        setTimeout(() => {
-            startBtn.classList.remove('hidden');
-            setTimeout(() => startBtn.classList.remove('opacity-0'), 50);
-        }, 1500);
+        // 2. دالة حساب الوقت المتطورة (سنين، شهور، أيام، ساعات، دقائق، ثواني)
+        function calculateTimeDifference(startDateStr) {
+            const start = new Date(startDateStr);
+            const now = new Date();
 
-        startBtn.addEventListener('click', () => {
-            loader.style.opacity = '0';
-            setTimeout(() => {
-                loader.style.display = 'none';
-                document.body.classList.remove('no-scroll'); 
-            }, 700);
+            if (now < start) return { years: 0, months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 };
+
+            let years = now.getFullYear() - start.getFullYear();
+            let months = now.getMonth() - start.getMonth();
+            let days = now.getDate() - start.getDate();
+            let hours = now.getHours() - start.getHours();
+            let minutes = now.getMinutes() - start.getMinutes();
+            let seconds = now.getSeconds() - start.getSeconds();
+
+            if (seconds < 0) { seconds += 60; minutes--; }
+            if (minutes < 0) { minutes += 60; hours--; }
+            if (hours < 0) { hours += 24; days--; }
+            if (days < 0) {
+                const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                days += prevMonth.getDate();
+                months--;
+            }
+            if (months < 0) { months += 12; years--; }
+
+            return { years, months, days, hours, minutes, seconds };
+        }
+
+        // 3. دالة بناء العناصر أوتوماتيكياً
+        function buildPageElements() {
+            // --- الإعدادات والهيرو ---
+            document.title = siteData.settings.pageTitle || "حكايتنا";
+            document.getElementById('bgMusic').src = siteData.settings.bgMusic;
             
-            bgMusic.play().then(() => {
-                musicDisk.classList.remove('spin-paused');
-                iconPlay.classList.add('hidden');
-                iconPause.classList.remove('hidden');
-            }).catch(e => console.log("المتصفح منع التشغيل التلقائي"));
-        });
+            document.getElementById('loaderText').innerText = siteData.loaderScreen.loadingText;
+            document.getElementById('startBtn').innerText = siteData.loaderScreen.startButtonText;
 
-        playPauseBtn.addEventListener('click', () => {
+            document.getElementById('pinTitle').innerText = siteData.pinScreen.title;
+            document.getElementById('pinSubtitle').innerText = siteData.pinScreen.subtitle;
+
+            document.getElementById('heroBadge').innerText = siteData.hero.dateBadge;
+            
+            // معالجة الاسم الواحد أو الاسمين
+            if (siteData.hero.name2 && siteData.hero.name2.trim() !== "") {
+                document.getElementById('heroNames').innerHTML = `${siteData.hero.name1} <span class='text-[#e11d48] font-light'>&</span> ${siteData.hero.name2}`;
+            } else {
+                document.getElementById('heroNames').innerHTML = siteData.hero.name1;
+            }
+
+            // تطبيق نصوص وستايل الهيرو
+            const heroDescEl = document.getElementById('heroDesc');
+            heroDescEl.innerText = siteData.hero.description;
+            if(siteData.hero.styles) {
+                if(siteData.hero.styles.descriptionColor) heroDescEl.style.color = siteData.hero.styles.descriptionColor;
+                if(siteData.hero.styles.descriptionLineHeight) heroDescEl.style.lineHeight = siteData.hero.styles.descriptionLineHeight;
+            }
+            
+            document.getElementById('scrollHint').innerText = siteData.hero.scrollText;
+
+            // --- التايم لاين ---
+            document.getElementById('timelineMainTitle').innerText = siteData.timeline.sectionTitle;
+            const timelineHTML = siteData.timeline.events.map(item => `
+                <div class="relative fade-up mb-20 pl-8 md:pl-10">
+                    <div class="timeline-node top-10"></div>
+                    <div class="glass p-8 md:p-10 rounded-[2rem] border border-gray-700/60 hover:border-[#e11d48]/60 transition-colors shadow-2xl">
+                        <span class="text-[#e11d48] text-sm md:text-base font-bold tracking-wider uppercase bg-[#e11d48]/10 px-4 py-2 rounded-full mb-4 inline-block">${item.badge}</span>
+                        <h3 class="text-3xl md:text-4xl font-bold text-white mb-4 title-font">${item.title}</h3>
+                        <p class="text-gray-300 text-lg md:text-xl leading-relaxed mb-8">${item.description}</p>
+                        <div class="w-full aspect-square md:max-w-md bg-gray-900 rounded-[2rem] overflow-hidden relative group shadow-inner mx-auto">
+                            <img src="${item.image}" class="w-full h-full object-cover object-center transition-transform duration-1000 group-hover:scale-110" onerror="this.style.display='none'">
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('timelineContainer').innerHTML = `<div class="timeline-line"></div>` + timelineHTML;
+
+            // --- سما السما ---
+            document.getElementById('starMapBadge').innerText = siteData.starMap.sectionBadge;
+            document.getElementById('starMapTitle').innerText = siteData.starMap.title;
+            document.getElementById('starMapDesc').innerText = siteData.starMap.description;
+            document.getElementById('starMapLocation').innerText = siteData.starMap.location;
+            document.getElementById('starMapDateLabel').innerText = siteData.starMap.dateLabel;
+            document.getElementById('starMapDateValue').innerText = siteData.starMap.dateValue;
+
+            // --- الخريطة ---
+            document.getElementById('mapMainTitle').innerText = siteData.map.sectionTitle;
+            document.getElementById('mapMainDesc').innerText = siteData.map.sectionDesc;
+            const mapBtnsHTML = siteData.map.locations.map(loc => `
+                <button onclick="flyToLocation(${loc.lat}, ${loc.lng}, '${loc.name}')" class="bg-[#18181b] hover:bg-[#e11d48] border border-gray-700 hover:border-[#e11d48] text-white px-6 py-3 rounded-full font-bold transition-all shadow-lg flex items-center gap-2">
+                    <i data-lucide="${loc.icon}" class="w-5 h-5"></i> ${loc.name}
+                </button>
+            `).join('');
+            document.getElementById('mapButtonsContainer').innerHTML = mapBtnsHTML;
+
+            // --- الجاليري ---
+            document.getElementById('galleryMainTitle').innerText = siteData.gallery.sectionTitle;
+            document.getElementById('galleryHint').innerText = siteData.gallery.hintText;
+            const galleryHTML = siteData.gallery.photos.map(item => `
+                <div class="snap-card gallery-item relative rounded-[2.5rem] overflow-hidden group border border-gray-700 shrink-0 shadow-2xl">
+                    <img src="${item.image}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" onerror="this.style.display='none'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90"></div>
+                    <div class="absolute bottom-0 left-0 w-full p-8 md:p-10 flex flex-col items-start gap-4">
+                        <p class="text-white font-bold text-3xl md:text-4xl title-font drop-shadow-md">${item.title}</p>
+                        <div class="voice-note-player" data-audio="${item.audio}" onclick="toggleVoiceNote(this)">
+                            <i data-lucide="play" class="w-4 h-4 text-white fill-current play-icon"></i>
+                            <i data-lucide="pause" class="w-4 h-4 text-[#e11d48] fill-current pause-icon hidden"></i>
+                            <div class="waves-container">
+                                <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                            </div>
+                            <span class="text-xs text-gray-300 font-sans ml-1">استمع للحكاية</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('galleryContainer').innerHTML = galleryHTML;
+
+            // --- رسايل الأسبوع (حل مشكلة الترحيل الذكي) ---
+            document.getElementById('messagesMainTitle').innerText = siteData.messagesSection.sectionTitle;
+            document.getElementById('messagesMainDesc').innerText = siteData.messagesSection.sectionDesc;
+            
+            const totalMsgs = siteData.messagesSection.messages.length;
+            const messagesHTML = siteData.messagesSection.messages.map((msg, index) => {
+                // الكود الذكي لتوسيط الكارت الأخير لو كان فردي
+                const isStandalone = (index === totalMsgs - 1) && (totalMsgs % 3 === 1 || (window.innerWidth >= 768 && window.innerWidth < 1024 && totalMsgs % 2 === 1));
+                const colSpanClass = isStandalone ? 'md:col-span-2 lg:col-span-3 md:w-1/2 lg:w-1/3 mx-auto w-full' : '';
+                
+                return `
+                <div class="msg-card min-h-[380px] flex flex-col glass p-8 rounded-[2rem] border border-gray-700 relative overflow-hidden transition-all duration-700 ${colSpanClass}" data-target-date="${msg.targetDate}">
+                    <div class="locked-layer flex-1 flex flex-col items-center justify-center text-center z-20">
+                        <div class="w-16 h-16 rounded-full bg-gray-800 border border-gray-600 flex items-center justify-center mb-4 shadow-xl">
+                            <i data-lucide="lock" class="w-7 h-7 text-gray-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-4">${msg.title}</h3>
+                        <div class="countdown-text text-[#e11d48] font-bold text-sm bg-gray-900 px-4 py-2.5 rounded-full border border-gray-700 w-full" dir="rtl">جاري الحساب...</div>
+                    </div>
+                    <div class="unlocked-layer hidden flex-col h-full z-10 relative">
+                        <div class="flex items-center justify-between mb-6 border-b border-gray-700/50 pb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-[#e11d48]/20 flex items-center justify-center text-[#e11d48]">
+                                    <i data-lucide="mail-open" class="w-5 h-5"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-white">${msg.title}</h3>
+                            </div>
+                            <span class="text-xs text-green-400 bg-green-400/10 px-3 py-1 rounded-full font-bold">متاحة</span>
+                        </div>
+                        <p class="text-gray-300 leading-relaxed font-bold font-['Cairo'] text-lg">${msg.content}</p>
+                        <p class="text-gray-500 text-xs mt-auto pt-6">تاريخ الفتح: ${msg.openDateStr}</p>
+                    </div>
+                </div>`;
+            }).join('');
+            document.getElementById('messagesContainer').innerHTML = messagesHTML;
+
+            // --- أسباب الحب ---
+            document.getElementById('reasonsMainTitle').innerText = siteData.reasonsSection.sectionTitle;
+            const reasonsHTML = siteData.reasonsSection.reasons.map(reason => `
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front glass border border-gray-600/50 shadow-2xl">
+                            <div class="w-20 h-20 rounded-full bg-[#e11d48]/20 flex items-center justify-center mb-6 text-[#e11d48]">
+                                <i data-lucide="${reason.icon}" class="w-10 h-10"></i>
+                            </div>
+                            <h3 class="text-3xl font-bold text-white title-font">${reason.title}</h3>
+                            <p class="text-gray-400 text-base mt-4">${siteData.reasonsSection.clickHint} <i data-lucide="mouse-pointer-click" class="inline w-4 h-4 mr-1 animate-pulse"></i></p>
+                        </div>
+                        <div class="flip-card-back shadow-[0_0_40px_rgba(225,29,72,0.3)]">
+                            <h3 class="text-2xl font-bold text-white mb-4 title-font border-b border-[#e11d48]/30 pb-3 w-full">${reason.title}</h3>
+                            <p class="text-gray-200 text-lg leading-relaxed mt-2">${reason.description}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('reasonsContainer').innerHTML = reasonsHTML;
+
+            // --- العداد العام ---
+            document.getElementById('counterMainTitle').innerText = siteData.counterSection.sectionTitle;
+            document.getElementById('counterMainDesc').innerText = siteData.counterSection.sectionDesc;
+            document.getElementById('startDateLabel').innerText = siteData.counterSection.startDateText;
+            document.getElementById('startDateDisplay').innerText = siteData.counterSection.displayDate;
+
+            // --- الرسالة الختامية ---
+            document.getElementById('finalLetterHint').innerHTML = `${siteData.finalLetterSection.hintTextLine1} <br class="md:hidden"> ${siteData.finalLetterSection.hintTextLine2}`;
+            document.getElementById('letterGreeting').innerText = siteData.finalLetterSection.greeting;
+            document.getElementById('letterBody').innerHTML = siteData.finalLetterSection.body;
+            document.getElementById('letterSignature').innerText = siteData.finalLetterSection.signature;
+
+            // --- الفوتر ---
+            const footerLink = document.getElementById('footerLink');
+            if(footerLink) {
+                const globalSettings = siteData.global || {};
+                footerLink.innerText = globalSettings.madeBy || "HeartCode";
+                footerLink.href = globalSettings.madeByLink || "https://HeartCode.site";
+            }
+
+            // تحديث الأيقونات وإعادة تفعيل السكربتات بعد حقن المحتوى
+            lucide.createIcons();
+            attachDynamicEvents();
+        }
+
+        window.addEventListener('DOMContentLoaded', fetchAndBuild);
+
+        // ==========================================
+        // بقية السكربتات التفاعلية
+        // ==========================================
+
+        let enteredPin = "";
+        
+        function updateDots() {
+            const pinDots = document.querySelectorAll('.pin-dot');
+            pinDots.forEach((dot, index) => {
+                if (index < enteredPin.length) dot.classList.add('filled');
+                else dot.classList.remove('filled');
+            });
+        }
+
+        function enterPin(num) {
+            if (enteredPin.length < 4) {
+                enteredPin += num;
+                updateDots();
+                if (enteredPin.length === 4) setTimeout(checkPin, 300);
+            }
+        }
+
+        function deletePin() {
+            if (enteredPin.length > 0) {
+                enteredPin = enteredPin.slice(0, -1);
+                updateDots();
+            }
+        }
+
+        function checkPin() {
+            if (enteredPin === siteData.settings.pinCode) {
+                document.getElementById('loader').classList.remove('hidden');
+                document.getElementById('pinScreen').style.opacity = '0';
+                
+                setTimeout(() => {
+                    document.getElementById('pinScreen').style.display = 'none';
+                    setTimeout(() => {
+                        const startBtn = document.getElementById('startBtn');
+                        startBtn.classList.remove('hidden');
+                        setTimeout(() => startBtn.classList.remove('opacity-0'), 50);
+                    }, 1500);
+                }, 700);
+            } else {
+                const dotsContainer = document.getElementById('pinDots');
+                dotsContainer.classList.add('shake');
+                setTimeout(() => {
+                    dotsContainer.classList.remove('shake');
+                    enteredPin = "";
+                    updateDots();
+                }, 500);
+            }
+        }
+
+        function attachDynamicEvents() {
+            // زر البدء
+            const bgMusic = document.getElementById('bgMusic');
+            const musicDisk = document.getElementById('musicDisk');
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const iconPlay = document.getElementById('iconPlay');
+            const iconPause = document.getElementById('iconPause');
+
+            document.getElementById('startBtn').addEventListener('click', () => {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loader').style.display = 'none';
+                    document.body.classList.remove('no-scroll'); 
+                    document.getElementById('musicWidget').classList.remove('hidden');
+                    initMap(); 
+                }, 700);
+                
+                bgMusic.play().then(() => {
+                    musicDisk.classList.remove('spin-paused');
+                    iconPlay.classList.add('hidden');
+                    iconPause.classList.remove('hidden');
+                }).catch(e => console.log("المتصفح منع التشغيل التلقائي"));
+            });
+
+            // كروت 3D
+            document.querySelectorAll('.flip-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    card.classList.toggle('flipped');
+                });
+            });
+
+            // مراقب التمرير
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, { threshold: 0.15 });
+            document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+            // العداد العام (تمت برمجته من الصفر ليحسب السنين والشهور وغيرها بترتيب ذكي)
+            const labels = siteData.counterSection.labels || { year: "سنة", month: "شهر", day: "يوم", hour: "ساعة", minute: "دقيقة", second: "ثانية" };
+            const counterBoxes = document.getElementById('counterBoxes');
+
+            function updateTimer() {
+                const timeDiff = calculateTimeDifference(siteData.counterSection.startDate);
+                if (!timeDiff) return;
+
+                let html = '';
+                const createBox = (val, label) => `
+                    <div class="glass p-5 md:p-6 rounded-3xl w-24 md:w-32 shadow-[0_0_30px_rgba(225,29,72,0.1)] hover:-translate-y-2 transition-transform flex flex-col items-center justify-center">
+                        <span class="block text-3xl md:text-5xl font-extrabold text-[#e11d48] mb-2 drop-shadow-md">${val}</span>
+                        <span class="text-sm md:text-base text-gray-300 font-bold">${label}</span>
+                    </div>
+                `;
+
+                // ترتيب الصناديق في الكود، مع استخدام dir="rtl" في الحاوية سيظهر الترتيب من اليمين لليسار بشكل مثالي
+                if (timeDiff.years > 0) html += createBox(timeDiff.years, labels.year);
+                if (timeDiff.months > 0 || timeDiff.years > 0) html += createBox(timeDiff.months, labels.month); // تظهر الشهور لو فيه سنين حتى لو الشهور 0
+                
+                // الأيام وما بعدها تظهر دائماً
+                html += createBox(timeDiff.days, labels.day);
+                html += createBox(timeDiff.hours.toString().padStart(2, '0'), labels.hour);
+                html += createBox(timeDiff.minutes.toString().padStart(2, '0'), labels.minute);
+                html += createBox(timeDiff.seconds.toString().padStart(2, '0'), labels.second);
+
+                counterBoxes.innerHTML = html;
+            }
+            setInterval(updateTimer, 1000);
+            updateTimer();
+        }
+
+        // أزرار المزيكا
+        document.getElementById('playPauseBtn').addEventListener('click', () => {
+            const bgMusic = document.getElementById('bgMusic');
             if (bgMusic.paused) {
                 bgMusic.play();
-                musicDisk.classList.remove('spin-paused');
-                iconPlay.classList.add('hidden');
-                iconPause.classList.remove('hidden');
+                document.getElementById('musicDisk').classList.remove('spin-paused');
+                document.getElementById('iconPlay').classList.add('hidden');
+                document.getElementById('iconPause').classList.remove('hidden');
             } else {
                 bgMusic.pause();
-                musicDisk.classList.add('spin-paused');
-                iconPause.classList.add('hidden');
-                iconPlay.classList.remove('hidden');
+                document.getElementById('musicDisk').classList.add('spin-paused');
+                document.getElementById('iconPause').classList.add('hidden');
+                document.getElementById('iconPlay').classList.remove('hidden');
             }
         });
 
-        muteBtn.addEventListener('click', () => {
+        document.getElementById('muteBtn').addEventListener('click', () => {
+            const bgMusic = document.getElementById('bgMusic');
+            const muteBtn = document.getElementById('muteBtn');
             if (bgMusic.muted) {
                 bgMusic.muted = false;
-                iconMute.classList.add('hidden');
-                iconUnmute.classList.remove('hidden');
+                document.getElementById('iconMute').classList.add('hidden');
+                document.getElementById('iconUnmute').classList.remove('hidden');
                 muteBtn.classList.add('text-[#e11d48]');
                 muteBtn.classList.remove('text-gray-400');
             } else {
                 bgMusic.muted = true;
-                iconUnmute.classList.add('hidden');
-                iconMute.classList.remove('hidden');
+                document.getElementById('iconUnmute').classList.add('hidden');
+                document.getElementById('iconMute').classList.remove('hidden');
                 muteBtn.classList.remove('text-[#e11d48]');
                 muteBtn.classList.add('text-gray-400');
             }
         });
 
-        // 2. حركات التمرير 
-        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target); 
+        // الخريطة
+        let map;
+        function initMap() {
+            if(map) return;
+            const centerLat = siteData.map.locations[0]?.lat || 30.0444;
+            const centerLng = siteData.map.locations[0]?.lng || 31.2357;
+            
+            map = L.map('interactiveMap', { zoomControl: false, attributionControl: false }).setView([centerLat, centerLng], 12);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {}).addTo(map);
+            const customIcon = L.divIcon({ className: 'custom-map-marker', iconSize: [20, 20] });
+            
+            siteData.map.locations.forEach(loc => {
+                L.marker([loc.lat, loc.lng], {icon: customIcon}).addTo(map).bindPopup(`<b>${loc.name}</b>`);
+            });
+        }
+        function flyToLocation(lat, lng, popupText) {
+            if(map) map.flyTo([lat, lng], 16, { duration: 2 });
+        }
+
+        // Voice Notes
+        let activeVoiceNoteElement = null;
+        let globalAudioPlayer = new Audio();
+        globalAudioPlayer.addEventListener('ended', () => {
+            if(activeVoiceNoteElement) {
+                activeVoiceNoteElement.classList.remove('playing');
+                activeVoiceNoteElement.querySelector('.play-icon').classList.remove('hidden');
+                activeVoiceNoteElement.querySelector('.pause-icon').classList.add('hidden');
+                activeVoiceNoteElement = null;
+                document.getElementById('bgMusic').volume = 1.0; 
+            }
+        });
+        function toggleVoiceNote(element) {
+            const audioSrc = element.getAttribute('data-audio');
+            const isPlaying = element.classList.contains('playing');
+            
+            if (activeVoiceNoteElement && activeVoiceNoteElement !== element) {
+                activeVoiceNoteElement.classList.remove('playing');
+                activeVoiceNoteElement.querySelector('.play-icon').classList.remove('hidden');
+                activeVoiceNoteElement.querySelector('.pause-icon').classList.add('hidden');
+            }
+            
+            if (!isPlaying) {
+                element.classList.add('playing');
+                element.querySelector('.play-icon').classList.add('hidden');
+                element.querySelector('.pause-icon').classList.remove('hidden');
+                activeVoiceNoteElement = element;
+                
+                if(audioSrc) {
+                    globalAudioPlayer.src = audioSrc;
+                    globalAudioPlayer.play().catch(e => console.log("تأكد من وجود ملف الصوت: " + audioSrc));
+                    document.getElementById('bgMusic').volume = 0.2; 
+                }
+            } else {
+                element.classList.remove('playing');
+                element.querySelector('.play-icon').classList.remove('hidden');
+                element.querySelector('.pause-icon').classList.add('hidden');
+                activeVoiceNoteElement = null;
+                globalAudioPlayer.pause();
+                document.getElementById('bgMusic').volume = 1.0; 
+            }
+        }
+
+        // عداد الرسايل المقفولة
+        function updateMessagesCountdown() {
+            const now = new Date().getTime();
+            document.querySelectorAll('.msg-card').forEach(card => {
+                const targetDateStr = card.getAttribute('data-target-date');
+                if(!targetDateStr) return;
+                
+                const targetDate = new Date(targetDateStr).getTime();
+                const diff = targetDate - now;
+                const lockedLayer = card.querySelector('.locked-layer');
+                const unlockedLayer = card.querySelector('.unlocked-layer');
+                const countdownEl = card.querySelector('.countdown-text');
+                
+                if (diff <= 0) {
+                    card.classList.add('border-[#e11d48]/50', 'shadow-[0_0_30px_rgba(225,29,72,0.15)]');
+                    card.classList.remove('border-gray-700');
+                    if(lockedLayer) lockedLayer.style.display = 'none'; 
+                    if(unlockedLayer) {
+                        unlockedLayer.style.display = 'flex'; 
+                        unlockedLayer.classList.remove('hidden');
+                    }
+                } else {
+                    if(lockedLayer) lockedLayer.style.display = 'flex';
+                    if(unlockedLayer) unlockedLayer.style.display = 'none'; 
+                    
+                    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const s = Math.floor((diff % (1000 * 60)) / 1000);
+                    
+                    if(countdownEl) {
+                        countdownEl.innerHTML = `<div class="flex items-center justify-center gap-1.5 w-full" dir="rtl">
+                            <span class="whitespace-nowrap">${d} يوم</span> <span>:</span>
+                            <span class="whitespace-nowrap">${h.toString().padStart(2, '0')} س</span> <span>:</span>
+                            <span class="whitespace-nowrap">${m.toString().padStart(2, '0')} د</span> <span>:</span>
+                            <span class="whitespace-nowrap">${s.toString().padStart(2, '0')} ث</span>
+                        </div>`;
+                    }
                 }
             });
-        }, observerOptions);
-        document.querySelectorAll('.fade-up').forEach((el) => { observer.observe(el); });
+        }
+        setInterval(updateMessagesCountdown, 1000);
 
-        // 3. أسهم تقليب الجاليري
-        const galleryContainer = document.getElementById('galleryContainer');
+        // فتح الجواب
+        function openEnvelope() {
+            document.getElementById('envelope').classList.add('open');
+            setTimeout(() => {
+                document.getElementById('letterFullscreenModal').classList.remove('hidden-modal');
+                document.body.classList.add('no-scroll'); 
+            }, 800);
+        }
+        function closeLetter() {
+            document.getElementById('letterFullscreenModal').classList.add('hidden-modal');
+            document.getElementById('envelope').classList.remove('open');
+            document.body.classList.remove('no-scroll'); 
+        }
+
+        // أسهم الجاليري
         const nextBtn = document.getElementById('nextBtn'); 
         const prevBtn = document.getElementById('prevBtn'); 
-        
         if(nextBtn && prevBtn) {
             nextBtn.addEventListener('click', () => {
                 const card = document.querySelector('.gallery-item');
-                const cardWidth = card.offsetWidth + 32; 
-                galleryContainer.scrollBy({ left: -cardWidth, behavior: 'smooth' }); 
+                if(card) document.getElementById('galleryContainer').scrollBy({ left: -(card.offsetWidth + 32), behavior: 'smooth' }); 
             });
             prevBtn.addEventListener('click', () => {
                 const card = document.querySelector('.gallery-item');
-                const cardWidth = card.offsetWidth + 32; 
-                galleryContainer.scrollBy({ left: cardWidth, behavior: 'smooth' }); 
+                if(card) document.getElementById('galleryContainer').scrollBy({ left: (card.offsetWidth + 32), behavior: 'smooth' }); 
             });
-        }
-
-        // 4. تقليب الكروت 3D 
-        document.querySelectorAll('.flip-card').forEach(card => {
-            card.addEventListener('click', () => {
-                card.classList.toggle('flipped');
-            });
-        });
-
-        // 5. العداد الديناميك
-        const startDate = new Date("2024-06-09T00:00:00").getTime();
-        const daysEl = document.getElementById('daysCount');
-        const hoursEl = document.getElementById('hoursCount');
-        const minutesEl = document.getElementById('minutesCount');
-        const secondsEl = document.getElementById('secondsCount');
-
-        function updateTimer() {
-            const now = new Date().getTime();
-            const distance = now - startDate;
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            if(daysEl) {
-                daysEl.innerText = days;
-                hoursEl.innerText = hours;
-                minutesEl.innerText = minutes;
-                secondsEl.innerText = seconds;
-            }
-        }
-        setInterval(updateTimer, 1000);
-        updateTimer(); 
-
-        // 6. فتح الجواب (بدون تدخل الجافاسكريبت في الأنيميشن لمنع التقطيع)
-        function openEnvelope() {
-            document.getElementById('envelope').classList.toggle('open');
         }
     </script>
 </body>
