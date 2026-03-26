@@ -1,0 +1,297 @@
+{
+  "theme": {
+    "primaryColor": "#a855f7",
+    "mainIcon": "gift",
+    "envelope": {
+      "flap": "#a855f7",
+      "frontBefore": "#9333ea",
+      "frontAfter": "#7e22ce",
+      "back": "#6b21a8"
+    }
+  },
+  "settings": {
+    "pageTitle": "عيد ميلاد القمر | هديتك الخاصة",
+    "bgMusic": "bg-music.mp3",
+    "pinCode": "1906"
+  },
+  "pinScreen": {
+    "enabled": true,
+    "title": "هدية عيد ميلادك",
+    "subtitle": "عشان تفتحي الهدية، اكتبي الباسورد 1906"
+  },
+  "loaderScreen": {
+    "enabled": true,
+    "type": "heart",
+    "loadingText": "بنجمع أحلى ذكرياتنا...",
+    "startButtonText": "يلا نبدأ",
+    "heartImages": [
+      "loader-1.webp",
+      "loader-2.webp",
+      "loader-3.webp",
+      "loader-4.webp",
+      "loader-5.webp"
+    ]
+  },
+  "hero": {
+    "enabled": true,
+    "dateBadge": "يوم ميلاد القمر",
+    "name1": "سارة",
+    "name2": "نور",
+    "description": "كل سنة وإنتي أجدع وأحلى صاحبة في الدنيا.. دي حاجة بسيطة تفكرك بأيامنا الحلوة وتفاصيلنا اللي مفيش زيها.",
+    "scrollText": "اسحبي لفوق",
+    "styles": {
+      "descriptionColor": "#e4e4e7",
+      "descriptionLineHeight": "2"
+    }
+  },
+  "firstChat": {
+    "enabled": true,
+    "sectionTitle": "أول كلام بينا",
+    "onlineStatusText": "متصل الآن",
+    "participants": {
+      "me": "سارة",
+      "you": "نور",
+      "youImage": "chat-avatar.webp"
+    },
+    "messages": [
+      {
+        "sender": "me",
+        "text": "فاكرة أول مرة اتكلمنا فيها؟",
+        "time": "10:00 PM"
+      },
+      {
+        "sender": "you",
+        "text": "أكيد، كنتي هادية جداً وماشية جمب الحيط 😂",
+        "time": "10:02 PM"
+      },
+      {
+        "sender": "me",
+        "text": "ومين كان يصدق إننا هنبقى المصيبة بتاعت بعض دلوقتي؟",
+        "time": "10:03 PM"
+      },
+      {
+        "sender": "you",
+        "text": "أحلى مصيبة حصلتلي والله ❤️",
+        "time": "10:04 PM"
+      }
+    ]
+  },
+  "timeline": {
+    "enabled": true,
+    "sectionTitle": "محطات في صداقتنا",
+    "events": [
+      {
+        "badge": "أول يوم",
+        "title": "صدفة التعارف",
+        "description": "يوم ما اتقابلنا بالصدفة ومكناش نعرف إننا هنبقى أقرب اتنين لبعض.. ومن ساعتها وإنتي مش بس صاحبتي، إنتي أختي.",
+        "image": "timeline-1.webp"
+      },
+      {
+        "badge": "أول مصيبة",
+        "title": "مغامراتنا سوا",
+        "description": "من وقت ما بدأنا نخرج ونعمل كوارث سوا، وعرفت إن مفيش حد هيفهمني من نظرة عيني غيرك.",
+        "image": "timeline-2.webp"
+      }
+    ]
+  },
+  "starMap": {
+    "enabled": true,
+    "sectionBadge": "سما السما",
+    "title": "يوم ما نورتي الدنيا",
+    "description": "دي ماب حقيقية لشكل النجوم في السما يوم ما اتولدتي.. عشان تعرفي إن الكون كان بيحتفل بيكي من أول يوم.",
+    "location": "القاهرة، مصر",
+    "dateLabel": "The Day You Were Born",
+    "dateValue": "10 . 05 . 2000"
+  },
+  "map": {
+    "enabled": true,
+    "sectionTitle": "خريطة ذكرياتنا",
+    "sectionDesc": "أماكن هتفضل محفورة في قلبنا وضحكنا فيها لحد ما دمعنا.. اختاري المكان عشان تزوريه.",
+    "locations": [
+      {
+        "lat": 30.0444,
+        "lng": 31.2357,
+        "name": "كافيه الشلة",
+        "icon": "coffee"
+      },
+      {
+        "lat": 30.0626,
+        "lng": 31.2497,
+        "name": "مكان أول خروجة",
+        "icon": "map-pin"
+      },
+      {
+        "lat": 30.0131,
+        "lng": 31.2089,
+        "name": "الجامعة",
+        "icon": "graduation-cap"
+      }
+    ]
+  },
+  "gallery": {
+    "enabled": true,
+    "mode": "3d-book",
+    "sectionTitle": "ألبوم فضايحنا",
+    "hintText": "اضغطي على الكتاب عشان تفتحيه، واسحبي الصفحات عشان تقلبي 📖",
+    "bookCoverImage": "album-cover-front.webp",
+    "bookBackCoverImage": "album-cover-back.webp",
+    "photos": [
+      {
+        "image": "album-photo-1.webp",
+        "title": "أحلى ضحكة",
+        "audio": "voice-note-1.mp3",
+        "handwrittenText": "اليوم ده ضحكنا فيه على حاجات تافهة لحد ما بطننا وجعتنا 😂."
+      },
+      {
+        "image": "album-photo-2.webp",
+        "title": "يوم عيد ميلادك اللي فات",
+        "audio": "voice-note-2.mp3",
+        "handwrittenText": "كل سنة وإنتي معايا وفي ضهري يا أغلى الناس على قلبي."
+      },
+      {
+        "image": "album-photo-3.webp",
+        "title": "سيلفي الغفلة",
+        "audio": "",
+        "handwrittenText": "مهما طلعنا شكلنا وحش في الصور، هتفضلي أحلى بنت في عيني."
+      }
+    ]
+  },
+  "scratchCard": {
+    "enabled": true,
+    "sectionTitle": "هديتك التانية",
+    "coverText": "امسحي الشاشة بصباعك عشان تشوفي المفاجأة 🎫",
+    "canvasScratchText": "امسحي هنا",
+    "hiddenImage": "scratch-surprise.webp",
+    "hiddenMessage": "عزومة على حسابي النهاردة في المكان اللي بتحبيه! كوني جاهزة."
+  },
+  "quiz": {
+    "enabled": true,
+    "sectionTitle": "فاكرة تفاصيلنا؟",
+    "nextButtonText": "السؤال اللي بعده",
+    "questions": [
+      {
+        "question": "إيه أكتر أكلة مستحيل نختلف عليها؟",
+        "options": [
+          "بيتزا",
+          "شاورما",
+          "سوشي",
+          "مكرونة بشاميل"
+        ],
+        "correctAnswerIndex": 1
+      },
+      {
+        "question": "مين فينا اللي دايماً بتتأخر على التانية في المواعيد؟",
+        "options": [
+          "أنا طبعاً",
+          "إنتي يا هانم",
+          "إحنا الاتنين بننزل متأخر",
+          "محدش فينا"
+        ],
+        "correctAnswerIndex": 1
+      }
+    ],
+    "successMessage": "عاش يا بيست فريند! ذاكرتك لسة حديد 🎉",
+    "failMessage": "يا خسارة العيش والملح والشاورما 😂"
+  },
+  "messagesSection": {
+    "enabled": true,
+    "sectionTitle": "رسايل أسبوع عيد ميلادك",
+    "sectionDesc": "عشان عيد ميلادك مش يوم واحد، دي رسالة كل يوم تفتح في ميعادها!",
+    "uiTexts": {
+      "calculating": "جاري الحساب...",
+      "openDate": "تاريخ الفتح:",
+      "opensAfter": "يفتح بعد:",
+      "d": "ي",
+      "h": "س",
+      "m": "د"
+    },
+    "messages": [
+      {
+        "title": "يوم عيد ميلادك",
+        "content": "كل سنة وإنتي طيبة يا أحلى بنوتة.. يا رب تحققي كل اللي نفسك فيه وأشوفك دايماً سعيدة ومبسوطة.",
+        "openDateStr": "14 فبراير 2024",
+        "targetDate": "2024-01-01T00:00:00"
+      },
+      {
+        "title": "تاني يوم",
+        "content": "عايزة أقولك إن وجودك في حياتي بيهون عليا حاجات كتير أوي، إنتي نعمة بجد.",
+        "openDateStr": "15 فبراير 2024",
+        "targetDate": "2024-02-01T00:00:00"
+      },
+      {
+        "title": "تالت يوم",
+        "content": "خليكي فاكرة دايماً إنك جميلة، قوية، وتستاهلي كل حاجة حلوة في الدنيا دي.",
+        "openDateStr": "16 فبراير 2024",
+        "targetDate": "2024-03-01T00:00:00"
+      },
+      {
+        "title": "رابع يوم",
+        "content": "مهما كبرنا وعقلنا.. هنفضل نعمل نفس المصايب ونضحك نفس الضحك.",
+        "openDateStr": "26 مارس 2026",
+        "targetDate": "2026-03-26T10:00:00"
+      }
+    ]
+  },
+  "reasonsSection": {
+    "enabled": true,
+    "sectionTitle": "ليه إنتي البيست فريند؟",
+    "clickHint": "اضغطي ع الكارت ولفيه",
+    "reasons": [
+      {
+        "icon": "smile",
+        "title": "عشان مجنونة زيي",
+        "description": "بتفهمي طريقتي وبتشاركيني في أي فكرة مجنونة من غير ما تقولي لا."
+      },
+      {
+        "icon": "shield",
+        "title": "عشان بير أسراري",
+        "description": "إنتي الوحيدة اللي عارفة عني كل حاجة ومطمنة إن كلامي معاكي في أمان دايماً."
+      },
+      {
+        "icon": "star",
+        "title": "عشان مفيش زيك",
+        "description": "ببساطة إنتي نسخة واحدة بس، أجدع وأحن صاحبة ممكن أي حد يتمناها في حياته."
+      }
+    ]
+  },
+  "counterSection": {
+    "enabled": true,
+    "sectionTitle": "عمرنا مع بعض",
+    "sectionDesc": "الوقت بيطير وإحنا سوا، بس الأرقام دي بتشهد على أيامنا الحلوة.",
+    "startDateText": "صحاب من يوم:",
+    "startDate": "2018-09-15T00:00:00",
+    "displayDate": "15 سبتمبر 2018",
+    "labels": {
+      "year": "سنة",
+      "month": "شهر",
+      "day": "يوم",
+      "hour": "ساعة",
+      "minute": "دقيقة",
+      "second": "ثانية"
+    }
+  },
+  "timeCapsule": {
+    "enabled": true,
+    "sectionTitle": "كبسولة لعيد ميلادنا الجاي",
+    "tryOpenButtonText": "جربي تفتحي",
+    "unlockedTitle": "تم فتح الكبسولة!",
+    "unlockDate": "2030-05-10T00:00:00",
+    "lockedMessage": "رسالة متتفتحش غير في عيد ميلادك سنة 2030 🔒",
+    "earlyClickMessage": "مستعجلة ليه؟ لسة قدامنا سنين كتير نهري فيها سوا!",
+    "unlockedMessage": "لو بتقري الرسالة دي دلوقتي، فده معناه إننا لسة صحاب ولسة قارفين بعض.. كل سنة وإحنا سوا يا أحلى أخت وصاحبة."
+  },
+  "finalLetterSection": {
+    "enabled": true,
+    "hintTextLine1": "عندي ليكي رسالة أخيرة..",
+    "hintTextLine2": "اضغطي ع الجواب",
+    "greeting": "يا أحلى صاحبة،",
+    "body": "كل سنة وإنتي طيبة وكل سنة وإنتي معايا وفي ضهري. ربنا يخليكي ليا وميحرمنيش من جنانك ولا من ضحكتك اللي بتنور الدنيا. <br><br> إنتي عارفة إني مبعرفش أقول كلام حلو كتير، بس اللي متأكدة منه إنك أختي اللي مخلفتهوش أمي. سنة سعيدة عليكي يا قمر! <br> بحبك جداً!",
+    "signature": "البيست فريند بتاعتك"
+  },
+  "global": {
+    "madeBy": "HeartCode",
+    "madeByLink": "https://HeartCode.site",
+    "footerPrefix": "صُنع بحب بواسطة",
+    "dataLoaderText": "بنجهز المفاجأة..."
+  }
+}

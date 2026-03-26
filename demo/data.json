@@ -1,14 +1,23 @@
 {
-  "global": {
-    "madeBy": "HeartCode",
-    "madeByLink": "https://HeartCode.site",
-    "footerPrefix": "صُنع بحب بواسطة",
-    "dataLoaderText": "جاري تجهيز الهدية..."
+  "theme": {
+    "primaryColor": "#e11d48",
+    "mainIcon": "heart",
+    "envelope": {
+      "flap": "#e11d48",
+      "frontBefore": "#be123c",
+      "frontAfter": "#9f1239",
+      "back": "#881337"
+    }
   },
   "settings": {
     "pageTitle": "حكايتنا | هديتك الخاصة",
-    "pinCode": "1906",
-    "bgMusic": "music.mp3"
+    "bgMusic": "bg-music.mp3",
+    "pinCode": "1906"
+  },
+  "pinScreen": {
+    "enabled": true,
+    "title": "هديتك الخاصة",
+    "subtitle": "عشان تفتح الديمو، اكتب الباسورد 1906"
   },
   "loaderScreen": {
     "enabled": true,
@@ -16,17 +25,12 @@
     "loadingText": "بنجيب أحلى الذكريات...",
     "startButtonText": "ابدأ الحكاية",
     "heartImages": [
-      "story-1.webp",
-      "story-2.webp",
-      "gallery-1.webp",
-      "gallery-2.webp",
-      "gallery-3.webp"
+      "loader-1.webp",
+      "loader-2.webp",
+      "loader-3.webp",
+      "loader-4.webp",
+      "loader-5.webp"
     ]
-  },
-  "pinScreen": {
-    "enabled": true,
-    "title": "هديتك الخاصة",
-    "subtitle": "عشان تفتح الديمو، اكتب الباسورد 1906"
   },
   "hero": {
     "enabled": true,
@@ -47,7 +51,7 @@
     "participants": {
       "me": "عمر",
       "you": "نور",
-      "youImage": "gallery-1.webp"
+      "youImage": "chat-avatar.webp"
     },
     "messages": [
       {
@@ -80,13 +84,13 @@
         "badge": "أول نظرة",
         "title": "صدفة الكافيه",
         "description": "يوم ما شوفتك بالصدفة، حسيت إن الوقت وقف. كنتي بتطلبي قهوتك ومندمجة أوي، ومن ساعتها وأنا عارف ومستعد أحلف إنك غير أي حد شوفته في حياتي.",
-        "image": "story-1.webp"
+        "image": "timeline-1.webp"
       },
       {
         "badge": "أول خروجة",
         "title": "مشينا بالساعات",
         "description": "مكناش عارفين نروح فين، بس فضلنا نتمشى بالساعات ونتكلم في كل حاجة وأي حاجة. الغريب إني محسيتش بملل لحظة واحدة وكأننا نعرف بعض من سنين.",
-        "image": "story-2.webp"
+        "image": "timeline-2.webp"
       }
     ]
   },
@@ -128,24 +132,24 @@
     "enabled": true,
     "mode": "3d-book",
     "sectionTitle": "كتاب لقطاتنا",
-    "hintText": "اضغط على الكتاب عشان تفتحه، ودوس على الصفحات عشان تقلب 📖",
-    "bookCoverImage": "story-1.webp",
-    "bookBackCoverImage": "story-2.webp",
+    "hintText": "قلبي في الكتاب عشان تشوفي اسعد لقطاتنا📖",
+    "bookCoverImage": "album-cover-front.webp",
+    "bookBackCoverImage": "album-cover-back.webp",
     "photos": [
       {
-        "image": "gallery-1.webp",
+        "image": "album-photo-1.webp",
         "title": "أحلى ضحكة",
-        "audio": "record-1.mp3",
+        "audio": "voice-note-1.mp3",
         "handwrittenText": "اليوم ده مقدرتش أشيل عيني من عليكي، ضحكتك خطفتني وخليتني أنسى كل حاجة."
       },
       {
-        "image": "gallery-2.webp",
+        "image": "album-photo-2.webp",
         "title": "يوم عيد ميلادك",
-        "audio": "record-2.mp3",
+        "audio": "voice-note-2.mp3",
         "handwrittenText": "كل سنة وإنتي أجمل حاجة في دنيتي.. يا رب سنينك الجاية كلها تبقي في حضني."
       },
       {
-        "image": "gallery-3.webp",
+        "image": "album-photo-3.webp",
         "title": "عالبحر وقت الغروب",
         "audio": "",
         "handwrittenText": "الغروب معاكي ليه شكل تاني، كأن الشمس بتسلم عليكي قبل ما تمشي."
@@ -157,7 +161,7 @@
     "sectionTitle": "مفاجأة صغيرة",
     "coverText": "امسحي الشاشة بصباعك عشان تشوفي المفاجأة 🎫",
     "canvasScratchText": "امسحي هنا",
-    "hiddenImage": "surprise-ticket.webp",
+    "hiddenImage": "scratch-surprise.webp",
     "hiddenMessage": "عشا رومانسي النهاردة بالليل.. كوني جاهزة!"
   },
   "quiz": {
@@ -283,5 +287,11 @@
     "greeting": "حبيبة قلبي،",
     "body": "كل سنة وإحنا مع بعض، وكل يوم بحبك أكتر من اللي قبله. ربنا يخليكي ليا يا أحلى صدفة وأجمل هدية نورت حياتي وعمري كله. <br><br> مهما كتبت كلام مش هيوصف أنا بحس بإيه وإنتي معايا، بس اللي متأكد منه إن الجاي أحلى طول ما إيدينا في إيد بعض. <br> بحبك جداً!",
     "signature": "عمرك حبيبك"
+  },
+  "global": {
+    "madeBy": "HeartCode",
+    "madeByLink": "https://HeartCode.site",
+    "footerPrefix": "صُنع بحب بواسطة",
+    "dataLoaderText": "جاري تجهيز الهدية..."
   }
 }
