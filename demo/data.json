@@ -1,7 +1,9 @@
 {
   "global": {
     "madeBy": "HeartCode",
-    "madeByLink": "https://HeartCode.site"
+    "madeByLink": "https://HeartCode.site",
+    "footerPrefix": "صُنع بحب بواسطة",
+    "dataLoaderText": "جاري تجهيز الهدية..."
   },
   "settings": {
     "pageTitle": "حكايتنا | هديتك الخاصة",
@@ -9,14 +11,25 @@
     "bgMusic": "music.mp3"
   },
   "loaderScreen": {
+    "enabled": true,
+    "type": "heart",
     "loadingText": "بنجيب أحلى الذكريات...",
-    "startButtonText": "ابدأ الحكاية"
+    "startButtonText": "ابدأ الحكاية",
+    "heartImages": [
+      "story-1.webp",
+      "story-2.webp",
+      "gallery-1.webp",
+      "gallery-2.webp",
+      "gallery-3.webp"
+    ]
   },
   "pinScreen": {
+    "enabled": true,
     "title": "هديتك الخاصة",
     "subtitle": "عشان تفتح الديمو، اكتب الباسورد 1906"
   },
   "hero": {
+    "enabled": true,
     "dateBadge": "14 فبراير 2024",
     "name1": "عمر",
     "name2": "نور",
@@ -27,7 +40,40 @@
       "descriptionLineHeight": "2"
     }
   },
+  "firstChat": {
+    "enabled": true,
+    "sectionTitle": "أول كلام بينا",
+    "onlineStatusText": "متصل الآن",
+    "participants": {
+      "me": "عمر",
+      "you": "نور",
+      "youImage": "gallery-1.webp"
+    },
+    "messages": [
+      {
+        "sender": "me",
+        "text": "ممكن أسألك على حاجة؟",
+        "time": "10:00 PM"
+      },
+      {
+        "sender": "you",
+        "text": "اتفضل أكيد",
+        "time": "10:02 PM"
+      },
+      {
+        "sender": "me",
+        "text": "هو إنتي بتشربي القهوة سادة إزاي كده؟ 😂",
+        "time": "10:03 PM"
+      },
+      {
+        "sender": "you",
+        "text": "اتعودت عليها خلاص، بتظبط دماغي",
+        "time": "10:04 PM"
+      }
+    ]
+  },
   "timeline": {
+    "enabled": true,
     "sectionTitle": "إزاي بدأت؟",
     "events": [
       {
@@ -45,6 +91,7 @@
     ]
   },
   "starMap": {
+    "enabled": true,
     "sectionBadge": "سما السما",
     "title": "شكل النجوم يوم ما اتقابلنا",
     "description": "دي ماب حقيقية لشكل النجوم في السما ليلة 9 يونيو 2024، الليلة اللي بدأت فيها حكايتنا. عشان تعرفي إن الكون كله كان شاهد علينا.",
@@ -53,26 +100,107 @@
     "dateValue": "09 . 06 . 2024"
   },
   "map": {
+    "enabled": true,
     "sectionTitle": "خريطة ذكرياتنا",
     "sectionDesc": "أماكن هتفضل محفورة في قلوبنا وعمرنا ما هننساها.. اختار المكان عشان تزوره.",
     "locations": [
-      { "lat": 30.0444, "lng": 31.2357, "name": "كافيه الصدفة", "icon": "coffee" },
-      { "lat": 30.0626, "lng": 31.2497, "name": "مكان أول اعتراف", "icon": "heart" },
-      { "lat": 30.0131, "lng": 31.2089, "name": "أحلى خروجة", "icon": "camera" }
+      {
+        "lat": 30.0444,
+        "lng": 31.2357,
+        "name": "كافيه الصدفة",
+        "icon": "coffee"
+      },
+      {
+        "lat": 30.0626,
+        "lng": 31.2497,
+        "name": "مكان أول اعتراف",
+        "icon": "heart"
+      },
+      {
+        "lat": 30.0131,
+        "lng": 31.2089,
+        "name": "أحلى خروجة",
+        "icon": "camera"
+      }
     ]
   },
   "gallery": {
-    "sectionTitle": "لقطات متتنسيش",
-    "hintText": "دوس على الريكورد تحت كل صورة عشان تسمع الحكاية 🎵",
+    "enabled": true,
+    "mode": "3d-book",
+    "sectionTitle": "كتاب لقطاتنا",
+    "hintText": "اضغط على الكتاب عشان تفتحه، ودوس على الصفحات عشان تقلب 📖",
+    "bookCoverImage": "story-1.webp",
+    "bookBackCoverImage": "story-2.webp",
     "photos": [
-      { "image": "gallery-1.webp", "title": "أحلى ضحكة", "audio": "record-1.mp3" },
-      { "image": "gallery-2.webp", "title": "يوم عيد ميلادك", "audio": "record-2.mp3" },
-      { "image": "gallery-3.webp", "title": "عالبحر وقت الغروب", "audio": "record-3.mp3" }
+      {
+        "image": "gallery-1.webp",
+        "title": "أحلى ضحكة",
+        "audio": "record-1.mp3",
+        "handwrittenText": "اليوم ده مقدرتش أشيل عيني من عليكي، ضحكتك خطفتني وخليتني أنسى كل حاجة."
+      },
+      {
+        "image": "gallery-2.webp",
+        "title": "يوم عيد ميلادك",
+        "audio": "record-2.mp3",
+        "handwrittenText": "كل سنة وإنتي أجمل حاجة في دنيتي.. يا رب سنينك الجاية كلها تبقي في حضني."
+      },
+      {
+        "image": "gallery-3.webp",
+        "title": "عالبحر وقت الغروب",
+        "audio": "",
+        "handwrittenText": "الغروب معاكي ليه شكل تاني، كأن الشمس بتسلم عليكي قبل ما تمشي."
+      }
     ]
   },
+  "scratchCard": {
+    "enabled": true,
+    "sectionTitle": "مفاجأة صغيرة",
+    "coverText": "امسحي الشاشة بصباعك عشان تشوفي المفاجأة 🎫",
+    "canvasScratchText": "امسحي هنا",
+    "hiddenImage": "surprise-ticket.webp",
+    "hiddenMessage": "عشا رومانسي النهاردة بالليل.. كوني جاهزة!"
+  },
+  "quiz": {
+    "enabled": true,
+    "sectionTitle": "فاكرة تفاصيلنا؟",
+    "nextButtonText": "السؤال اللي بعده",
+    "questions": [
+      {
+        "question": "إيه أول أكلة طلبناها سوا؟",
+        "options": [
+          "بيتزا",
+          "شاورما",
+          "سوشي",
+          "برجر"
+        ],
+        "correctAnswerIndex": 1
+      },
+      {
+        "question": "مين فينا قال (بحبك) الأول؟",
+        "options": [
+          "أنا طبعاً",
+          "إنتي",
+          "اتقالت في نفس اللحظة",
+          "لسة متقالتش"
+        ],
+        "correctAnswerIndex": 0
+      }
+    ],
+    "successMessage": "طبعاً مش معقول تنسي تفاصيلنا! 🎉",
+    "failMessage": "يا خسارة الأيام.. طلعتي نساية 😂"
+  },
   "messagesSection": {
+    "enabled": true,
     "sectionTitle": "رسايل الأسبوع",
     "sectionDesc": "كل يوم رسالة جديدة ومفاجأة تفتح في ميعادها متواصلة!",
+    "uiTexts": {
+      "calculating": "جاري الحساب...",
+      "openDate": "تاريخ الفتح:",
+      "opensAfter": "يفتح بعد:",
+      "d": "ي",
+      "h": "س",
+      "m": "د"
+    },
     "messages": [
       {
         "title": "اليوم الأول",
@@ -97,31 +225,33 @@
         "content": "رسالة النهاردة مخصوص عشان أقولك إن كل لحظة بينا بتبقى أحلى ذكرى بحتفظ بيها في قلبي للأبد.",
         "openDateStr": "26 مارس 2026",
         "targetDate": "2026-03-26T10:00:00"
-      },
-      {
-        "title": "اليوم الخامس",
-        "content": "خامس يوم بيثبتلي أكتر إنك أجمل اختيار اخترته، وإن مفيش في الدنيا دي كلها حد يعوضني عنك.",
-        "openDateStr": "27 مارس 2026",
-        "targetDate": "2026-03-27T10:00:00"
-      },
-      {
-        "title": "اليوم السادس والأخير",
-        "content": "رسالة مسك الختام للأسبوع ده... بس هي بداية لـ عُمر كامل مكمل هعيشه معاكي وبس. بحبك!",
-        "openDateStr": "28 مارس 2026",
-        "targetDate": "2026-03-28T10:00:00"
       }
     ]
   },
   "reasonsSection": {
+    "enabled": true,
     "sectionTitle": "ليه إنتي؟",
-    "clickHint": "اضغط عشان تقرأ",
+    "clickHint": "اضغطي ع الكارت ولفيه",
     "reasons": [
-      { "icon": "smile", "title": "عشان ضحكتك", "description": "هي الحاجه الوحيدة اللي بتفصلني عن دوشة يومي، بتنسيني همومي وتخليني أشوف الدنيا أحلى." },
-      { "icon": "shield", "title": "عشان جدعنتك", "description": "وقفتك جنبي في المواقف الصعبة قبل الحلوة. إنتي مش بس حبيبتي، إنتي ضهري والسند الحقيقي ليا." },
-      { "icon": "heart", "title": "عشان إنتي روحي", "description": "ببساطة، مش متخيل أيامي من غيرك. إنتي الروح اللي بتكملني وتخليني أحسن نسخة من نفسي كل يوم." }
+      {
+        "icon": "smile",
+        "title": "عشان ضحكتك",
+        "description": "هي الحاجه الوحيدة اللي بتفصلني عن دوشة يومي، بتنسيني همومي وتخليني أشوف الدنيا أحلى."
+      },
+      {
+        "icon": "shield",
+        "title": "عشان جدعنتك",
+        "description": "وقفتك جنبي في المواقف الصعبة قبل الحلوة. إنتي مش بس حبيبتي، إنتي ضهري والسند الحقيقي ليا."
+      },
+      {
+        "icon": "heart",
+        "title": "عشان إنتي روحي",
+        "description": "ببساطة، مش متخيل أيامي من غيرك. إنتي الروح اللي بتكملني وتخليني أحسن نسخة من نفسي كل يوم."
+      }
     ]
   },
   "counterSection": {
+    "enabled": true,
     "sectionTitle": "كل ثانية معاكي بحساب",
     "sectionDesc": "من يوم ما عرفتك والوقت مبقاش مجرد أرقام..",
     "startDateText": "بدأت الحكاية في:",
@@ -136,7 +266,18 @@
       "second": "ثانية"
     }
   },
+  "timeCapsule": {
+    "enabled": true,
+    "sectionTitle": "كبسولة الزمن",
+    "tryOpenButtonText": "جرب تفتح",
+    "unlockedTitle": "تم فتح الكبسولة!",
+    "unlockDate": "2030-02-14T00:00:00",
+    "lockedMessage": "رسالة مشفرة ممنوع فتحها قبل 14 فبراير 2030 🔒",
+    "earlyClickMessage": "مستعجلة على إيه؟ لسة قدامنا عمر بحاله نعيشه سوا!",
+    "unlockedMessage": "لو بتقري الرسالة دي دلوقتي، فده معناه إننا قضينا أحلى سنين عمرنا سوا، وإن وعدي ليكي لسة مكمل وكل يوم بحبك أكتر."
+  },
   "finalLetterSection": {
+    "enabled": true,
     "hintTextLine1": "عندي ليكي رسالة أخيرة..",
     "hintTextLine2": "اضغطي ع الجواب",
     "greeting": "حبيبة قلبي،",
