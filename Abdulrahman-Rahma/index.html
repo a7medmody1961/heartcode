@@ -1343,6 +1343,28 @@
             setTimeout(() => document.querySelectorAll('.fade-up').forEach(el => observer.observe(el)), 1000);
         }
 
+        // دالة لعمل تأثير التدرج في الصوت (Fade In / Fade Out) بنعومة
+        function fadeVolume(audio, targetVolume, duration) {
+            if (!audio) return;
+            const steps = 20;
+            const stepTime = duration / steps;
+            const volumeStep = (targetVolume - audio.volume) / steps;
+            
+            if (audio.fadeInterval) clearInterval(audio.fadeInterval);
+            
+            audio.fadeInterval = setInterval(() => {
+                let newVol = audio.volume + volumeStep;
+                if (newVol > 1) newVol = 1;
+                if (newVol < 0) newVol = 0;
+                audio.volume = newVol;
+                
+                if ((volumeStep > 0 && audio.volume >= targetVolume) || (volumeStep < 0 && audio.volume <= targetVolume)) {
+                    audio.volume = targetVolume;
+                    clearInterval(audio.fadeInterval);
+                }
+            }, stepTime);
+        }
+
         function toggleVoiceNote(el) {
             const src = el.getAttribute('data-audio');
             const isPlaying = el.classList.contains('playing');
@@ -1363,7 +1385,7 @@
                     if (playPromise !== undefined) {
                         playPromise.then(() => {
                             const bgm = document.getElementById('bgMusic');
-                            if(bgm) bgm.volume = 0.2; 
+                            if(bgm) fadeVolume(bgm, 0.10, 500); 
                         }).catch(e => {
                             console.warn("ملف الصوت غير موجود، ولكن الكود شغال تمام.");
                             el.classList.remove('playing'); 
@@ -1377,7 +1399,7 @@
                 el.classList.remove('playing'); el.querySelector('.play-icon').classList.remove('hidden'); el.querySelector('.pause-icon').classList.add('hidden');
                 activeVoiceNoteElement = null; globalAudioPlayer.pause(); 
                 const bgm = document.getElementById('bgMusic');
-                if(bgm) bgm.volume = 1.0;
+                if(bgm) fadeVolume(bgm, 1.0, 1000);
             }
         }
         globalAudioPlayer.addEventListener('ended', () => {
@@ -1386,7 +1408,7 @@
                 activeVoiceNoteElement.querySelector('.play-icon').classList.remove('hidden'); activeVoiceNoteElement.querySelector('.pause-icon').classList.add('hidden');
                 activeVoiceNoteElement = null; 
                 const bgm = document.getElementById('bgMusic');
-                if(bgm) bgm.volume = 1.0;
+                if(bgm) fadeVolume(bgm, 1.0, 1000);
             }
         });
 

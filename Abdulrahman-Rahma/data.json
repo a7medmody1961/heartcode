@@ -26,12 +26,21 @@
     "startButtonText": "ابدأ الحكاية",
     "heartImages": [
       "loader-1.webp",
-      "loader-2.webp",
-      "loader-3.webp",
-      "loader-4.webp",
-      "loader-5.webp",
-      "loader-6.webp",
-      "loader-7.webp"
+"loader-2.webp",
+"loader-3.webp",
+"loader-4.webp",
+"loader-5.webp",
+"loader-6.webp",
+"loader-7.webp",
+"loader-8.webp",
+"loader-9.webp",
+"loader-10.webp",
+"loader-11.webp",
+"loader-12.webp",
+"loader-13.webp",
+"loader-14.webp",
+"loader-16.webp",
+"loader-17.webp"
     ]
   },
   "hero": {
@@ -121,9 +130,9 @@
         "image": "timeline-3.webp"
       },
       {
-        "badge": "26 مارس",
-        "title": "خطوة جديدة",
-        "description": "يوم المشاركة فى عفشنا ❤️",
+        "badge": "",
+        "title": "لقطة متتنسيش",
+        "description": "تحفة وانتى المتحف ❤️",
         "image": "timeline-4.webp"
       }
     ]
@@ -143,21 +152,27 @@
     "sectionDesc": "أماكن هتفضل محفورة في قلوبنا وعمرنا ما هننساها.. اختاري المكان عشان تزوريه.",
     "locations": [
       {
-        "lat": 30.0444,
-        "lng": 31.2357,
-        "name": "أول لقاء",
+        "lat": 31.280511,
+        "lng": 30.010721,
+        "name": "قرية السنوسي",
         "icon": "heart"
       },
       {
-        "lat": 30.0626,
-        "lng": 31.2497,
-        "name": "مكان أول اعتراف",
+        "lat": 31.243044,
+        "lng": 29.958571,
+        "name": "جليم باي",
+        "icon": "camera"
+      },
+      {
+        "lat": 31.245921,
+        "lng": 29.965964,
+        "name": "سان ستيفانو",
         "icon": "coffee"
       },
       {
-        "lat": 30.0131,
-        "lng": 31.2089,
-        "name": "تجهيز عفشنا",
+        "lat": 31.255308,
+        "lng": 30.022986,
+        "name": "منطقة اسكوت",
         "icon": "home"
       }
     ]
@@ -179,7 +194,7 @@
       {
         "image": "album-photo-2.webp",
         "title": "أول لقاء حب 24/1",
-        "audio": "voice-note-2.mp3",
+        "audio": "",
         "handwrittenText": "كل لحظه مع روح الروح هى أجمل لحظه."
       },
       {
@@ -199,6 +214,48 @@
         "title": "29/3",
         "audio": "",
         "handwrittenText": "حلاوة ياحلاوة 😉❤️"
+      },
+      {
+        "image": "album-photo-6.webp",
+        "title": "روح الروح",
+        "audio": "",
+        "handwrittenText": "لو لفيت الدنيا كلها مش هلاقي في حنيتك وجمال قلبك يا روح الروح."
+      },
+      {
+        "image": "album-photo-7.webp",
+        "title": "دنيتي",
+        "audio": "",
+        "handwrittenText": "إنتي مش بس حبيبتي، إنتي بنتي وصاحبتي وكل دنيتي."
+      },
+      {
+        "image": "album-photo-8.webp",
+        "title": "عوضي الحلو",
+        "audio": "",
+        "handwrittenText": "معاكي بحس إن الدنيا كلها بتضحكلي، إنتي عوضي الحلو."
+      },
+      {
+        "image": "album-photo-9.webp",
+        "title": "لآخر العمر",
+        "audio": "",
+        "handwrittenText": "وأنا معاكي بنسى كل حاجة، كفاية عليا إيدي في إيدك لآخر العمر."
+      },
+      {
+        "image": "album-photo-10.webp",
+        "title": "نعمة ربنا",
+        "audio": "",
+        "handwrittenText": "يا حظي الحلو إن ربنا رزقني بيكي، بحمد ربنا عليكي كل يوم."
+      },
+      {
+        "image": "album-photo-11.webp",
+        "title": "حتة من الجنة",
+        "audio": "",
+        "handwrittenText": "ملامحك دي حتة من الجنة، مابشبعش من البص فيها."
+      },
+      {
+        "image": "album-photo-13.webp",
+        "title": "تفاصيلك",
+        "audio": "",
+        "handwrittenText": "كل تفصيلة فيكي بتخطف قلبي من أول وجديد."
       }
     ]
   },
@@ -260,7 +317,7 @@
     "failMessage": "يا خسارة الأيام.. طلعتي نساية 😂"
   },
   "messagesSection": {
-    "enabled": true,
+    "enabled": false,
     "sectionTitle": "رسايل الأسبوع",
     "sectionDesc": "كل يوم رسالة جديدة ومفاجأة تفتح في ميعادها متواصلة!",
     "uiTexts": {
@@ -334,10 +391,10 @@
     "sectionTitle": "كبسولة الزمن",
     "tryOpenButtonText": "جرب تفتح",
     "unlockedTitle": "تم فتح الكبسولة!",
-    "unlockDate": "2030-01-24T00:00:00",
+    "unlockDate": "2026-09-29T00:00:00",
     "lockedMessage": "رسالة مشفرة ممنوع فتحها دلوقتي 🔒",
     "earlyClickMessage": "مستعجلة على إيه؟ لسة قدامنا عمر بحاله نعيشه سوا!",
-    "unlockedMessage": "لو بتقري الرسالة دي دلوقتي، فده معناه إننا قضينا أحلى سنين عمرنا سوا، وإن وعدي ليكي لسة مكمل وكل يوم بحبك أكتر."
+    "unlockedMessage": "كنت قد الوعد ياروح الروح"
   },
   "finalLetterSection": {
     "enabled": true,
