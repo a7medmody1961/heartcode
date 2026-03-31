@@ -1,0 +1,356 @@
+{
+  "theme": {
+    "primaryColor": "#e11d48",
+    "mainIcon": "heart",
+    "envelope": {
+      "flap": "#e11d48",
+      "frontBefore": "#be123c",
+      "frontAfter": "#9f1239",
+      "back": "#881337"
+    }
+  },
+  "settings": {
+    "pageTitle": "حكايتنا | هديتك الخاصة",
+    "bgMusic": "bg-music.mp3",
+    "pinCode": "2912"
+  },
+  "pinScreen": {
+    "enabled": true,
+    "title": "هديتك الخاصة",
+    "subtitle": "عشان تفتحي الهدية، اكتبي تاريخنا المميز (2912)"
+  },
+  "loaderScreen": {
+    "enabled": true,
+    "type": "heart",
+    "loadingText": "بنجيب أحلى الذكريات...",
+    "startButtonText": "ابدأ الحكاية",
+    "heartImages": [
+      "loader-1.webp",
+      "loader-2.webp",
+      "loader-3.webp",
+      "loader-4.webp",
+      "loader-5.webp",
+      "loader-6.webp",
+      "loader-7.webp"
+    ]
+  },
+  "hero": {
+    "enabled": true,
+    "dateBadge": "24 يناير",
+    "name1": "عبدالرحمن",
+    "name2": "رحمة",
+    "description": "كنتى الختام وكنت البدايه فما اجمل الختام والبدايه بكى ولكى ❤️",
+    "scrollText": "اسحبي لفوق",
+    "styles": {
+      "descriptionColor": "#e4e4e7",
+      "descriptionLineHeight": "2"
+    }
+  },
+  "firstChat": {
+    "enabled": true,
+    "sectionTitle": "شات مش هيتنسي",
+    "onlineStatusText": "متصل الآن",
+    "participants": {
+      "me": "عبدالرحمن",
+      "you": "رحمة",
+      "youImage": "chat-avatar.webp"
+    },
+    "messages": [
+      {
+        "sender": "me",
+        "text": "رحمه",
+        "time": "10:00 PM"
+      },
+      {
+        "sender": "you",
+        "text": "نعم",
+        "time": "10:01 PM"
+      },
+      {
+        "sender": "me",
+        "text": "انا سبت كل حاجه علشانك",
+        "time": "10:01 PM"
+      },
+      {
+        "sender": "you",
+        "text": "بجد اى لازمة الكلام ده",
+        "time": "10:02 PM"
+      },
+      {
+        "sender": "me",
+        "text": "سبت كل حاجه علشان انا مش عارف اكمل وانتى مش معايا",
+        "time": "10:03 PM"
+      },
+      {
+        "sender": "you",
+        "text": "عبدالرحمن بتتكلم بجد",
+        "time": "10:04 PM"
+      },
+      {
+        "sender": "me",
+        "text": "اه بتكلم بجد وبحبك",
+        "time": "10:04 PM"
+      },
+      {
+        "sender": "you",
+        "text": "❤️🥹❤️",
+        "time": "10:05 PM"
+      }
+    ]
+  },
+  "timeline": {
+    "enabled": true,
+    "sectionTitle": "أهم محطاتنا",
+    "events": [
+      {
+        "badge": "13 أكتوبر",
+        "title": "أول جواب",
+        "description": "ده كان أول جواب مني ليها، بداية كلام ومشاعر متتنسيش.",
+        "image": "timeline-1.webp"
+      },
+      {
+        "badge": "24 يناير",
+        "title": "أول لقاء حب",
+        "description": "كل لحظه مع روح الروح هى أجمل لحظه.",
+        "image": "timeline-2.webp"
+      },
+      {
+        "badge": "25 فبراير",
+        "title": "تاني أحلى يوم في حياتي",
+        "description": "كل مكان معاك بيجدد الحب والروح.",
+        "image": "timeline-3.webp"
+      },
+      {
+        "badge": "26 مارس",
+        "title": "خطوة جديدة",
+        "description": "يوم المشاركة فى عفشنا ❤️",
+        "image": "timeline-4.webp"
+      }
+    ]
+  },
+  "starMap": {
+    "enabled": true,
+    "sectionBadge": "سما السما",
+    "title": "شكل النجوم يوم مشاركة عفشنا",
+    "description": "دي ماب حقيقية لشكل النجوم في السما ليلة 26 مارس، يوم المشاركة فى عفشنا وخطوتنا الجديدة سوا.",
+    "location": "مصر",
+    "dateLabel": "Our Special Day",
+    "dateValue": "26 . 03"
+  },
+  "map": {
+    "enabled": true,
+    "sectionTitle": "خريطة ذكرياتنا",
+    "sectionDesc": "أماكن هتفضل محفورة في قلوبنا وعمرنا ما هننساها.. اختاري المكان عشان تزوريه.",
+    "locations": [
+      {
+        "lat": 30.0444,
+        "lng": 31.2357,
+        "name": "أول لقاء",
+        "icon": "heart"
+      },
+      {
+        "lat": 30.0626,
+        "lng": 31.2497,
+        "name": "مكان أول اعتراف",
+        "icon": "coffee"
+      },
+      {
+        "lat": 30.0131,
+        "lng": 31.2089,
+        "name": "تجهيز عفشنا",
+        "icon": "home"
+      }
+    ]
+  },
+  "gallery": {
+    "enabled": true,
+    "mode": "3d-book",
+    "sectionTitle": "كتاب لقطاتنا",
+    "hintText": "قلبي في الكتاب عشان تشوفي اسعد لقطاتنا 📖",
+    "bookCoverImage": "album-cover-front.webp",
+    "bookBackCoverImage": "album-cover-back.webp",
+    "photos": [
+      {
+        "image": "album-photo-1.webp",
+        "title": "أول جواب 13/10",
+        "audio": "voice-note-1.mp3",
+        "handwrittenText": "ده كان أول جواب منى ليها."
+      },
+      {
+        "image": "album-photo-2.webp",
+        "title": "أول لقاء حب 24/1",
+        "audio": "voice-note-2.mp3",
+        "handwrittenText": "كل لحظه مع روح الروح هى أجمل لحظه."
+      },
+      {
+        "image": "album-photo-3.webp",
+        "title": "25/2",
+        "audio": "",
+        "handwrittenText": "كل مكان معاك بيجدد الحب والروح."
+      },
+      {
+        "image": "album-photo-4.webp",
+        "title": "21/3",
+        "audio": "",
+        "handwrittenText": "العيد والعيديه هو انتى يارحومتى."
+      },
+      {
+        "image": "album-photo-5.webp",
+        "title": "29/3",
+        "audio": "",
+        "handwrittenText": "حلاوة ياحلاوة 😉❤️"
+      }
+    ]
+  },
+  "scratchCard": {
+    "enabled": true,
+    "sectionTitle": "مفاجأة صغيرة",
+    "coverText": "امسحي الشاشة بصباعك عشان تشوفي المفاجأة 🎫",
+    "canvasScratchText": "امسحي هنا",
+    "hiddenImage": "scratch-surprise.webp",
+    "hiddenMessage": "استنى هديتك وانا جى ❤️"
+  },
+  "quiz": {
+    "enabled": true,
+    "sectionTitle": "فاكرة تفاصيلنا؟",
+    "nextButtonText": "السؤال اللي بعده",
+    "questions": [
+      {
+        "question": "بحب فيكي إيه أكتر حاجة؟",
+        "options": [
+          "الاحتواء",
+          "الجمال",
+          "الدماغ",
+          "اللسان"
+        ],
+        "correctAnswerIndex": 0
+      },
+      {
+        "question": "أكتر أكلة بحبها؟",
+        "options": [
+          "كوارع",
+          "فراخ",
+          "سبانخ",
+          "سمك"
+        ],
+        "correctAnswerIndex": 0
+      },
+      {
+        "question": "مين بيتقاله حلاوة ياحلاوة؟",
+        "options": [
+          "رحمه",
+          "عبده",
+          "حبيبتى",
+          "زوجتى"
+        ],
+        "correctAnswerIndex": 3
+      },
+      {
+        "question": "أنا دلعي إيه؟",
+        "options": [
+          "عبدو",
+          "كوتى",
+          "بودتى",
+          "حبيبى"
+        ],
+        "correctAnswerIndex": 2
+      }
+    ],
+    "successMessage": "طبعاً مش معقول تنسي تفاصيلنا! 🎉",
+    "failMessage": "يا خسارة الأيام.. طلعتي نساية 😂"
+  },
+  "messagesSection": {
+    "enabled": true,
+    "sectionTitle": "رسايل الأسبوع",
+    "sectionDesc": "كل يوم رسالة جديدة ومفاجأة تفتح في ميعادها متواصلة!",
+    "uiTexts": {
+      "calculating": "جاري الحساب...",
+      "openDate": "تاريخ الفتح:",
+      "opensAfter": "يفتح بعد:",
+      "d": "ي",
+      "h": "س",
+      "m": "د"
+    },
+    "messages": [
+      {
+        "title": "اليوم الأول",
+        "content": "صباح الخير لأحلى عيون.. حبيت أبدأ يومك وأفكرك إنك أغلى حاجة حصلتلي.",
+        "openDateStr": "الرسالة الأولى",
+        "targetDate": "2024-01-01T00:00:00"
+      },
+      {
+        "title": "اليوم الثاني",
+        "content": "في اليوم التاني حابب أقولك إن مهما حصل هيفضل مكاني المفضل في الدنيا هو جنبك.",
+        "openDateStr": "الرسالة الثانية",
+        "targetDate": "2024-02-01T00:00:00"
+      }
+    ]
+  },
+  "reasonsSection": {
+    "enabled": true,
+    "sectionTitle": "ليه بحبك؟",
+    "clickHint": "اضغطي ع الكارت ولفيه",
+    "reasons": [
+      {
+        "icon": "heart",
+        "title": "الحب",
+        "description": "غرقان ياعمو سامى ❤️"
+      },
+      {
+        "icon": "shield",
+        "title": "السند",
+        "description": "أنا جمبك متقلقش.. دايماً في ضهري."
+      },
+      {
+        "icon": "smile",
+        "title": "الراحة النفسية",
+        "description": "مبعرفش اخبى حاجة وصريح معاكي في كل حاجة."
+      },
+      {
+        "icon": "star",
+        "title": "الاحتواء",
+        "description": "قدرتي تفهمي عصبيتي وتقدريها وتحتويني."
+      }
+    ]
+  },
+  "counterSection": {
+    "enabled": true,
+    "sectionTitle": "كل ثانية معاكي بحساب",
+    "sectionDesc": "من يوم ما عرفتك والوقت مبقاش مجرد أرقام..",
+    "startDateText": "بدأت الحكاية في:",
+    "startDate": "2024-01-24T00:00:00",
+    "displayDate": "24 يناير",
+    "labels": {
+      "year": "سنة",
+      "month": "شهر",
+      "day": "يوم",
+      "hour": "ساعة",
+      "minute": "دقيقة",
+      "second": "ثانية"
+    }
+  },
+  "timeCapsule": {
+    "enabled": true,
+    "sectionTitle": "كبسولة الزمن",
+    "tryOpenButtonText": "جرب تفتح",
+    "unlockedTitle": "تم فتح الكبسولة!",
+    "unlockDate": "2030-01-24T00:00:00",
+    "lockedMessage": "رسالة مشفرة ممنوع فتحها دلوقتي 🔒",
+    "earlyClickMessage": "مستعجلة على إيه؟ لسة قدامنا عمر بحاله نعيشه سوا!",
+    "unlockedMessage": "لو بتقري الرسالة دي دلوقتي، فده معناه إننا قضينا أحلى سنين عمرنا سوا، وإن وعدي ليكي لسة مكمل وكل يوم بحبك أكتر."
+  },
+  "finalLetterSection": {
+    "enabled": true,
+    "hintTextLine1": "عندي ليكي رسالة أخيرة..",
+    "hintTextLine2": "اضغطي ع الجواب",
+    "greeting": "حبيبة قلبي،",
+    "body": "بحبك يارحووووووووم ❤️",
+    "signature": "زوجك الحبيب الصالح"
+  },
+  "global": {
+    "madeBy": "HeartCode",
+    "madeByLink": "https://HeartCode.site",
+    "footerPrefix": "صُنع بحب بواسطة",
+    "dataLoaderText": "جاري تجهيز الهدية..."
+  }
+}
