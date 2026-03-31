@@ -1,0 +1,295 @@
+{
+  "theme": {
+    "primaryColor": "#e11d48",
+    "mainIcon": "heart",
+    "envelope": {
+      "flap": "#e11d48",
+      "frontBefore": "#be123c",
+      "frontAfter": "#9f1239",
+      "back": "#881337"
+    }
+  },
+  "settings": {
+    "pageTitle": "Our Story | Your Special Gift",
+    "bgMusic": "bg-music.mp3",
+    "pinCode": "1024"
+  },
+  "pinScreen": {
+    "enabled": true,
+    "title": "Your Special Gift",
+    "subtitle": "To open your gift, enter the password."
+  },
+  "loaderScreen": {
+    "enabled": true,
+    "type": "heart",
+    "loadingText": "Fetching our best memories...",
+    "startButtonText": "Start Our Story",
+    "heartImages": [
+      "loader-1.webp",
+      "loader-2.webp",
+      "loader-3.webp",
+      "loader-4.webp",
+      "loader-6.webp",
+      "loader-8.webp",
+      "loader-9.webp",
+      "loader-10.webp",
+      "loader-11.webp",
+      "loader-12.webp",
+      "loader-13.webp",
+      "loader-14.webp",
+      "loader-16.webp",
+      "loader-18.webp",
+      "loader-19.webp",
+      "loader-20.webp",
+      "loader-21.webp",
+      "loader-22.webp",
+      "loader-17.webp"
+    ]
+  },
+  "hero": {
+    "enabled": true,
+    "dateBadge": "10 April 2024",
+    "name1": "Mortada",
+    "name2": "Shahd",
+    "description": "In an ordinary day, our beautiful story began... And here are some of our best memories.",
+    "scrollText": "Swipe Up",
+    "styles": {
+      "descriptionColor": "#e4e4e7",
+      "descriptionLineHeight": "2"
+    }
+  },
+  "firstChat": {
+    "enabled": false,
+    "sectionTitle": "Our First Chat",
+    "onlineStatusText": "Online",
+    "participants": {
+      "me": "Shou",
+      "you": "Shahd",
+      "youImage": "chat-avatar.webp"
+    },
+    "messages": []
+  },
+  "timeline": {
+    "enabled": true,
+    "sectionTitle": "Our Timeline",
+    "events": [
+      {
+        "badge": "أول موقف",
+        "title": "يومها كنت غيران عليا",
+        "description": "وبرضو جيت وصلتني لحد الكلية، مكنش في بينا أي حاجة لسه غير إننا كنا عمالين نغير على بعض، بس فاكرة حاجتين: نظرة عينك ليا يومها عمرها ما بتروح من بالي، وفاكرة لما قلتلي يومها على سفر أمريكا، وقلتلي هتبقي إنتي في بلد وأنا في بلد، ونسافر لبعض بالقطر لما قلتلك هبقى مضيفة.",
+        "image": "timeline-1.webp"
+      },
+      {
+        "badge": "ثاني موقف",
+        "title": "يوم ارتبطنا",
+        "description": "عمري ما أنسى اليوم ده وقد إيه كنت خايف عليا، وجيت لحد تحت البيت روحتني، وتاني يوم اتقابلنا وإديتني عيديتي، وفضلت تلف معايا لحد ما روحتني.",
+        "image": "timeline-2.webp"
+      },
+      {
+        "badge": "ثالث موقف",
+        "title": "آخر مرة أشوفك فيها",
+        "description": "دي كانت آخر مرة نخرج مع بعض يوم ما قلتلي على الأوتنج واتخانقنا وصالحتني يومها، وإحنا قاعدين قلتلك عايزين نتصور بس موبايلاتنا كانت فصلت، قلتلي المرة اللي جاية إحنا هنروح من بعض فين! بس أنت مشيت ودي كانت آخر مرة فعلاً!!",
+        "image": "timeline-3.webp"
+      }
+    ]
+  },
+  "starMap": {
+    "enabled": true,
+    "sectionBadge": "The Sky Above Us",
+    "title": "The Stars The Night We Met",
+    "description": "This is a real map of the stars on April 10, 2024. The night our story officially started. The universe was watching us.",
+    "location": "Alexandria, Egypt",
+    "dateLabel": "Our Special Day",
+    "dateValue": "10 . 04 . 2024"
+  },
+  "map": {
+    "enabled": true,
+    "sectionTitle": "Our Memories Map",
+    "sectionDesc": "Places that will always be carved in our hearts. Click on a place to visit.",
+    "locations": [
+      {
+        "lat": 31.3128,
+        "lng": 30.06268,
+        "name": "مدينة الضباط (أول ديت)",
+        "icon": "heart"
+      },
+      {
+        "lat": 31.24555,
+        "lng": 29.96799,
+        "name": "سينما سان ستيفانو",
+        "icon": "camera"
+      },
+      {
+        "lat": 31.25414,
+        "lng": 29.97368,
+        "name": "Tots Cafe (اخر مقابله)",
+        "icon": "coffee"
+      }
+    ]
+  },
+  "gallery": {
+    "enabled": true,
+    "mode": "3d-book",
+    "sectionTitle": "Our Memories Book",
+    "hintText": "Flip the pages to see our moments 📖",
+    "bookCoverImage": "album-cover-front.webp",
+    "bookBackCoverImage": "album-cover-back.webp",
+    "photos": [
+      {
+        "image": "album-photo-1.webp",
+        "title": "",
+        "audio": "voice-note-1.mp3",
+        "handwrittenText": "أول صورة نتصورها، أول مرة قلبي يطمن فيها."
+      },
+      {
+        "image": "album-photo-2.webp",
+        "title": "My safe place",
+        "audio": "voice-note-2.mp3",
+        "handwrittenText": "This is exactly how you make me feel."
+      },
+      {
+        "image": "album-photo-3.webp",
+        "title": "",
+        "audio": "voice-note-3.mp3",
+        "handwrittenText": "الصورة دي كان نفسي نتصور زيها، عملتها أنا لأن للأسف أنت مش هنا."
+      },
+      {
+        "image": "album-photo-4.webp",
+        "title": "",
+        "audio": "",
+        "handwrittenText": "هنا أنت سبتني ألعب وكنت مبسوطة أوي."
+      },
+      {
+        "image": "album-photo-5.webp",
+        "title": "",
+        "audio": "",
+        "handwrittenText": "هنا كانت بداية إن كل حاجة تتصلح، وعمري ما هنسى الفترة اللي بعدها."
+      },
+      {
+        "image": "album-photo-6.webp",
+        "title": "",
+        "audio": "",
+        "handwrittenText": "كانت آخر مرة أشوفك فيها."
+      },
+      {
+        "image": "album-photo-7.webp",
+        "title": "",
+        "audio": "",
+        "handwrittenText": "أنت كلمتني صحتني، أنت أكيد مش فاكر بس أنت قلتلي إن أنا وحشتك أوي وأنت عايز تشوفني، وإن كل حاجة فيا وحشتك أوي، حتى كانت الأوضة ضلمة خلتني أنور علشان تشوفني."
+      }
+    ]
+  },
+  "scratchCard": {
+    "enabled": false,
+    "sectionTitle": "Little Surprise",
+    "coverText": "Scratch the screen to see your surprise 🎫",
+    "canvasScratchText": "Scratch Here",
+    "hiddenImage": "scratch-surprise.webp",
+    "hiddenMessage": "Wait for your gift!"
+  },
+  "quiz": {
+    "enabled": true,
+    "sectionTitle": "Remember Our Details?",
+    "nextButtonText": "Next Question",
+    "questions": [
+      {
+        "question": "فاكر أكتر مكان رحناه؟",
+        "options": [
+          "السينما",
+          "كافيهات",
+          "مكتبة إسكندرية",
+          "المنتزه"
+        ],
+        "correctAnswerIndex": 0
+      },
+      {
+        "question": "فاكر أكتر حاجة كنا عايزين نعملها سوا؟",
+        "options": [
+          "نلف بالعربية",
+          "ننزل البحر في الشتا",
+          "نسافر لوحدنا",
+          "نتأخر سوا برا"
+        ],
+        "correctAnswerIndex": 1
+      }
+    ],
+    "successMessage": "Of course you remember! 🎉",
+    "failMessage": "Oh no, you forgot! 😂"
+  },
+  "messagesSection": {
+    "enabled": false,
+    "sectionTitle": "Weekly Messages",
+    "sectionDesc": "Every day a new message unlocks!",
+    "uiTexts": {
+      "calculating": "Calculating...",
+      "openDate": "Opens on:",
+      "opensAfter": "Unlocks in:",
+      "d": "d",
+      "h": "h",
+      "m": "m"
+    },
+    "messages": []
+  },
+  "reasonsSection": {
+    "enabled": true,
+    "sectionTitle": "Why I Love You",
+    "clickHint": "Tap the card to flip",
+    "reasons": [
+      {
+        "icon": "shield",
+        "title": "الأمان",
+        "description": "بحبك علشان أنت الوحيد في الدنيا اللي بيطمني."
+      },
+      {
+        "icon": "heart",
+        "title": "كل حاجة ليا",
+        "description": "بحبك علشان أنت صاحبي الوحيد وحبيبي وكل حاجة ليا."
+      },
+      {
+        "icon": "star",
+        "title": "مقدرش من غيرك",
+        "description": "بحبك علشان لما مشيت اكتشفت إن كل يوم بموت من غيرك."
+      }
+    ]
+  },
+  "counterSection": {
+    "enabled": true,
+    "sectionTitle": "Every Second Counts",
+    "sectionDesc": "Time is not just numbers since I met you...",
+    "startDateText": "Our story began on:",
+    "startDate": "2024-04-10T00:00:00",
+    "displayDate": "10 April 2024",
+    "labels": {
+      "year": "Years",
+      "month": "Months",
+      "day": "Days",
+      "hour": "Hours",
+      "minute": "Minutes",
+      "second": "Seconds"
+    }
+  },
+  "timeCapsule": {
+    "enabled": false,
+    "sectionTitle": "Time Capsule",
+    "tryOpenButtonText": "Try Opening",
+    "unlockedTitle": "Capsule Unlocked!",
+    "unlockDate": "2026-09-29T00:00:00",
+    "lockedMessage": "Locked message, do not open yet 🔒",
+    "earlyClickMessage": "Why the rush? We have a lifetime together!",
+    "unlockedMessage": "كنت قد الوعد ياروح الروح"
+  },
+  "finalLetterSection": {
+    "enabled": true,
+    "hintTextLine1": "I have one last message for you...",
+    "hintTextLine2": "Tap the envelope",
+    "greeting": "My Love,",
+    "body": "النهاردة كان المفروض نكمل سنتين مع بعض، أنا مكنتش بتمنى أي حاجة قد إننا نكمل مع بعض زي ما أنت وعدتني. أنا لسه بحب فيك كل حاجة ولسه فاكرة كل حاجة، أنت وحشتني أوي، وعايزة أقولك إن عمر ما هييجي مكانك حد، أنا محبتش حد غيرك. يا رب يا رب يهديك عليا وتعمل أي حاجة علشان أنت وحشتني، وأنا مش عارفة أعيش من غيرك.. يا رب تنفذ وعودك ليا.",
+    "signature": "Shou"
+  },
+  "global": {
+    "madeBy": "HeartCode",
+    "madeByLink": "https://HeartCode.site",
+    "footerPrefix": "Made with love by",
+    "dataLoaderText": "Preparing your gift..."
+  }
+}
