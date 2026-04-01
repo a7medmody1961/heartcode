@@ -1,0 +1,231 @@
+{
+  "theme": {
+    "primaryColor": "#e11d48",
+    "mainIcon": "heart",
+    "envelope": {
+      "flap": "#e11d48",
+      "frontBefore": "#be123c",
+      "frontAfter": "#9f1239",
+      "back": "#881337"
+    }
+  },
+  "settings": {
+    "pageTitle": "حكايتنا | هديتك الخاصة",
+    "bgMusic": "bg-music.mp3",
+    "pinCode": "2008"
+  },
+  "pinScreen": {
+    "enabled": true,
+    "title": "هديتك الخاصة",
+    "subtitle": "عشان تفتحي الهدية، اكتبي الباسورد السري (4 أرقام)"
+  },
+  "loaderScreen": {
+    "enabled": true,
+    "type": "heart",
+    "loadingText": "بنجيب أحلى الذكريات...",
+    "startButtonText": "ابدأ الحكاية",
+    "heartImages": [
+      "loader-1.webp",
+      "loader-2.webp",
+      "loader-3.webp",
+      "loader-4.webp",
+      "loader-5.webp"
+    ]
+  },
+  "hero": {
+    "enabled": true,
+    "dateBadge": "25 أبريل 2023",
+    "name1": "محمد",
+    "name2": "بسملة",
+    "description": "وكان في الليلة الظلماء يُفتقد نور البدر، فأتيتِ لي بنور عينيكِ.",
+    "scrollText": "اسحبي لفوق",
+    "styles": {
+      "descriptionColor": "#e4e4e7",
+      "descriptionLineHeight": "2"
+    }
+  },
+  "firstChat": {
+    "enabled": false,
+    "sectionTitle": "أول كلام بينا",
+    "onlineStatusText": "متصل الآن",
+    "participants": {
+      "me": "محمد",
+      "you": "بسملة",
+      "youImage": "chat-avatar.webp"
+    },
+    "messages": []
+  },
+  "timeline": {
+    "enabled": false,
+    "sectionTitle": "إزاي بدأت؟",
+    "events": []
+  },
+  "starMap": {
+    "enabled": true,
+    "sectionBadge": "سما السما",
+    "title": "شكل النجوم يوم ما حكايتنا بدأت",
+    "description": "دي ماب حقيقية لشكل النجوم في السما ليلة 25 أبريل 2023، الليلة اللي بدأت فيها حكايتنا. عشان تعرفي إن الكون كله كان شاهد علينا.",
+    "location": "مصر",
+    "dateLabel": "The Night We Started",
+    "dateValue": "25 . 04 . 2023"
+  },
+  "map": {
+    "enabled": false,
+    "sectionTitle": "خريطة ذكرياتنا",
+    "sectionDesc": "أماكن هتفضل محفورة في قلوبنا وعمرنا ما هننساها.. اختار المكان عشان تزوره.",
+    "locations": []
+  },
+  "gallery": {
+    "enabled": true,
+    "mode": "3d-book",
+    "sectionTitle": "كتاب لقطاتنا",
+    "hintText": "قلبي في الكتاب عشان تشوفي اسعد لقطاتنا📖",
+    "bookCoverImage": "album-cover-front.webp",
+    "bookBackCoverImage": "album-cover-back.webp",
+    "photos": [
+      {
+        "image": "album-photo-1.webp",
+        "title": "",
+        "audio": "",
+        "handwrittenText": "فَمَا رَأَيْتُ أَعَزَّ مِنْكَ فِي قَلْبِي، وَمَا رَغِبْتُ فِي أَحَدٍ سِوَاكَ."
+      },
+      {
+        "image": "album-photo-2.webp",
+        "title": "",
+        "audio": "",
+        "handwrittenText": "يتباهى قلبي فيك ياسيد قلبي وشعُوره"
+      },
+      {
+        "image": "album-photo-3.webp",
+        "title": "",
+        "audio": "",
+        "handwrittenText": "ڪل ﭑلاشيَاء الجَميلۃ ﺂكتَملت فيڪ"
+      },
+      {
+        "image": "album-photo-4.webp",
+        "title": "",
+        "audio": "",
+        "handwrittenText": "وإني اغَار عليه غيَرة تشَبه جَمالهُ، ‏فلا جَمَالهُ ينتَهي ولا غَيرتَي تمَوت"
+      },
+      {
+        "image": "album-photo-5.webp",
+        "title": "",
+        "audio": "",
+        "handwrittenText": "فَكَيْفَ أَتُوبُ مِنْ عَيْنَيْكِ، وَرَبُّكِ فِي الغَرَامِ قَدْ بَلَانِي"
+      }
+    ]
+  },
+  "scratchCard": {
+    "enabled": false,
+    "sectionTitle": "مفاجأة صغيرة",
+    "coverText": "امسحي الشاشة بصباعك عشان تشوفي المفاجأة 🎫",
+    "canvasScratchText": "امسحي هنا",
+    "hiddenImage": "scratch-surprise.webp",
+    "hiddenMessage": "بحبك!"
+  },
+  "quiz": {
+    "enabled": true,
+    "sectionTitle": "فاكرة تفاصيلنا؟",
+    "nextButtonText": "السؤال اللي بعده",
+    "questions": [
+      {
+        "question": "يوم ما رجعنا نتكلم كان يوم إيه؟",
+        "options": [
+          "2/9/2024",
+          "3/9/2024",
+          "4/9/2024",
+          "5/9/2024"
+        ],
+        "correctAnswerIndex": 2
+      },
+      {
+        "question": "فاكرة الساعة اللي بعتيلي فيها كانت كام؟",
+        "options": [
+          "02:17 AM",
+          "01:33 AM",
+          "02:24 AM",
+          "01:17 AM"
+        ],
+        "correctAnswerIndex": 0
+      }
+    ],
+    "successMessage": "طبعاً مش معقول تنسي تفاصيلنا! 🎉",
+    "failMessage": "يا خسارة الأيام.. طلعتي نساية 😂"
+  },
+  "messagesSection": {
+    "enabled": false,
+    "sectionTitle": "رسايل الأسبوع",
+    "sectionDesc": "كل يوم رسالة جديدة ومفاجأة تفتح في ميعادها متواصلة!",
+    "uiTexts": {
+      "calculating": "جاري الحساب...",
+      "openDate": "تاريخ الفتح:",
+      "opensAfter": "يفتح بعد:",
+      "d": "ي",
+      "h": "س",
+      "m": "د"
+    },
+    "messages": []
+  },
+  "reasonsSection": {
+    "enabled": true,
+    "sectionTitle": "ليه إنتي؟",
+    "clickHint": "اضغطي ع الكارت ولفيه",
+    "reasons": [
+      {
+        "icon": "shield",
+        "title": "أصيلة",
+        "description": "مهما كانت الظروف ومهما كان الوضع اللي وصلنا ليه، مستحيل تبعدي عني عشان حاجة خارج إرادتي."
+      },
+      {
+        "icon": "heart",
+        "title": "ملازماني",
+        "description": "ماشية معايا بمبدأ 'لن تسير وحدك أبداً'."
+      },
+      {
+        "icon": "smile",
+        "title": "غيرتك عليا",
+        "description": "بشم ريحة شياط لو عيني زاغت بره هدومي 😂."
+      }
+    ]
+  },
+  "counterSection": {
+    "enabled": true,
+    "sectionTitle": "كل ثانية معاكي بحساب",
+    "sectionDesc": "من يوم ما عرفتك والوقت مبقاش مجرد أرقام..",
+    "startDateText": "بدأت الحكاية في:",
+    "startDate": "2023-04-25T00:00:00",
+    "displayDate": "25 أبريل 2023",
+    "labels": {
+      "year": "سنة",
+      "month": "شهر",
+      "day": "يوم",
+      "hour": "ساعة",
+      "minute": "دقيقة",
+      "second": "ثانية"
+    }
+  },
+  "timeCapsule": {
+    "enabled": false,
+    "sectionTitle": "كبسولة الزمن",
+    "tryOpenButtonText": "جرب تفتح",
+    "unlockedTitle": "تم فتح الكبسولة!",
+    "unlockDate": "2030-02-14T00:00:00",
+    "lockedMessage": "رسالة مشفرة ممنوع فتحها قبل الميعاد 🔒",
+    "earlyClickMessage": "مستعجلة على إيه؟ لسة قدامنا عمر بحاله نعيشه سوا!",
+    "unlockedMessage": ""
+  },
+  "finalLetterSection": {
+    "enabled": true,
+    "hintTextLine1": "عندي ليكي رسالة أخيرة..",
+    "hintTextLine2": "اضغطي ع الجواب",
+    "greeting": "أميرتي،",
+    "body": "هخرجك اول ما تقدمي في الطب ان شاء الله",
+    "signature": "محمد"
+  },
+  "global": {
+    "madeBy": "HeartCode",
+    "madeByLink": "https://HeartCode.site",
+    "footerPrefix": "صُنع بحب بواسطة",
+    "dataLoaderText": "جاري تجهيز الهدية..."
+  }
+}
