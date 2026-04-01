@@ -1,0 +1,421 @@
+{
+  "theme": {
+    "primaryColor": "#e11d48",
+    "mainIcon": "heart",
+    "envelope": {
+      "flap": "#e11d48",
+      "frontBefore": "#be123c",
+      "frontAfter": "#9f1239",
+      "back": "#881337"
+    }
+  },
+  "settings": {
+    "pageTitle": "مودي وسولا | هديتك الخاصة",
+    "bgMusic": "bg-music.mp3",
+    "pinCode": "0906"
+  },
+  "pinScreen": {
+    "enabled": true,
+    "title": "هديتك الخاصة",
+    "subtitle": "عشان تفتحي الهدية، اكتبي الباسورد. (هينت: فاكرة تاريخ ارتباطنا؟)"
+  },
+  "loaderScreen": {
+    "enabled": true,
+    "type": "heart",
+    "loadingText": "بنجيب أحلى الذكريات...",
+    "startButtonText": "ابدأ الحكاية",
+    "heartImages": [
+      "loader-1.webp",
+      "loader-2.webp",
+      "loader-3.webp",
+      "loader-4.webp",
+      "loader-5.webp",
+      "loader-6.webp",
+      "loader-7.webp",
+      "loader-8.webp",
+      "loader-9.webp",
+      "loader-10.webp",
+      "loader-11.webp",
+      "loader-12.webp",
+      "loader-13.webp",
+      "loader-14.webp",
+      "loader-15.webp",
+      "loader-16.webp",
+      "loader-17.webp",
+      "loader-18.webp",
+      "loader-19.webp",
+      "loader-20.webp",
+      "loader-21.webp",
+      "loader-22.webp",
+      "loader-23.webp"
+    ]
+  },
+  "hero": {
+    "enabled": true,
+    "dateBadge": "9 يونيو",
+    "name1": "Mody",
+    "name2": "Sola",
+    "description": "أحلى صدفة وأجمل حكاية اتكتبت في عمري.. من يوم ما عرفتك والوقت مبقاش مجرد أرقام.",
+    "scrollText": "اسحبي لفوق",
+    "styles": {
+      "descriptionColor": "#e4e4e7",
+      "descriptionLineHeight": "2"
+    }
+  },
+  "firstChat": {
+    "enabled": true,
+    "sectionTitle": "أول كلام بينا",
+    "onlineStatusText": "متصل الآن",
+    "participants": {
+      "me": "Mody",
+      "you": "Sola",
+      "youImage": "chat-avatar.webp"
+    },
+    "messages": [
+      {
+        "sender": "me",
+        "text": "اسراء ازيك عامله اي",
+        "time": "12:19 AM"
+      },
+      {
+        "sender": "me",
+        "text": "في حاجه معاكي فالبوستات او الفيديوهات",
+        "time": "12:19 AM"
+      },
+      {
+        "sender": "me",
+        "text": "استاذ جمعه مأكد عليا انك مهم تتعلمي",
+        "time": "12:19 AM"
+      },
+      {
+        "sender": "me",
+        "text": "فلو ف حاجه ابعتيلي ونا هتابع معاكي",
+        "time": "12:19 AM"
+      },
+      {
+        "sender": "you",
+        "text": "هو أنا معملتش بوستات جديده و الله علشان كنت تعبانه جدا و بالنسبه للفيديوهات أنا ماجتش يوم الاربع و مشوفتش الفيديوهات بتتعمل ازاي فأنا جايه بكرا أن شاء الله",
+        "time": "05:04 PM"
+      },
+      {
+        "sender": "me",
+        "text": "الف سلامه عليكي لو عرفتي برضو تعملي بوستات او حاجه لحد بكره ان شاء الله",
+        "time": "05:21 PM"
+      },
+      {
+        "sender": "you",
+        "text": "الله يسلمك.. هو المفروض اجي بكرا الساعه كام",
+        "time": "01:40 AM"
+      },
+      {
+        "sender": "me",
+        "text": "ع ١ كدا كويس",
+        "time": "01:44 AM"
+      }
+    ]
+  },
+  "timeline": {
+    "enabled": true,
+    "sectionTitle": "أهم محطاتنا",
+    "events": [
+      {
+        "badge": "30 يناير 2024",
+        "title": "أول مرة نتقابل",
+        "description": "يوم ما جيتي الموقع لأول مرة.. صدفة قلبت حياتي كلها وبدأت معاها أحلى حكاية في عمري.",
+        "image": "timeline-1.webp"
+      },
+      {
+        "badge": "بداية الكلام",
+        "title": "رخامة لذيذة ورغي كتير",
+        "description": "في الأول كنا بنرخم على بعض شوية بس بطريقة حلوة، وكنا بنرغي كتير أوي حتى قبل ما نرتبط.. وكل حرف كان بيقربنا من بعض أكتر.",
+        "image": "timeline-2.webp"
+      },
+      {
+        "badge": "تيست ٣",
+        "title": "يوم ما اعترفتلك",
+        "description": "اليوم اللي جمعت فيه كل شجاعتي عشان أقولك إنك بقيتي كل دنيتي، وإن اللي جاي كله ليكي.",
+        "image": "timeline-3.webp"
+      }
+    ]
+  },
+  "starMap": {
+    "enabled": true,
+    "sectionBadge": "سما السما",
+    "title": "شكل النجوم يوم ما حكايتنا بدأت",
+    "description": "دي ماب حقيقية لشكل النجوم في السما ليلة ارتباطنا. عشان تعرفي إن الكون كله كان شاهد على أجمل بداية.",
+    "location": "مصر",
+    "dateLabel": "The Night We Met",
+    "dateValue": "09 . 06 . 2024"
+  },
+  "map": {
+    "enabled": true,
+    "sectionTitle": "خريطة ذكرياتنا",
+    "sectionDesc": "أماكن هتفضل محفورة في قلوبنا وعمرنا ما هننساها.. اختاري المكان عشان تزوريه.",
+    "locations": [
+      {
+        "lat": 30.04987400302781,
+        "lng": 31.199856183088777,
+        "name": "الموقع (أول مكان اتقابلنا فيه)",
+        "icon": "heart"
+      },
+      {
+        "lat": 30.05448843366232,
+        "lng": 31.244331757949798,
+        "name": "سينما رينيسانس (أكتر مكان بنحب نروحه)",
+        "icon": "camera"
+      },
+      {
+        "lat": 30.052255619495003,
+        "lng": 31.24460551192448,
+        "name": "كافيه نيتوكريس (قضينا نص حياتنا عندهم باين😂)",
+        "icon": "coffee"
+      },
+      {
+        "lat": 30.05114687594971,
+        "lng": 31.24105093253157,
+        "name": "كافيه ع الروف (أول خروجة وأول مسكة إيد)",
+        "icon": "map-pin"
+      },
+      {
+        "lat": 30.056356321815425,
+        "lng": 31.21760982883543,
+        "name": "حديقة العبور",
+        "icon": "map-pin"
+      }
+    ]
+  },
+  "gallery": {
+    "enabled": true,
+    "mode": "3d-book",
+    "sectionTitle": "كتاب لقطاتنا",
+    "hintText": "قلبي في الكتاب عشان تشوفي اسعد لقطاتنا 📖",
+    "bookCoverImage": "album-cover-front.webp",
+    "bookBackCoverImage": "album-cover-back.webp",
+    "photos": [
+      {
+        "image": "album-photo-1.webp",
+        "title": "حياتي",
+        "audio": "",
+        "handwrittenText": "ملامحك دي حتة من الجنة، مابشبعش من البص فيها."
+      },
+      {
+        "image": "album-photo-2.webp",
+        "title": "دنيتي",
+        "audio": "",
+        "handwrittenText": "إنتي مش بس حبيبتي، إنتي بنتي وأمي وأختي ومراتي وكل حاجة ليا في الدنيا."
+      },
+      {
+        "image": "album-photo-3.webp",
+        "title": "خطفة قلبي",
+        "audio": "",
+        "handwrittenText": "كل تفصيلة فيكي بتخطف قلبي وتخليني أحبك من أول وجديد."
+      },
+      {
+        "image": "album-photo-4.webp",
+        "title": "مرايتي",
+        "audio": "",
+        "handwrittenText": "مفيش خطوة في شغلي ولا حياتي بتمشي من غير رأيك.. إنتي مرايتي وعقلي التاني."
+      },
+      {
+        "image": "album-photo-5.webp",
+        "title": "مجانين سوا",
+        "audio": "",
+        "handwrittenText": "لما بنبقى سوا بننسى العقل ونبقى زي العيال الصغيرة العبيطة.. ودي أحلى حاجة فينا."
+      },
+      {
+        "image": "album-photo-6.webp",
+        "title": "عيني ليكي",
+        "audio": "",
+        "handwrittenText": "عيني مبتشوفش غيرك، وقلبي مبينبضش غير ليكي."
+      },
+      {
+        "image": "album-photo-7.webp",
+        "title": "راحتي",
+        "audio": "",
+        "handwrittenText": "في عز الدوشة، بتبقى إنتي الهدوء والراحة بتاعتي."
+      },
+      {
+        "image": "album-photo-8.webp",
+        "title": "حنيتك",
+        "audio": "",
+        "handwrittenText": "لو لفيت الدنيا كلها مش هلاقي في حنيتك وجمال قلبك يا سولا."
+      },
+      {
+        "image": "album-photo-9.webp",
+        "title": "نعمتي",
+        "audio": "",
+        "handwrittenText": "يا حظي الحلو إن ربنا رزقني بيكي، بحمد ربنا عليكي كل يوم."
+      },
+      {
+        "image": "album-photo-10.webp",
+        "title": "لآخر العمر",
+        "audio": "",
+        "handwrittenText": "كفاية عليا إيدي في إيدك لآخر العمر، والباقي كله مش مهم."
+      }
+    ]
+  },
+  "scratchCard": {
+    "enabled": false,
+    "sectionTitle": "مفاجأة صغيرة",
+    "coverText": "امسحي الشاشة بصباعك عشان تشوفي المفاجأة 🎫",
+    "canvasScratchText": "امسحي هنا",
+    "hiddenImage": "scratch-surprise.webp",
+    "hiddenMessage": "بحبك!"
+  },
+  "quiz": {
+    "enabled": true,
+    "sectionTitle": "فاكرة تفاصيلنا؟",
+    "nextButtonText": "السؤال اللي بعده",
+    "questions": [
+      {
+        "question": "مين أول واحد قال للتاني بحبك؟",
+        "options": [
+          "سولا",
+          "مودي"
+        ],
+        "correctAnswerIndex": 1
+      },
+      {
+        "question": "أكتر مكان بنخرج فيه؟",
+        "options": [
+          "السينما",
+          "الزمالك",
+          "الكافيهات",
+          "ع الكورنيش"
+        ],
+        "correctAnswerIndex": 0
+      }
+    ],
+    "successMessage": "طبعاً مش معقول تنسي تفاصيلنا! 🎉",
+    "failMessage": "يا خسارة الأيام.. طلعتي نساية 😂"
+  },
+  "messagesSection": {
+    "enabled": true,
+    "sectionTitle": "رسايل الأسبوع",
+    "sectionDesc": "كل يوم رسالة جديدة ومفاجأة تفتح في ميعادها متواصلة!",
+    "uiTexts": {
+      "calculating": "جاري الحساب...",
+      "openDate": "تاريخ الفتح:",
+      "opensAfter": "يفتح بعد:",
+      "d": "ي",
+      "h": "س",
+      "m": "د"
+    },
+    "messages": [
+      {
+        "title": "اليوم الأول",
+        "content": "يا أجمل حاجة حصلتلي.. أنا جنبك اهه دلوقتي وباصص على عيونك وهي بتقرء الكلام دا ودايب فيها دوووب.",
+        "openDateStr": "2 أبريل 2026",
+        "targetDate": "2026-04-02T00:00:00"
+      },
+      {
+        "title": "اليوم الثاني",
+        "content": "كل يوم بيعدي وأنا معاكي، بتأكد إنك القرار الوحيد الصح اللي أخدته في حياتي.",
+        "openDateStr": "3 أبريل 2026",
+        "targetDate": "2026-04-03T00:00:00"
+      },
+      {
+        "title": "اليوم الثالث",
+        "content": "مهما حصل ومهما الدنيا لفت، هيفضل حضنك هو أماني ومكاني المفضل.",
+        "openDateStr": "4 أبريل 2026",
+        "targetDate": "2026-04-04T00:00:00"
+      },
+      {
+        "title": "اليوم الرابع",
+        "content": "بيقولوا الحب أفعال.. وأنا بوعدك إن كل أفعالي هتكون عشان أشوف ضحكتك وبس.",
+        "openDateStr": "5 أبريل 2026",
+        "targetDate": "2026-04-05T00:00:00"
+      },
+      {
+        "title": "اليوم الخامس",
+        "content": "إنتي مش بس حبيبتي، إنتي السند والصاحبة والروح اللي بتكملني.",
+        "openDateStr": "6 أبريل 2026",
+        "targetDate": "2026-04-06T00:00:00"
+      },
+      {
+        "title": "اليوم السادس",
+        "content": "كل تفصيلة فيكي بحبها، حتى الحاجات البسيطة اللي إنتي مبتخديش بالك منها.",
+        "openDateStr": "7 أبريل 2026",
+        "targetDate": "2026-04-07T00:00:00"
+      },
+      {
+        "title": "اليوم السابع",
+        "content": "استعدي عشان لسة الحكاية مكملة والمفاجآت مبتخلصش.. بحبك يا سولا.",
+        "openDateStr": "8 أبريل 2026",
+        "targetDate": "2026-04-08T00:00:00"
+      }
+    ]
+  },
+  "reasonsSection": {
+    "enabled": true,
+    "sectionTitle": "ليه إنتي؟",
+    "clickHint": "اضغطي ع الكارت ولفيه",
+    "reasons": [
+      {
+        "icon": "smile",
+        "title": "عشان مجانين سوا",
+        "description": "بننسى العقل ونبقى زي العيال الصغيرة العبيطة مع بعض، وبحس معاكي إني على طبيعتي بجد من غير أي تكلف."
+      },
+      {
+        "icon": "star",
+        "title": "مرايتي في كل حاجة",
+        "description": "مقدرش أخد خطوة في شغلي أو حياتي من غير ما أخد رأيك الأول.. إنتي البوصلة ومرايتي اللي بشوف بيها الصح."
+      },
+      {
+        "icon": "heart",
+        "title": "إنتي كل دنيتي",
+        "description": "زي ما أنا حبيبك وأخوكي وأبوكي وجوزك.. إنتي كمان حبيبتي وأختي وأمي ومراتي وكل مسميات الحب ليا."
+      },
+      {
+        "icon": "message-circle",
+        "title": "رغينا اللي مبيخلصش",
+        "description": "من قبل حتى ما نرتبط وإحنا بنرغي كتير، ومبزهقش من الكلام معاكي ولا من تفاصيلك أبداً."
+      },
+      {
+        "icon": "zap",
+        "title": "رخامتنا اللذيذة",
+        "description": "في الأول كنا بنرخم على بعض شوية بس بطريقة حلوة خطفت قلبي، رخامة خلتني مقدرش أستغنى عنك."
+      }
+    ]
+  },
+  "counterSection": {
+    "enabled": true,
+    "sectionTitle": "كل ثانية معاكي بحساب",
+    "sectionDesc": "من يوم ما عرفتك والوقت مبقاش مجرد أرقام..",
+    "startDateText": "بدأت الحكاية في:",
+    "startDate": "2024-06-09T00:00:00",
+    "displayDate": "9 يونيو 2024",
+    "labels": {
+      "year": "سنة",
+      "month": "شهر",
+      "day": "يوم",
+      "hour": "ساعة",
+      "minute": "دقيقة",
+      "second": "ثانية"
+    }
+  },
+  "timeCapsule": {
+    "enabled": true,
+    "sectionTitle": "كبسولة الزمن",
+    "tryOpenButtonText": "جرب تفتح",
+    "unlockedTitle": "تم فتح الكبسولة!",
+    "unlockDate": "2026-06-09T00:00:00",
+    "lockedMessage": "رسالة مشفرة ممنوع فتحها قبل 9 يونيو 2026 🔒",
+    "earlyClickMessage": "مستعجلة على إيه؟ لسة قدامنا عمر بحاله نعيشه سوا!",
+    "unlockedMessage": "لو بتقري الرسالة دي دلوقتي، فده معناه إننا قضينا أحلى أيام عمرنا سوا، وإن وعدي ليكي لسة مكمل، وكل يوم بحبك أكتر من اللي قبله."
+  },
+  "finalLetterSection": {
+    "enabled": true,
+    "hintTextLine1": "عندي ليكي رسالة أخيرة..",
+    "hintTextLine2": "اضغطي ع الجواب",
+    "greeting": "سولا حبيبة قلبي،",
+    "body": "مش هقول كلام متزوق، بس هقولك اللي طالع من قلبي بجد. إنتي مش بس حبيبتي، إنتي أمي وأختي وبنتي ومرايتي في كل خطوة باخدها في شغلي وحياتي.<br><br>بحب عبطنا وجناننا ولما بنبقى عيال صغيرة مع بعض، وبحب إزاي بتكمليني وتخليني أحسن. مهما عدت الأيام هتفضلي إنتي البداية والنهاية، وزي ما بتشوفيني كل حاجة ليكي، إنتي كمان دنيتي كلها.<br><br>أوعدك أفضل السند والضهر، وأوعدك أفضل أحبك لحد آخر نفس فيا.",
+    "signature": "مودي"
+  },
+  "global": {
+    "madeBy": "HeartCode",
+    "madeByLink": "https://HeartCode.site",
+    "footerPrefix": "صُنع بحب بواسطة",
+    "dataLoaderText": "جاري تجهيز الهدية..."
+  }
+}

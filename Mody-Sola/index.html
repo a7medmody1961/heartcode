@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="docTitle">حكايتنا | هديتك الخاصة</title>
+    
+    <!-- إعدادات المشاركة (Open Graph) -->
+    <meta property="og:title" content="حكايتنا | هديتك الخاصة">
+    <meta property="og:description" content="في يوم عادي جداً، بدأت أحلى حكاية.. مساحتنا الخاصة لتوثيق أجمل ذكرياتنا.">
+    <meta property="og:image" content="https://heartcode.site/main-thumbnail.webp">
+    <meta property="og:url" content="https://heartcode.site/demo/">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://heartcode.site/main-thumbnail.webp">
+
+    <!-- خطوط عربية -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&family=Readex+Pro:wght@300;500;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- مكتبة PageFlip لعمل الكتاب الحقيقي -->
+    <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.js"></script>
+
+    <style>
+        :root {
+            --bg-dark: #09090b; 
+            --surface: #18181b;
+            /* المتغيرات الديناميكية (هتتغير من الجافاسكريبت حسب الجيسون) */
+            --primary: #e11d48;
+            --primary-rgb: 225, 29, 72;
+            --env-flap: #e11d48;
+            --env-front-b: #be123c;
+            --env-front-a: #9f1239;
+            --env-back: #881337;
+        }
+
+        body {
+            font-family: 'Readex Pro', sans-serif;
+            background-color: var(--bg-dark);
+            color: #f4f4f5;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none; 
+            user-select: none; 
+        }
+
+        .no-scroll { height: 100dvh; overflow: hidden !important; }
+        h1, h2, h3, .title-font { font-family: 'Cairo', sans-serif; }
+        
+        /* خط اليدوي للألبوم */
+        .handwriting { 
+            font-family: 'Aref Ruqaa', serif; 
+            color: #0f172a; 
+            text-shadow: 0px 0px 1px rgba(15,23,42,0.2);
+            line-height: 2;
+            min-height: 80px; 
+            white-space: pre-wrap; /* السطر ده اللي هيشغل النزول لتحت */
+        } 
+        
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 10px; }
+
+        .glass {
+            background: rgba(24, 24, 27, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        .fade-up { opacity: 0; transform: translateY(40px) scale(0.95); transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .fade-up.visible { opacity: 1; transform: translateY(0) scale(1); }
+
+        .glow-bg {
+            position: absolute; width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(var(--primary-rgb),0.15) 0%, rgba(9,9,11,0) 70%);
+            border-radius: 50%; pointer-events: none; z-index: -1;
+            animation: pulse-glow 8s infinite alternate;
+        }
+        @keyframes pulse-glow { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(1.2); opacity: 1; } }
+
+        /* --- شاشات التحميل والقفل --- */
+        #pinScreen { z-index: 20001; background: #09090b; }
+        #loaderScreen { z-index: 20000; background: #09090b; }
+        
+        .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--primary); transition: all 0.3s ease; }
+        .pin-dot.filled { background-color: var(--primary); box-shadow: 0 0 10px var(--primary); }
+        .pin-btn { width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.1); transition: all 0.2s; cursor: pointer; }
+        .pin-btn:active { background: rgba(var(--primary-rgb), 0.3); transform: scale(0.95); }
+        .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake { 10%, 90% { transform: translate3d(-2px, 0, 0); } 20%, 80% { transform: translate3d(4px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-8px, 0, 0); } 40%, 60% { transform: translate3d(8px, 0, 0); } }
+
+        /* --- Heart Loader --- */
+        #heartLoaderContainer { position: relative; width: 100%; max-width: 300px; aspect-ratio: 1; margin: 0 auto; }
+        @media (max-width: 768px) { #heartLoaderContainer { max-width: 250px; } }
+        
+        .heart-image-point {
+            position: absolute; width: 18%; aspect-ratio: 1; border-radius: 50%;
+            object-fit: cover; border: 2px solid var(--primary); opacity: 0;
+            transform: scale(0) translate(-50%, -50%);
+            transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 15px rgba(var(--primary-rgb), 0.6);
+            transform-origin: top left;
+        }
+        .heart-image-point.show { opacity: 1; transform: scale(1) translate(-50%, -50%); }
+
+        /* --- First Chat Simulation --- */
+        .chat-bubble { max-width: 80%; padding: 12px 16px; border-radius: 20px; font-size: 1rem; position: relative; opacity: 0; transform: translateY(20px); animation: popIn 0.4s ease forwards; }
+        @keyframes popIn { to { opacity: 1; transform: translateY(0); } }
+        .chat-me { background: var(--primary); color: white; border-bottom-right-radius: 4px; align-self: flex-end; }
+        .chat-you { background: #27272a; color: #f4f4f5; border-bottom-left-radius: 4px; align-self: flex-start; border: 1px solid #3f3f46; }
+        .typing-indicator { display: flex; gap: 4px; padding: 12px 16px; background: #27272a; border-radius: 20px; align-self: flex-start; border: 1px solid #3f3f46; border-bottom-left-radius: 4px;}
+        .typing-dot { width: 6px; height: 6px; background: #a1a1aa; border-radius: 50%; animation: typing 1.4s infinite ease-in-out both; }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+
+        /* ================================================================= */
+        /* --- تصميم الألبوم الجديد (PageFlip) --- */
+        /* ================================================================= */
+        .book-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            direction: ltr; 
+            padding: 0 10px;
+        }
+
+        .flip-book {
+            width: 100%;
+            height: 75vh;
+            max-height: 650px;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+            border-radius: 4px;
+        }
+
+        .page {
+            background-color: #f4ebd0; 
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-cover {
+            background: var(--env-back); /* نستخدم لون الخلفية الغامق للغلاف */
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+        }
+
+        .page-cover-front { border-radius: 2px 12px 12px 2px; }
+        .page-cover-back { border-radius: 12px 2px 2px 12px; }
+
+        .dir-rtl { direction: rtl; }
+
+        .polaroid-frame {
+            background: #fff;
+            padding: 4% 4% 12% 4%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border-radius: 2px;
+            margin: 0 auto;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            width: 85%;
+            max-width: 320px;
+            pointer-events: none; 
+        }
+        .polaroid-frame img { width: 100%; aspect-ratio: 1; object-fit: cover; pointer-events: none; }
+        .tape {
+            position: absolute; width: 80px; height: 25px; background: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2); backdrop-filter: blur(2px);
+            top: -10px; left: 50%; transform: translateX(-50%) rotate(-2deg); z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .flip-book { height: 75vh; max-height: 600px; }
+            .polaroid-frame { width: 95%; margin-top: -10px; }
+            .handwriting { font-size: 1.1rem !important; line-height: 1.6; min-height: 60px; }
+        }
+
+        /* --- Scratch Card --- */
+        .scratch-container { position: relative; width: 300px; height: 300px; margin: 0 auto; border-radius: 2rem; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.5); border: 2px solid #3f3f46; background: #18181b; }
+        .scratch-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 10; }
+        .scratch-message-overlay { position: absolute; inset: 0; z-index: 20; background: rgba(0,0,0,0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; }
+        .scratch-text { color: white; text-shadow: 0 2px 8px rgba(0,0,0,0.9), 0 0 15px rgba(0,0,0,0.8); }
+        .scratch-canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: pointer; touch-action: none; z-index: 30; }
+
+        /* --- Flip Cards (Reasons) --- */
+        .flip-card { background-color: transparent; height: 320px; perspective: 1000px; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; -webkit-transform-style: preserve-3d; cursor: pointer; }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); -webkit-transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back { 
+            position: absolute; width: 100%; height: 100%; 
+            backface-visibility: hidden; -webkit-backface-visibility: hidden; 
+            border-radius: 1.5rem; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; text-align: center; 
+        }
+        .flip-card-back { 
+            transform: rotateY(180deg); -webkit-transform: rotateY(180deg); 
+            background: linear-gradient(135deg, rgba(var(--primary-rgb),0.2), rgba(24,24,27,0.9)); border: 1px solid rgba(var(--primary-rgb),0.4); 
+            justify-content: flex-start; 
+        }
+        .flip-card-front { background: rgba(24, 24, 27, 0.6); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); }
+
+        /* --- Confetti (Quiz) --- */
+        .confetti { position: fixed; width: 10px; height: 10px; background-color: var(--primary); z-index: 9999; animation: fall linear forwards; }
+        @keyframes fall { to { transform: translateY(100vh) rotate(720deg); } }
+
+        /* --- Time Capsule --- */
+        .capsule-lock.shake-lock { animation: shake 0.4s ease-in-out; border-color: #ef4444 !important; color: #ef4444 !important; }
+
+        /* --- Voice Notes --- */
+        .voice-note-player { background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); border-radius: 30px; padding: 10px 20px; display: inline-flex; align-items: center; gap: 12px; border: 1px solid rgba(255,255,255,0.3); cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.3); position: relative; z-index: 100;}
+        .voice-note-player:hover { border-color: var(--primary); background: rgba(var(--primary-rgb),0.9); }
+        .waves-container { display: flex; align-items: center; gap: 3px; height: 20px; }
+        .wave-bar { width: 3px; background-color: #fff; border-radius: 3px; height: 4px; transition: height 0.2s; }
+        .voice-note-player.playing .wave-bar { animation: sound-wave 1s ease-in-out infinite alternate; background-color: #fff;}
+        .voice-note-player.playing .wave-bar:nth-child(1) { animation-delay: 0.1s; }
+        .voice-note-player.playing .wave-bar:nth-child(2) { animation-delay: 0.3s; }
+        .voice-note-player.playing .wave-bar:nth-child(3) { animation-delay: 0.5s; }
+        .voice-note-player.playing .wave-bar:nth-child(4) { animation-delay: 0.2s; }
+        .voice-note-player.playing .wave-bar:nth-child(5) { animation-delay: 0.4s; }
+        @keyframes sound-wave { 0% { height: 4px; } 100% { height: 20px; } }
+
+        /* --- Envelope Dynamic Colors --- */
+        .envelope-wrapper { position: relative; width: 280px; height: 200px; margin: 0 auto; cursor: pointer; perspective: 1500px; transform-style: preserve-3d; transition: transform 0.4s ease; }
+        @media (min-width: 768px) { .envelope-scale-wrapper { transform: scale(1.2); margin-top: 60px; } }
+        .envelope-wrapper:hover { transform: scale(1.03); }
+        .envelope-wrapper.open { transform: scale(1.05) translateY(10px); }
+        .envelope-back { position: absolute; inset: 0; background: var(--env-back); border-radius: 10px; z-index: 1; box-shadow: 0 25px 50px rgba(0,0,0,0.8); }
+        .envelope-front { position: absolute; inset: 0; z-index: 3; pointer-events: none; overflow: hidden; border-radius: 10px; }
+        .envelope-front::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; border-left: 140px solid transparent; border-right: 140px solid transparent; border-bottom: 120px solid var(--env-front-b); }
+        .envelope-front::after { content: ''; position: absolute; top: 0; bottom: 0; left: 0; right: 0; border-left: 140px solid var(--env-front-a); border-right: 140px solid var(--env-front-a); border-top: 100px solid transparent; border-bottom: 100px solid transparent; }
+        .flap { position: absolute; top: 0; left: 0; right: 0; border-left: 140px solid transparent; border-right: 140px solid transparent; border-top: 120px solid var(--env-flap); transform-origin: top; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.1s; z-index: 4; filter: drop-shadow(0 8px 15px rgba(0,0,0,0.5)); }
+        .letter { position: absolute; top: 20px; bottom: 20px; left: 15px; right: 15px; background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 0 20px rgba(0,0,0,0.5); transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.1s 0.3s; z-index: 2; display: flex; flex-direction: column; justify-content: space-between; }
+        .envelope-wrapper.open .flap { transform: rotateX(180deg); z-index: 1; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.1s 0.3s; }
+        .envelope-wrapper.open .letter { transform: translateY(-130px); z-index: 5; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s, z-index 0.1s 0.3s; }
+        
+        #letterFullscreenModal { transition: opacity 0.4s ease, transform 0.4s ease; }
+        #letterFullscreenModal.hidden-modal { opacity: 0; pointer-events: none; transform: scale(0.95); }
+        
+        /* Map / Timeline / StarMap */
+        .timeline-container { position: relative; padding-right: 40px; }
+        .timeline-line { position: absolute; right: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(to bottom, transparent, var(--primary), transparent); border-radius: 4px; }
+        .timeline-node { position: absolute; right: -12px; width: 28px; height: 28px; background: var(--bg-dark); border: 6px solid var(--primary); border-radius: 50%; box-shadow: 0 0 20px rgba(var(--primary-rgb),0.8); z-index: 2; }
+        
+        /* Star Map Animation */
+        @keyframes rotateStars {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .star-map-circle {
+            width: 300px; height: 300px; border-radius: 50%;
+            background: radial-gradient(circle at bottom, #1e1b4b 0%, #000000 100%);
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 0 30px rgba(var(--primary-rgb),0.3);
+            position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;
+        }
+        .stars-bg {
+            position: absolute; inset: 0;
+            background-image: radial-gradient(1px 1px at 20px 30px, #ffffff, rgba(0,0,0,0)), radial-gradient(1px 1px at 40px 70px, #ffffff, rgba(0,0,0,0)), radial-gradient(1.5px 1.5px at 90px 40px, #ffffff, rgba(0,0,0,0)), radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.8), rgba(0,0,0,0)), radial-gradient(1px 1px at 220px 80px, #ffffff, rgba(0,0,0,0)), radial-gradient(1px 1px at 260px 180px, #ffffff, rgba(0,0,0,0)), radial-gradient(1.5px 1.5px at 110px 240px, #ffffff, rgba(0,0,0,0));
+            animation: rotateStars 150s linear infinite;
+        }
+        .constellation-wrapper {
+            position: absolute; inset: -50%;
+            display: flex; align-items: center; justify-content: center;
+            animation: rotateStars 200s linear infinite reverse;
+            pointer-events: none; mix-blend-mode: screen; opacity: 0.5;
+        }
+        .constellation-map {
+            width: 100%; height: 100%; max-width: none; object-fit: cover; pointer-events: none;
+        }
+
+        #interactiveMap { width: 100%; height: 450px; border-radius: 2rem; z-index: 10; }
+        .leaflet-container { background: #09090b !important; font-family: 'Readex Pro', sans-serif; }
+        .custom-map-marker { background: var(--primary); border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 15px var(--primary); animation: pulse-marker 2s infinite; }
+    </style>
+</head>
+<body class="antialiased no-scroll"> 
+
+    <!-- 0. Data Loader -->
+    <div id="dataLoader" class="fixed inset-0 z-[20000] bg-[#09090b] flex flex-col items-center justify-center">
+        <div class="w-16 h-16 border-4 border-gray-700 border-t-[color:var(--primary)] rounded-full animate-spin"></div>
+        <p id="dataLoaderText" class="mt-4 text-gray-400 font-bold">جاري تجهيز الهدية...</p>
+    </div>
+
+    <!-- 1. شاشة القفل (PIN) -->
+    <div id="pinScreen" class="fixed inset-0 flex flex-col items-center justify-center w-full h-[100dvh] transition-opacity duration-700 hidden">
+        <div class="mb-8 flex flex-col items-center">
+            <div class="w-20 h-20 rounded-full bg-gray-800 border-2 border-gray-600 mb-4 flex items-center justify-center overflow-hidden shadow-lg">
+                <i data-lucide="lock" class="w-8 h-8 text-gray-400"></i>
+            </div>
+            <h2 id="pinTitle" class="text-2xl font-bold text-white title-font"></h2>
+            <p id="pinSubtitle" class="text-sm text-gray-400 mt-2 text-center max-w-[250px]"></p>
+        </div>
+        <div id="pinDots" class="flex gap-4 mb-10">
+            <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+        </div>
+        <div class="grid grid-cols-3 gap-6" dir="ltr">
+            <button class="pin-btn text-white" onclick="enterPin('1')">1</button>
+            <button class="pin-btn text-white" onclick="enterPin('2')">2</button>
+            <button class="pin-btn text-white" onclick="enterPin('3')">3</button>
+            <button class="pin-btn text-white" onclick="enterPin('4')">4</button>
+            <button class="pin-btn text-white" onclick="enterPin('5')">5</button>
+            <button class="pin-btn text-white" onclick="enterPin('6')">6</button>
+            <button class="pin-btn text-white" onclick="enterPin('7')">7</button>
+            <button class="pin-btn text-white" onclick="enterPin('8')">8</button>
+            <button class="pin-btn text-white" onclick="enterPin('9')">9</button>
+            <div></div>
+            <button class="pin-btn text-white" onclick="enterPin('0')">0</button>
+            <button class="pin-btn text-gray-400 !bg-transparent !border-transparent hover:text-white" onclick="deletePin()">
+                <i data-lucide="delete" class="w-8 h-8"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 2. شاشة التحميل (Loader) -->
+    <div id="loaderScreen" class="fixed inset-0 flex flex-col items-center justify-center w-full h-[100dvh] transition-opacity duration-1000 opacity-0 pointer-events-none z-[15000]">
+        <div id="heartLoaderContainer" class="hidden mb-12"></div>
+        <div id="defaultLoaderContainer" class="relative w-32 h-32 flex items-center justify-center mb-8 hidden">
+            <div class="absolute inset-0 rounded-full border-t-4 border-l-4 border-[color:var(--primary)] animate-spin"></div>
+            <!-- الديناميك أيكون للودر -->
+            <i id="loaderThemeIcon" data-lucide="heart" class="theme-icon-dynamic w-12 h-12 text-[color:var(--primary)] animate-pulse fill-current"></i>
+        </div>
+        <h2 id="loaderText" class="mt-8 text-2xl font-bold text-white title-font tracking-wide"></h2>
+        <button id="startBtn" class="mt-10 px-12 py-4 text-xl bg-[color:var(--primary)] text-white rounded-full font-bold shadow-[0_0_30px_rgba(var(--primary-rgb),0.6)] hover:scale-110 active:scale-95 hidden opacity-0 transition-all duration-500 z-50 pointer-events-auto"></button>
+    </div>
+
+    <!-- حاوية الموقع بالكامل -->
+    <main id="appWrapper" style="display: none; opacity: 0; transition: opacity 1s ease-in-out;">
+        
+        <!-- مشغل المزيكا -->
+        <div id="musicWidget" class="fixed bottom-8 right-6 md:right-10 md:bottom-12 z-[90] glass rounded-full p-2.5 flex items-center gap-4 shadow-2xl border border-gray-700/80 backdrop-blur-xl hidden">
+            <div class="relative w-12 h-12 rounded-full bg-gray-900 border-2 border-gray-600 flex items-center justify-center spin-slow spin-paused pointer-events-none" id="musicDisk">
+                <div class="w-4 h-4 rounded-full bg-gray-900 border-2 border-gray-600 z-10 pointer-events-none"></div>
+                <i data-lucide="music" class="w-5 h-5 text-[color:var(--primary)] absolute pointer-events-none"></i>
+            </div>
+            <div class="flex items-center gap-3 pl-3 border-r border-gray-600 pr-3">
+                <button id="playPauseBtn" class="text-white hover:text-[color:var(--primary)] transition-colors p-2 relative w-8 h-8 flex justify-center items-center cursor-pointer">
+                    <div id="iconPlay" class="absolute"><i data-lucide="play" class="w-7 h-7 fill-current"></i></div>
+                    <div id="iconPause" class="absolute hidden"><i data-lucide="pause" class="w-7 h-7 fill-current"></i></div>
+                </button>
+                <button id="muteBtn" class="text-[color:var(--primary)] hover:text-white transition-colors p-2 relative w-8 h-8 flex justify-center items-center cursor-pointer">
+                    <div id="iconUnmute" class="absolute"><i data-lucide="volume-2" class="w-7 h-7"></i></div>
+                    <div id="iconMute" class="absolute hidden"><i data-lucide="volume-x" class="w-7 h-7"></i></div>
+                </button>
+            </div>
+            <audio id="bgMusic" loop></audio>
+        </div>
+
+        <!-- 3. الهيرو -->
+        <header id="heroSection" class="relative min-h-screen flex flex-col justify-center items-center text-center px-6 overflow-hidden hidden">
+            <div class="particles"></div>
+            <div class="absolute inset-0 z-0">
+                <img src="hero-bg.webp" class="w-full h-full object-cover opacity-20 mix-blend-luminosity" onerror="this.style.display='none'">
+                <div class="absolute inset-0 bg-gradient-to-b from-[#09090b]/40 via-[#09090b]/80 to-[#09090b]"></div>
+            </div>
+            <div class="glow-bg top-[-10%] right-[-10%] w-[600px] h-[600px]"></div>
+            <div class="z-10 fade-up">
+                <span id="heroBadge" class="inline-block py-2 px-6 rounded-full border border-[color:var(--primary)]/40 bg-[color:var(--primary)]/10 text-[color:var(--primary)] text-lg font-bold mb-8 backdrop-blur-md shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)]"></span>
+                <h1 id="heroNames" class="text-7xl md:text-9xl font-extrabold text-white mb-6 title-font tracking-tight drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]"></h1>
+                <p id="heroDesc" class="text-2xl md:text-3xl text-gray-300 mt-6 max-w-2xl mx-auto leading-relaxed"></p>
+            </div>
+            <div class="absolute bottom-16 flex flex-col items-center gap-3 text-gray-400 animate-bounce z-10">
+                <span id="scrollHint" class="text-lg font-bold tracking-widest"></span>
+                <i data-lucide="chevron-down" class="w-8 h-8 text-[color:var(--primary)]"></i>
+            </div>
+        </header>
+
+        <!-- 4. محاكاة الشات -->
+        <section id="firstChatSection" class="py-24 px-6 relative hidden">
+            <div class="max-w-3xl mx-auto fade-up">
+                <h2 id="chatMainTitle" class="text-4xl md:text-5xl font-bold text-center text-white mb-16 title-font drop-shadow-2xl"></h2>
+                <div class="glass rounded-[2rem] p-4 md:p-8 border border-gray-700/50 shadow-2xl relative overflow-hidden bg-[#18181b]/80">
+                    <div class="flex items-center gap-4 border-b border-gray-700 pb-4 mb-6">
+                        <img id="chatYouImg" src="" class="w-14 h-14 rounded-full border-2 border-[color:var(--primary)] object-cover bg-gray-800" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23e11d48\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><path d=\'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2\'></path><circle cx=\'12\' cy=\'7\' r=\'4\'></circle></svg>'">
+                        <div>
+                            <h3 id="chatYouName" class="text-white font-bold text-lg"></h3>
+                            <p class="text-green-400 text-xs flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-green-400 inline-block animate-pulse"></span> <span id="chatOnlineStatus"></span></p>
+                        </div>
+                    </div>
+                    <div id="chatBox" class="flex flex-col gap-4 min-h-[300px] overflow-y-auto max-h-[500px] pb-4"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. التايم لاين -->
+        <section id="timelineSection" class="py-24 px-6 relative hidden">
+            <div class="max-w-4xl mx-auto">
+                <h2 id="timelineMainTitle" class="text-5xl font-bold text-center text-white mb-24 title-font drop-shadow-2xl"></h2>
+                <div class="timeline-container" id="timelineContainer">
+                    <div class="timeline-line"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. سما السما -->
+        <section id="starMapSection" class="py-24 px-6 relative overflow-hidden fade-up hidden">
+            <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12 bg-[#18181b]/50 rounded-[3rem] p-8 md:p-16 border border-gray-800 shadow-2xl">
+                <div class="flex-1 text-center md:text-right">
+                    <span id="starMapBadge" class="text-[color:var(--primary)] font-bold tracking-wider mb-2 block"></span>
+                    <h2 id="starMapTitle" class="text-4xl md:text-5xl font-bold text-white mb-6 title-font drop-shadow-2xl"></h2>
+                    <p id="starMapDesc" class="text-gray-400 text-lg leading-relaxed mb-6"></p>
+                    <div class="inline-flex items-center gap-2 bg-gray-900 px-4 py-2 rounded-full border border-gray-700 text-sm text-gray-300">
+                        <i data-lucide="map-pin" class="w-4 h-4 text-[color:var(--primary)]"></i>
+                        <span id="starMapLocation"></span>
+                    </div>
+                </div>
+                <div class="flex-1 flex justify-center">
+                    <div class="star-map-circle">
+                        <div class="stars-bg"></div>
+                        <div class="constellation-wrapper">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Constellation_map.svg/1024px-Constellation_map.svg.png" class="constellation-map" alt="Constellation Map">
+                        </div>
+                        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-center z-20 w-full">
+                            <p id="starMapDateLabel" class="text-white font-serif text-sm opacity-80 uppercase tracking-widest"></p>
+                            <p id="starMapDateValue" class="text-[color:var(--primary)] text-xs mt-1 font-bold"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. خريطة ذكرياتنا -->
+        <section id="mapSection" class="py-24 px-6 fade-up relative z-10 hidden">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 id="mapMainTitle" class="text-4xl md:text-5xl font-bold text-white mb-4 title-font"></h2>
+                    <p id="mapMainDesc" class="text-gray-400 text-lg mb-8"></p>
+                    <div id="mapButtonsContainer" class="flex flex-wrap justify-center gap-4 mb-8"></div>
+                </div>
+                <div dir="ltr" class="p-2 glass rounded-[2.5rem] shadow-2xl border border-gray-700/50">
+                    <div id="interactiveMap"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. الألبوم الحقيقي (Realistic Flipbook) -->
+        <section id="gallerySection" class="py-32 overflow-hidden fade-up relative mx-auto hidden">
+            <div class="px-6 mb-16 text-center">
+                <h2 id="galleryMainTitle" class="text-5xl font-bold text-white title-font drop-shadow-2xl"></h2>
+                <p id="galleryHint" class="text-[color:var(--primary)] text-base mt-3 font-bold"></p>
+            </div>
+            
+            <div class="book-container">
+                <div id="flipbook" class="flip-book"></div>
+            </div>
+        </section>
+
+        <!-- 9. كارت الخربشة -->
+        <section id="scratchCardSection" class="py-24 px-6 relative fade-up hidden">
+            <div class="max-w-lg mx-auto text-center">
+                <h2 id="scratchTitle" class="text-4xl md:text-5xl font-bold text-white mb-6 title-font drop-shadow-2xl"></h2>
+                <p id="scratchHint" class="text-gray-400 mb-10 text-lg"></p>
+                
+                <div class="scratch-container" id="scratchContainer">
+                    <img id="scratchHiddenImg" src="" class="scratch-image" alt="مفاجأة">
+                    <div class="scratch-message-overlay">
+                        <h3 id="scratchHiddenMsg" class="scratch-text font-bold text-2xl md:text-3xl title-font px-4"></h3>
+                    </div>
+                    <canvas id="scratchCanvas" class="scratch-canvas"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10. الكويز -->
+        <section id="quizSection" class="py-24 px-6 relative fade-up hidden">
+            <div class="max-w-2xl mx-auto glass rounded-[3rem] p-8 md:p-12 border border-gray-700/50 shadow-2xl relative overflow-hidden">
+                <h2 id="quizTitle" class="text-4xl font-bold text-center text-white mb-10 title-font"></h2>
+                
+                <div id="quizContent">
+                    <h3 id="quizQuestion" class="text-2xl text-[color:var(--primary)] font-bold text-center mb-8"></h3>
+                    <div id="quizOptions" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                </div>
+                
+                <div id="quizResult" class="hidden text-center mt-8">
+                    <div id="quizResultIcon" class="flex justify-center mb-4"></div>
+                    <h3 id="quizResultMessage" class="text-2xl font-bold text-white"></h3>
+                    <button onclick="nextQuestion()" id="quizNextBtn" class="mt-6 px-8 py-3 bg-[color:var(--primary)] text-white rounded-full font-bold hover:scale-105 transition-transform hidden"></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 11. رسايل الأسبوع -->
+        <section id="messagesSection" class="py-24 px-6 relative fade-up hidden">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 id="messagesMainTitle" class="text-4xl md:text-5xl font-bold text-white mt-4 title-font"></h2>
+                    <p id="messagesMainDesc" class="text-gray-400 mt-4 max-w-xl mx-auto"></p>
+                </div>
+                <div id="messagesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch"></div>
+            </div>
+        </section>
+
+        <!-- 12. أسباب الحب (Flip Cards) -->
+        <section id="reasonsSection" class="py-32 px-6 max-w-7xl mx-auto fade-up hidden">
+            <h2 id="reasonsMainTitle" class="text-5xl font-bold text-center text-white mb-24 title-font drop-shadow-2xl"></h2>
+            <div id="reasonsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-10"></div>
+        </section>
+
+        <!-- 13. العداد اللايف -->
+        <section id="counterSection" class="py-24 px-6 bg-gradient-to-b from-[#09090b] via-[#18181b]/80 to-[#09090b] border-y border-gray-800/80 relative fade-up hidden">
+            <div class="max-w-5xl mx-auto text-center">
+                <h2 id="counterMainTitle" class="text-4xl md:text-5xl font-bold text-white mb-6 title-font drop-shadow-lg"></h2>
+                <p id="counterMainDesc" class="text-xl text-gray-400 mb-16"></p>
+                <div id="counterBoxes" class="flex flex-wrap justify-center gap-4 md:gap-8 text-center text-white" dir="rtl"></div>
+                <div class="mt-8 inline-block px-6 py-2 rounded-full bg-gray-900 border border-gray-700 text-sm text-gray-500">
+                    <span id="startDateLabel"></span> <span id="startDateDisplay"></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 14. كبسولة الزمن -->
+        <section id="timeCapsuleSection" class="py-24 px-6 relative fade-up hidden">
+            <div class="max-w-2xl mx-auto text-center">
+                <h2 id="capsuleTitle" class="text-4xl md:text-5xl font-bold text-white mb-12 title-font drop-shadow-2xl"></h2>
+                <div class="glass p-10 rounded-[3rem] border border-gray-700 relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[color:var(--primary)]/10 to-transparent opacity-50"></div>
+                    
+                    <div id="capsuleLockedState" class="relative z-10">
+                        <div class="w-24 h-24 mx-auto rounded-full bg-gray-900 border-4 border-gray-700 flex items-center justify-center mb-6 capsule-lock transition-colors duration-300">
+                            <i id="capsuleLockIcon" data-lucide="lock" class="w-10 h-10 text-gray-400"></i>
+                        </div>
+                        <h3 id="capsuleLockedMsg" class="text-2xl font-bold text-white mb-4"></h3>
+                        <p id="capsuleDateLabel" class="text-[color:var(--primary)] font-bold text-xl tracking-widest mb-8"></p>
+                        <button id="capsuleTryBtn" onclick="tryUnlockCapsule()" class="px-8 py-3 bg-white text-gray-900 rounded-full font-bold hover:bg-gray-200 transition-colors"></button>
+                        <p id="capsuleEarlyMsg" class="text-sm text-gray-400 mt-4 opacity-0 transition-opacity"></p>
+                    </div>
+
+                    <div id="capsuleUnlockedState" class="relative z-10 hidden">
+                        <i data-lucide="unlock" class="w-16 h-16 text-[color:var(--primary)] mx-auto mb-6"></i>
+                        <h3 id="capsuleUnlockedTitle" class="text-3xl font-bold text-white mb-6 title-font"></h3>
+                        <p id="capsuleUnlockedMsg" class="text-xl text-gray-300 leading-relaxed font-bold font-['Cairo']"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 15. الرسالة الختامية والجواب -->
+        <section id="finalLetterSection" class="relative py-40 px-6 text-center overflow-hidden min-h-[800px] flex flex-col items-center justify-center hidden">
+            <div class="glow-bg top-[20%] left-[50%] -translate-x-1/2 w-[800px] h-[800px] opacity-20"></div>
+            <h2 id="finalLetterHint" class="text-3xl md:text-5xl font-bold text-white mb-16 title-font fade-up relative z-10 drop-shadow-2xl leading-[1.7] md:leading-normal max-w-sm md:max-w-3xl mx-auto px-4"></h2>
+            <div class="fade-up relative z-20 w-full flex justify-center mt-12 envelope-scale-wrapper transition-transform">
+                <div class="envelope-wrapper" id="envelope" onclick="openEnvelope()">
+                    <div class="envelope-back">
+                        <!-- أيقونة الخلفية الديناميكية للجواب -->
+                        <i data-lucide="heart" class="theme-icon-dynamic w-12 h-12 text-white/10 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></i>
+                    </div>
+                    <div class="letter text-right text-gray-900 border-2 border-gray-100 flex items-center justify-center bg-gray-50">
+                        <!-- أيقونة الجواب الداخلية الديناميكية -->
+                        <i data-lucide="heart" class="theme-icon-dynamic w-8 h-8 text-[color:var(--primary)] opacity-50"></i>
+                    </div>
+                    <div class="envelope-front"></div>
+                    <div class="flap flex justify-center items-end pb-6">
+                        <div class="w-12 h-12 bg-black/20 rounded-full border-4 border-white/30 shadow-[0_5px_15px_rgba(0,0,0,0.5)] flex justify-center items-center backdrop-blur-sm">
+                            <!-- أيقونة الشمع الديناميكية -->
+                            <i data-lucide="heart" class="theme-icon-dynamic w-5 h-5 text-white fill-current"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- الفوتر -->
+        <footer class="text-center py-10 text-gray-500 text-sm border-t border-gray-900 pb-32 relative z-10 bg-[#09090b]">
+            <span id="footerPrefix"></span> <a id="footerLink" target="_blank" class="text-[color:var(--primary)] font-bold text-base ml-1 hover:underline transition-all"></a>
+        </footer>
+
+    </main>
+
+    <!-- Modal الرسالة الختامية -->
+    <div id="letterFullscreenModal" class="hidden-modal fixed inset-0 z-[99999] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 md:p-10">
+        <div class="bg-white text-gray-900 w-full max-w-3xl h-[80vh] md:h-[auto] md:min-h-[60vh] rounded-3xl relative shadow-[0_0_50px_rgba(var(--primary-rgb),0.4)] flex flex-col overflow-hidden">
+            
+            <div class="absolute top-4 left-1/2 -translate-x-1/2 z-50">
+                <button onclick="closeLetter()" class="w-12 h-12 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-full flex items-center justify-center transition-colors shadow-md">
+                    <i data-lucide="x" class="w-6 h-6 text-gray-800"></i>
+                </button>
+            </div>
+
+            <div class="overflow-y-auto p-8 md:p-16 pt-24 flex-1 flex flex-col justify-between">
+                <div class="text-right">
+                    <span id="letterGreeting" class="text-[color:var(--primary)] font-bold text-2xl md:text-3xl block mb-6 title-font border-b-2 border-gray-200 pb-4 inline-block"></span>
+                    <p id="letterBody" class="text-xl md:text-2xl leading-[2] font-bold font-['Cairo'] text-gray-800 mt-4"></p>
+                </div>
+                <div class="flex justify-end items-end mt-12">
+                    <div class="text-center">
+                        <!-- أيقونة التوقيع الديناميكية -->
+                        <i data-lucide="heart" class="theme-icon-dynamic w-12 h-12 text-[color:var(--primary)] fill-current animate-pulse mx-auto mb-2"></i>
+                        <span id="letterSignature" class="text-gray-600 font-extrabold text-xl font-['Cairo']"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        // --- Protection Scripts ---
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 67 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) {
+                return false;
+            }
+        };
+
+        let siteData = null;
+        let enteredPin = '';
+        let map;
+        let globalAudioPlayer = new Audio();
+        let activeVoiceNoteElement = null;
+        let pageFlipInstance = null; 
+
+        async function fetchAndBuild() {
+            try {
+                const response = await fetch('data.json');
+                if(!response.ok) throw new Error("Network response was not ok");
+                siteData = await response.json();
+                initializeApp();
+            } catch (error) {
+                console.warn('Error loading data.json, using fallback data:', error);
+                // Fallback Data
+                siteData = {
+                  "theme": {
+                      "primaryColor": "#e11d48",
+                      "mainIcon": "heart",
+                      "envelope": {
+                          "flap": "#e11d48",
+                          "frontBefore": "#be123c",
+                          "frontAfter": "#9f1239",
+                          "back": "#881337"
+                      }
+                  },
+                  "global": { "madeBy": "HeartCode", "madeByLink": "https://HeartCode.site", "footerPrefix": "صُنع بحب بواسطة", "dataLoaderText": "جاري تجهيز الهدية..." },
+                  "settings": { "pageTitle": "حكايتنا | هديتك الخاصة", "pinCode": "1906", "bgMusic": "music.mp3" },
+                  "loaderScreen": { "enabled": true, "type": "heart", "loadingText": "بنجيب أحلى الذكريات...", "startButtonText": "ابدأ الحكاية", "heartImages": ["story-1.webp", "story-2.webp", "gallery-1.webp", "gallery-2.webp", "gallery-3.webp"] },
+                  "pinScreen": { "enabled": true, "title": "هديتك الخاصة", "subtitle": "عشان تفتح الديمو، اكتب الباسورد 1906" },
+                  "hero": { "enabled": true, "dateBadge": "14 فبراير 2024", "name1": "عمر", "name2": "نور", "description": "في يوم عادي جداً، بدأت أحلى حكاية.. ودي شوية ملامح وتفاصيل من حكايتنا.", "scrollText": "اسحب لفوق" },
+                  "firstChat": { "enabled": true, "sectionTitle": "أول كلام بينا", "onlineStatusText": "متصل الآن", "participants": { "me": "عمر", "you": "نور", "youImage": "gallery-1.webp" }, "messages": [ { "sender": "me", "text": "ممكن أسألك على حاجة؟", "time": "10:00 PM" }, { "sender": "you", "text": "اتفضل أكيد", "time": "10:02 PM" } ] },
+                  "timeline": { "enabled": true, "sectionTitle": "إزاي بدأت؟", "events": [ { "badge": "أول نظرة", "title": "صدفة الكافيه", "description": "يوم ما شوفتك بالصدفة، حسيت إن الوقت وقف...", "image": "story-1.webp" } ] },
+                  "starMap": { "enabled": true, "sectionBadge": "سما السما", "title": "شكل النجوم يوم ما اتقابلنا", "description": "دي ماب حقيقية لشكل النجوم...", "location": "القاهرة، مصر", "dateLabel": "The Night We Met", "dateValue": "09 . 06 . 2024" },
+                  "map": { "enabled": true, "sectionTitle": "خريطة ذكرياتنا", "sectionDesc": "أماكن هتفضل محفورة في قلوبنا...", "locations": [ { "lat": 30.0444, "lng": 31.2357, "name": "كافيه الصدفة", "icon": "coffee" } ] },
+                  "gallery": { "enabled": true, "mode": "3d-book", "sectionTitle": "كتاب لقطاتنا", "hintText": "اسحب الصفحات بصباعك أو بالماوس كأنه كتاب حقيقي 📖", "bookCoverImage": "story-1.webp", "bookBackCoverImage": "story-2.webp", "photos": [ { "image": "gallery-1.webp", "title": "أحلى ضحكة", "audio": "record-1.mp3", "handwrittenText": "اليوم ده مقدرتش أشيل عيني من عليكي..." } ] },
+                  "scratchCard": { "enabled": true, "sectionTitle": "مفاجأة صغيرة", "coverText": "امسحي الشاشة بصباعك عشان تشوفي المفاجأة 🎫", "canvasScratchText": "امسحي هنا", "hiddenImage": "surprise-ticket.webp", "hiddenMessage": "عشا رومانسي النهاردة بالليل.. كوني جاهزة!" },
+                  "quiz": { "enabled": true, "sectionTitle": "فاكرة تفاصيلنا؟", "nextButtonText": "السؤال اللي بعده", "questions": [ { "question": "إيه أول أكلة طلبناها سوا؟", "options": ["بيتزا", "شاورما"], "correctAnswerIndex": 1 } ], "successMessage": "طبعاً مش معقول تنسي تفاصيلنا! 🎉", "failMessage": "يا خسارة الأيام.. طلعتي نساية 😂" },
+                  "messagesSection": { "enabled": true, "sectionTitle": "رسايل الأسبوع", "sectionDesc": "كل يوم رسالة جديدة ومفاجأة تفتح في ميعادها!", "uiTexts": { "calculating": "جاري الحساب...", "openDate": "تاريخ الفتح:", "opensAfter": "يفتح بعد:", "d": "ي", "h": "س", "m": "د" }, "messages": [ { "title": "اليوم الأول", "content": "صباح الخير لأحلى عيون...", "openDateStr": "14 فبراير 2024", "targetDate": "2024-01-01T00:00:00" } ] },
+                  "reasonsSection": { "enabled": true, "sectionTitle": "ليه إنتي؟", "clickHint": "اضغطي ع الكارت ولفيه", "reasons": [ { "icon": "smile", "title": "عشان ضحكتك", "description": "هي الحاجه الوحيدة اللي بتفصلني عن دوشة يومي..." } ] },
+                  "counterSection": { "enabled": true, "sectionTitle": "كل ثانية معاكي بحساب", "sectionDesc": "من يوم ما عرفتك والوقت مبقاش مجرد أرقام..", "startDateText": "بدأت الحكاية في:", "startDate": "2024-06-09T00:00:00", "displayDate": "14 فبراير 2024", "labels": { "year": "سنة", "month": "شهر", "day": "يوم", "hour": "ساعة", "minute": "دقيقة", "second": "ثانية" } },
+                  "timeCapsule": { "enabled": true, "sectionTitle": "كبسولة الزمن", "tryOpenButtonText": "جرب تفتح", "unlockedTitle": "تم فتح الكبسولة!", "unlockDate": "2030-02-14T00:00:00", "lockedMessage": "رسالة مشفرة ممنوع فتحها قبل 14 فبراير 2030 🔒", "earlyClickMessage": "مستعجلة على إيه؟ لسة قدامنا عمر بحاله نعيشه سوا!", "unlockedMessage": "لو بتقري الرسالة دي دلوقتي..." },
+                  "finalLetterSection": { "enabled": true, "hintTextLine1": "عندي ليكي رسالة أخيرة..", "hintTextLine2": "اضغطي ع الجواب", "greeting": "حبيبة قلبي،", "body": "كل سنة وإحنا مع بعض...", "signature": "عمرك حبيبك" }
+                };
+                initializeApp();
+            }
+        }
+
+        function applyTheme() {
+            if (siteData && siteData.theme) {
+                const root = document.documentElement;
+                
+                // تطبيق اللون الأساسي
+                if (siteData.theme.primaryColor) {
+                    root.style.setProperty('--primary', siteData.theme.primaryColor);
+                    // تحويل اللون لـ RGB عشان الظلال والشفافية
+                    const hex = siteData.theme.primaryColor.replace('#', '');
+                    if (hex.length === 6) {
+                        const r = parseInt(hex.substring(0, 2), 16);
+                        const g = parseInt(hex.substring(2, 4), 16);
+                        const b = parseInt(hex.substring(4, 6), 16);
+                        root.style.setProperty('--primary-rgb', `${r}, ${g}, ${b}`);
+                    }
+                }
+                
+                // تطبيق ألوان الجواب
+                if (siteData.theme.envelope) {
+                    if (siteData.theme.envelope.flap) root.style.setProperty('--env-flap', siteData.theme.envelope.flap);
+                    if (siteData.theme.envelope.frontBefore) root.style.setProperty('--env-front-b', siteData.theme.envelope.frontBefore);
+                    if (siteData.theme.envelope.frontAfter) root.style.setProperty('--env-front-a', siteData.theme.envelope.frontAfter);
+                    if (siteData.theme.envelope.back) root.style.setProperty('--env-back', siteData.theme.envelope.back);
+                }
+
+                // تغيير الأيقونات الأساسية (Theme Icons)
+                if (siteData.theme.mainIcon) {
+                    document.querySelectorAll('.theme-icon-dynamic').forEach(icon => {
+                        icon.setAttribute('data-lucide', siteData.theme.mainIcon);
+                    });
+                }
+            }
+        }
+
+        function initializeApp() {
+            // 1. تطبيق الثيم (الألوان والأيقونات) قبل رسم أي حاجة
+            applyTheme();
+
+            if(siteData.global.dataLoaderText) {
+                document.getElementById('dataLoaderText').innerText = siteData.global.dataLoaderText;
+            }
+            document.getElementById('dataLoader').style.display = 'none';
+            document.title = siteData.settings.pageTitle;
+            document.getElementById('bgMusic').src = siteData.settings.bgMusic;
+            
+            checkFeatureFlagsAndBuild();
+            
+            // 2. رسم الأيقونات (بعد ما اتأكدنا إن الأيقونات اتحدثت حسب الثيم)
+            lucide.createIcons();
+            attachGlobalEvents();
+        }
+
+        function checkFeatureFlagsAndBuild() {
+            // PIN
+            if(siteData.pinScreen.enabled) {
+                document.getElementById('pinScreen').classList.remove('hidden');
+                document.getElementById('pinTitle').innerText = siteData.pinScreen.title;
+                document.getElementById('pinSubtitle').innerText = siteData.pinScreen.subtitle;
+            } else {
+                showLoaderScreen(); // Skip PIN
+            }
+
+            // Loader text
+            if(siteData.loaderScreen.enabled) {
+                document.getElementById('loaderText').innerText = siteData.loaderScreen.loadingText;
+                document.getElementById('startBtn').innerText = siteData.loaderScreen.startButtonText;
+            } else {
+                document.getElementById('startBtn').click(); 
+            }
+
+            // Sections
+            toggleSection('heroSection', siteData.hero.enabled, () => {
+                document.getElementById('heroBadge').innerText = siteData.hero.dateBadge;
+                document.getElementById('heroNames').innerText = siteData.hero.name1 + ' & ' + siteData.hero.name2;
+                
+                const descEl = document.getElementById('heroDesc');
+                descEl.innerText = siteData.hero.description;
+                if(siteData.hero.styles) {
+                    if(siteData.hero.styles.descriptionColor) descEl.style.color = siteData.hero.styles.descriptionColor;
+                    if(siteData.hero.styles.descriptionLineHeight) descEl.style.lineHeight = siteData.hero.styles.descriptionLineHeight;
+                }
+                
+                document.getElementById('scrollHint').innerText = siteData.hero.scrollText;
+            });
+
+            toggleSection('firstChatSection', siteData.firstChat.enabled, () => {
+                document.getElementById('chatMainTitle').innerText = siteData.firstChat.sectionTitle;
+                document.getElementById('chatYouName').innerText = siteData.firstChat.participants.you;
+                document.getElementById('chatOnlineStatus').innerText = siteData.firstChat.onlineStatusText || "متصل الآن";
+                if(siteData.firstChat.participants.youImage) {
+                    document.getElementById('chatYouImg').src = siteData.firstChat.participants.youImage;
+                }
+                initChatSimulation();
+            });
+
+            toggleSection('timelineSection', siteData.timeline.enabled, () => {
+                document.getElementById('timelineMainTitle').innerText = siteData.timeline.sectionTitle;
+                const eventsHtml = siteData.timeline.events.map((ev, i) => `
+                    <div class="relative fade-up mb-20 pl-8 md:pl-10">
+                        <div class="timeline-node top-10"></div>
+                        <div class="glass p-8 md:p-10 rounded-[2rem] border border-gray-700/60 shadow-2xl">
+                            <span class="text-[color:var(--primary)] text-sm font-bold bg-[color:var(--primary)]/10 px-4 py-2 rounded-full mb-4 inline-block">${ev.badge}</span>
+                            <h3 class="text-3xl font-bold text-white mb-4 title-font">${ev.title}</h3>
+                            <p class="text-gray-300 text-lg leading-relaxed">${ev.description}</p>
+                            ${ev.image ? `<img src="${ev.image}" class="mt-6 rounded-2xl w-full h-auto border border-gray-600/50 shadow-md" onerror="this.style.display='none'">` : ''}
+                        </div>
+                    </div>
+                `).join('');
+                document.getElementById('timelineContainer').innerHTML += eventsHtml;
+            });
+
+            toggleSection('starMapSection', siteData.starMap.enabled, () => {
+                document.getElementById('starMapBadge').innerText = siteData.starMap.sectionBadge;
+                document.getElementById('starMapTitle').innerText = siteData.starMap.title;
+                document.getElementById('starMapDesc').innerText = siteData.starMap.description;
+                document.getElementById('starMapLocation').innerText = siteData.starMap.location;
+                document.getElementById('starMapDateLabel').innerText = siteData.starMap.dateLabel;
+                document.getElementById('starMapDateValue').innerText = siteData.starMap.dateValue;
+            });
+
+            toggleSection('mapSection', siteData.map.enabled, () => {
+                document.getElementById('mapMainTitle').innerText = siteData.map.sectionTitle;
+                document.getElementById('mapMainDesc').innerText = siteData.map.sectionDesc;
+                const buttons = siteData.map.locations.map(loc => `
+                    <button onclick="flyToLocation(${loc.lat}, ${loc.lng})" class="bg-[#18181b] hover:bg-[color:var(--primary)] border border-gray-700 text-white px-6 py-3 rounded-full font-bold transition-all flex items-center gap-2">
+                        <i data-lucide="${loc.icon}" class="w-5 h-5"></i> ${loc.name}
+                    </button>
+                `).join('');
+                document.getElementById('mapButtonsContainer').innerHTML = buttons;
+            });
+
+            // بناء HTML الألبوم
+            toggleSection('gallerySection', siteData.gallery.enabled, () => {
+                document.getElementById('galleryMainTitle').innerText = siteData.gallery.sectionTitle;
+                document.getElementById('galleryHint').innerText = siteData.gallery.hintText;
+                initRealisticBookHTML(); 
+            });
+
+            toggleSection('scratchCardSection', siteData.scratchCard.enabled, () => {
+                document.getElementById('scratchTitle').innerText = siteData.scratchCard.sectionTitle;
+                document.getElementById('scratchHint').innerText = siteData.scratchCard.coverText;
+                if (siteData.scratchCard.hiddenImage) {
+                    document.getElementById('scratchHiddenImg').src = siteData.scratchCard.hiddenImage;
+                }
+                document.getElementById('scratchHiddenMsg').innerText = siteData.scratchCard.hiddenMessage;
+                initScratchCard();
+            });
+
+            toggleSection('quizSection', siteData.quiz.enabled, () => {
+                document.getElementById('quizTitle').innerText = siteData.quiz.sectionTitle;
+                document.getElementById('quizNextBtn').innerText = siteData.quiz.nextButtonText || "السؤال اللي بعده";
+                initQuiz();
+            });
+
+            toggleSection('messagesSection', siteData.messagesSection.enabled, () => {
+                document.getElementById('messagesMainTitle').innerText = siteData.messagesSection.sectionTitle;
+                document.getElementById('messagesMainDesc').innerText = siteData.messagesSection.sectionDesc;
+                const ui = siteData.messagesSection.uiTexts || { calculating: "جاري الحساب...", openDate: "تاريخ الفتح:" };
+                const msgsHtml = siteData.messagesSection.messages.map((m) => `
+                    <div class="msg-card glass p-8 rounded-[2rem] border border-gray-700 relative overflow-hidden" data-target-date="${m.targetDate}">
+                        <h3 class="text-xl font-bold text-white mb-4">${m.title}</h3>
+                        <div class="countdown-text text-[color:var(--primary)] font-bold text-sm bg-gray-900 px-4 py-2 rounded-full border border-gray-700 text-center">${ui.calculating}</div>
+                        <div class="unlocked-layer hidden mt-4">
+                            <p class="text-gray-300 font-bold">${m.content}</p>
+                            <p class="text-gray-500 text-xs mt-4">${ui.openDate} ${m.openDateStr}</p>
+                        </div>
+                    </div>
+                `).join('');
+                document.getElementById('messagesContainer').innerHTML = msgsHtml;
+                setInterval(updateMessagesCountdown, 1000);
+            });
+
+            toggleSection('reasonsSection', siteData.reasonsSection.enabled, () => {
+                document.getElementById('reasonsMainTitle').innerText = siteData.reasonsSection.sectionTitle;
+                const reasonsHtml = siteData.reasonsSection.reasons.map(r => `
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front text-center">
+                                <i data-lucide="${r.icon}" class="w-16 h-16 text-[color:var(--primary)] mb-4"></i>
+                                <h3 class="text-2xl font-bold text-white title-font">${r.title}</h3>
+                                <p class="text-xs text-gray-400 mt-4">${siteData.reasonsSection.clickHint}</p>
+                            </div>
+                            <div class="flip-card-back text-center">
+                                <h3 class="text-xl font-bold text-[color:var(--primary)] mb-4 title-font">${r.title}</h3>
+                                <p class="text-gray-200 text-lg leading-relaxed">${r.description}</p>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                document.getElementById('reasonsContainer').innerHTML = reasonsHtml;
+            });
+
+            toggleSection('counterSection', siteData.counterSection.enabled, () => {
+                document.getElementById('counterMainTitle').innerText = siteData.counterSection.sectionTitle;
+                document.getElementById('counterMainDesc').innerText = siteData.counterSection.sectionDesc;
+                document.getElementById('startDateLabel').innerText = siteData.counterSection.startDateText;
+                document.getElementById('startDateDisplay').innerText = siteData.counterSection.displayDate;
+                setInterval(updateCounter, 1000);
+            });
+
+            toggleSection('timeCapsuleSection', siteData.timeCapsule.enabled, () => {
+                document.getElementById('capsuleTitle').innerText = siteData.timeCapsule.sectionTitle;
+                document.getElementById('capsuleTryBtn').innerText = siteData.timeCapsule.tryOpenButtonText || "جرب تفتح";
+                document.getElementById('capsuleLockedMsg').innerText = siteData.timeCapsule.lockedMessage;
+                document.getElementById('capsuleUnlockedTitle').innerText = siteData.timeCapsule.unlockedTitle || "تم فتح الكبسولة!";
+                document.getElementById('capsuleUnlockedMsg').innerText = siteData.timeCapsule.unlockedMessage;
+                const uDate = new Date(siteData.timeCapsule.unlockDate);
+                document.getElementById('capsuleDateLabel').innerText = `${uDate.getDate()} . ${uDate.getMonth()+1} . ${uDate.getFullYear()}`;
+            });
+
+            toggleSection('finalLetterSection', siteData.finalLetterSection.enabled, () => {
+                document.getElementById('finalLetterHint').innerHTML = `${siteData.finalLetterSection.hintTextLine1} <br> <span class="text-[color:var(--primary)]">${siteData.finalLetterSection.hintTextLine2}</span>`;
+                document.getElementById('letterGreeting').innerText = siteData.finalLetterSection.greeting;
+                document.getElementById('letterBody').innerHTML = siteData.finalLetterSection.body;
+                document.getElementById('letterSignature').innerText = siteData.finalLetterSection.signature;
+            });
+
+            const fLink = document.getElementById('footerLink');
+            if(fLink) { 
+                fLink.innerText = siteData.global.madeBy; 
+                fLink.href = siteData.global.madeByLink; 
+            }
+            if(document.getElementById('footerPrefix')){
+                document.getElementById('footerPrefix').innerText = siteData.global.footerPrefix || "صُنع بحب بواسطة";
+            }
+        }
+
+        function toggleSection(id, isEnabled, callback) {
+            const el = document.getElementById(id);
+            if(isEnabled) { el.classList.remove('hidden'); if(callback) callback(); }
+            else { el.classList.add('hidden'); }
+        }
+
+        // --- Heart Loader ---
+        function drawHeartLoader(images) {
+            const container = document.getElementById('heartLoaderContainer');
+            container.innerHTML = '';
+            const points = [];
+            for (let t = 0; t < Math.PI * 2; t += 0.25) {
+                let x = 16 * Math.pow(Math.sin(t), 3);
+                let y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+                let px = 50 + (x * 2.8);
+                let py = 45 + (y * 2.8);
+                points.push({ x: px, y: py });
+            }
+
+            points.forEach((point, index) => {
+                const imgSrc = images[index % images.length];
+                const img = document.createElement('img');
+                img.src = imgSrc;
+                img.className = 'heart-image-point';
+                // تلوين إطار الصورة بنفس لون الثيم
+                img.style.borderColor = 'var(--primary)';
+                img.style.boxShadow = '0 0 15px rgba(var(--primary-rgb), 0.6)';
+                
+                img.style.left = `${point.x}%`;
+                img.style.top = `${point.y}%`;
+                container.appendChild(img);
+
+                setTimeout(() => { img.classList.add('show'); }, index * 100); 
+            });
+        }
+
+        // --- PIN Logic ---
+        function updateDots() {
+            document.querySelectorAll('.pin-dot').forEach((dot, i) => i < enteredPin.length ? dot.classList.add('filled') : dot.classList.remove('filled'));
+        }
+        function enterPin(num) {
+            if(enteredPin.length < 4) {
+                enteredPin += num; updateDots();
+                if(enteredPin.length === 4) setTimeout(checkPin, 300);
+            }
+        }
+        function deletePin() {
+            if(enteredPin.length > 0) { enteredPin = enteredPin.slice(0, -1); updateDots(); }
+        }
+        function checkPin() {
+            if(enteredPin === siteData.settings.pinCode) {
+                document.getElementById('pinScreen').style.opacity = '0';
+                showLoaderScreen();
+                setTimeout(() => { document.getElementById('pinScreen').style.display = 'none'; }, 700);
+            } else {
+                const pinDots = document.getElementById('pinDots');
+                pinDots.classList.add('shake');
+                setTimeout(() => { pinDots.classList.remove('shake'); enteredPin=''; updateDots(); }, 500);
+            }
+        }
+
+        function showLoaderScreen() {
+            const loader = document.getElementById('loaderScreen');
+            loader.classList.remove('hidden');
+            setTimeout(() => { loader.style.opacity = '1'; }, 50);
+
+            if(siteData.loaderScreen.enabled) {
+                if(siteData.loaderScreen.type === 'heart' && siteData.loaderScreen.heartImages && siteData.loaderScreen.heartImages.length > 0) {
+                    document.getElementById('heartLoaderContainer').classList.remove('hidden');
+                    drawHeartLoader(siteData.loaderScreen.heartImages);
+                } else {
+                    document.getElementById('defaultLoaderContainer').classList.remove('hidden');
+                }
+            }
+
+            setTimeout(() => {
+                const startBtn = document.getElementById('startBtn');
+                startBtn.classList.remove('hidden');
+                setTimeout(() => startBtn.classList.remove('opacity-0'), 100);
+            }, siteData.loaderScreen.type === 'heart' ? 3500 : 1500);
+        }
+
+        // --- Chat Simulation ---
+        function initChatSimulation() {
+            const chatBox = document.getElementById('chatBox');
+            let isChatStarted = false;
+            const observer = new IntersectionObserver((entries) => {
+                if(entries[0].isIntersecting && !isChatStarted) {
+                    isChatStarted = true; runChatSequence(chatBox);
+                }
+            }, { threshold: 0.5 });
+            observer.observe(document.getElementById('firstChatSection'));
+        }
+
+        async function runChatSequence(chatBox) {
+            const messages = siteData.firstChat.messages;
+            for(let i=0; i < messages.length; i++) {
+                const msg = messages[i];
+                const isMe = msg.sender === 'me';
+                const typingId = `typing-${i}`;
+                
+                chatBox.innerHTML += `
+                    <div id="${typingId}" class="typing-indicator ${isMe ? 'self-end bg-[color:var(--primary)]/20 border-[color:var(--primary)]/30' : ''}">
+                        <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+                    </div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+                
+                await new Promise(r => setTimeout(r, 2000)); 
+                
+                document.getElementById(typingId).remove();
+                chatBox.innerHTML += `
+                    <div class="chat-bubble ${isMe ? 'chat-me' : 'chat-you'}">
+                        ${msg.text}
+                        <span class="text-[10px] opacity-70 block text-right mt-1">${msg.time}</span>
+                    </div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+                
+                await new Promise(r => setTimeout(r, 1000));
+            }
+        }
+
+        // --- بناء الألبوم الحقيقي ---
+        function initRealisticBookHTML() {
+            const flipbookElement = document.getElementById('flipbook');
+            const photos = siteData.gallery.photos;
+            let html = '';
+            
+            // قراءة الأيقونة من الثيم للألبوم
+            const currentIcon = (siteData && siteData.theme && siteData.theme.mainIcon) ? siteData.theme.mainIcon : 'heart';
+
+            html += `
+                <div class="page page-cover page-cover-front" data-density="hard">
+                    <img src="${siteData.gallery.bookCoverImage}" class="w-full h-full object-cover opacity-80" onerror="this.style.display='none'">
+                    <div class="absolute inset-0 flex items-center justify-center p-6 bg-black/40 backdrop-blur-[2px]">
+                        <h3 class="text-white font-bold text-4xl md:text-5xl title-font text-center drop-shadow-2xl border-2 border-[color:var(--env-front-b)] p-6 rounded-xl bg-[color:var(--env-back)]/60">${siteData.gallery.sectionTitle}</h3>
+                    </div>
+                </div>
+            `;
+
+            photos.forEach((p, index) => {
+                let audioHtml = p.audio ? `
+                    <div class="w-full flex justify-center pb-6 pt-2 mt-auto shrink-0 z-10">
+                        <div class="voice-note-player" data-audio="${p.audio}">
+                            <i data-lucide="play" class="w-5 h-5 text-white fill-current play-icon pointer-events-none"></i>
+                            <i data-lucide="pause" class="w-5 h-5 text-[color:var(--primary)] fill-current pause-icon hidden pointer-events-none"></i>
+                            <div class="waves-container pointer-events-none"><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div></div>
+                        </div>
+                    </div>` : '';
+
+                let rotateClass = index % 2 === 0 ? 'rotate-[-2deg]' : 'rotate-[2deg]';
+
+                html += `
+                    <div class="page album-paper" data-density="hard">
+                        <div class="w-full h-full flex flex-col pt-6 px-4 md:px-8 overflow-hidden dir-rtl">
+                            
+                            <div class="polaroid-frame content-interact ${rotateClass} shrink-0 mb-2">
+                                <div class="tape"></div>
+                                <img src="${p.image}" onerror="this.style.display='none'">
+                                <h3 class="text-center font-bold text-gray-800 text-base md:text-lg mt-2 title-font">${p.title}</h3>
+                            </div>
+                            
+                            <div class="text-center w-full content-interact flex-1 flex items-center justify-center px-2">
+                                <p class="handwriting text-lg md:text-2xl text-[#0f172a] font-bold leading-snug opacity-0 transition-opacity duration-300" data-text="${p.handwrittenText || ''}"></p>
+                            </div>
+                            
+                            ${audioHtml}
+                            
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                <div class="page page-cover page-cover-back" data-density="hard">
+                    <img src="${siteData.gallery.bookBackCoverImage}" class="w-full h-full object-cover opacity-60" onerror="this.style.display='none'">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center p-6 bg-black/40 backdrop-blur-[2px]">
+                        <h3 class="text-white font-bold text-4xl md:text-5xl title-font text-center drop-shadow-2xl border-2 border-[color:var(--env-front-b)] p-6 rounded-xl bg-[color:var(--env-back)]/60">${siteData.gallery.sectionTitle}</h3>
+                        <i data-lucide="${currentIcon}" class="w-12 h-12 text-[color:var(--primary)] opacity-80 fill-current mt-8 theme-icon-dynamic"></i>
+                    </div>
+                </div>
+            `;
+
+            flipbookElement.innerHTML = html;
+        }
+
+        function typeWriterEffect(element, text) {
+            if (element.dataset.intervalId) { clearInterval(parseInt(element.dataset.intervalId)); }
+            element.innerHTML = '';
+            element.style.opacity = '1'; 
+            element.dataset.typed = 'true'; 
+
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    element.removeAttribute('data-intervalId');
+                }
+            }, 50); 
+            element.dataset.intervalId = interval;
+        }
+
+        function startPageFlip() {
+            if(pageFlipInstance || !document.getElementById('flipbook')) return;
+            
+            const flipbookElement = document.getElementById('flipbook');
+            pageFlipInstance = new St.PageFlip(flipbookElement, {
+                width: 400, height: 600, size: "stretch", 
+                minWidth: 300, maxWidth: 500, minHeight: 400, maxHeight: 700,
+                maxShadowOpacity: 0.5, showCover: false, mobileScrollSupport: false, 
+                usePortrait: true, useMouseEvents: false 
+            });
+
+            pageFlipInstance.loadFromHTML(document.querySelectorAll('.page'));
+
+            let touchStartX = 0; let touchStartY = 0; let touchTime = 0; let isSwiping = false;
+
+            const handleStart = (x, y, target) => {
+                if (target.closest('.voice-note-player')) return; 
+                touchStartX = x; touchStartY = y; touchTime = Date.now(); isSwiping = true;
+            };
+
+            const handleEnd = (x, y) => {
+                if (!isSwiping || !touchStartX) return;
+                isSwiping = false;
+                
+                const diffX = x - touchStartX; const diffY = y - touchStartY; const duration = Date.now() - touchTime;
+
+                if (duration <= 1000 && Math.abs(diffX) >= 40 && Math.abs(diffY) <= 100) {
+                    if (diffX > 0) { pageFlipInstance.flipPrev(); } 
+                    else { pageFlipInstance.flipNext(); }
+                }
+                touchStartX = 0; touchStartY = 0;
+            };
+
+            flipbookElement.addEventListener('touchstart', e => handleStart(e.touches[0].clientX, e.touches[0].clientY, e.target), {passive: true});
+            flipbookElement.addEventListener('touchend', e => handleEnd(e.changedTouches[0].clientX, e.changedTouches[0].clientY));
+            flipbookElement.addEventListener('mousedown', e => handleStart(e.clientX, e.clientY, e.target));
+            window.addEventListener('mouseup', e => handleEnd(e.clientX, e.clientY));
+
+            document.querySelectorAll('.voice-note-player').forEach(vn => {
+                vn.addEventListener('pointerdown', e => e.stopPropagation());
+                vn.addEventListener('mousedown', e => e.stopPropagation());
+                vn.addEventListener('touchstart', e => e.stopPropagation(), {passive: false});
+                vn.addEventListener('click', e => { e.stopPropagation(); toggleVoiceNote(vn); });
+            });
+
+            pageFlipInstance.on('changeState', (e) => {
+                if (e.data === 'flipping') {
+                    if(activeVoiceNoteElement) activeVoiceNoteElement.click(); 
+                    document.querySelectorAll('.handwriting').forEach(el => {
+                        if (el.dataset.intervalId) { clearInterval(parseInt(el.dataset.intervalId)); el.removeAttribute('data-intervalId'); }
+                    });
+                }
+                if (e.data === 'read') {
+                    const activeIndex = pageFlipInstance.getCurrentPageIndex();
+                    const pages = document.querySelectorAll('.page');
+                    pages.forEach((page, index) => {
+                        const textElement = page.querySelector('.handwriting');
+                        if (textElement) {
+                            if (index === activeIndex) {
+                                if (textElement.dataset.typed !== 'true') {
+                                    textElement.style.opacity = '1';
+                                    typeWriterEffect(textElement, textElement.getAttribute('data-text'));
+                                }
+                            } else {
+                                textElement.innerHTML = ''; textElement.style.opacity = '0'; textElement.dataset.typed = 'false';
+                            }
+                        }
+                    });
+                }
+            });
+
+            setTimeout(() => {
+                const pages = document.querySelectorAll('.page');
+                const activeIndex = pageFlipInstance.getCurrentPageIndex();
+                if(pages[activeIndex]) {
+                    const firstText = pages[activeIndex].querySelector('.handwriting');
+                    if (firstText && firstText.getAttribute('data-text')) {
+                        firstText.style.opacity = '1';
+                        typeWriterEffect(firstText, firstText.getAttribute('data-text'));
+                    }
+                }
+            }, 800);
+        }
+
+        // --- Scratch Card ---
+        function initScratchCard() {
+            const canvas = document.getElementById('scratchCanvas');
+            const ctx = canvas.getContext('2d');
+            let isDrawing = false;
+            canvas.width = 300; canvas.height = 300;
+
+            ctx.fillStyle = '#3f3f46';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.font = "20px Cairo"; ctx.fillStyle = "#a1a1aa"; ctx.textAlign = "center";
+            const canvasText = siteData.scratchCard.canvasScratchText || "امسحي هنا";
+            ctx.fillText(canvasText, canvas.width/2, canvas.height/2);
+
+            ctx.globalCompositeOperation = 'destination-out';
+
+            function getPos(e) {
+                const rect = canvas.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return { x: clientX - rect.left, y: clientY - rect.top };
+            }
+            function scratch(e) {
+                if (!isDrawing) return;
+                if (e.cancelable) { e.preventDefault(); }
+                const pos = getPos(e);
+                ctx.beginPath(); ctx.arc(pos.x, pos.y, 30, 0, Math.PI * 2); ctx.fill();
+            }
+
+            canvas.addEventListener('mousedown', () => isDrawing = true);
+            canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); }, {passive: false});
+            window.addEventListener('mouseup', () => isDrawing = false);
+            window.addEventListener('touchend', () => isDrawing = false);
+            canvas.addEventListener('mousemove', scratch);
+            canvas.addEventListener('touchmove', scratch, {passive: false});
+        }
+
+        // --- Quiz ---
+        let currentQIndex = 0;
+        function initQuiz() { showQuestion(0); }
+        function showQuestion(index) {
+            const q = siteData.quiz.questions[index];
+            if(!q) return;
+            document.getElementById('quizResult').classList.add('hidden');
+            document.getElementById('quizContent').classList.remove('hidden');
+            document.getElementById('quizQuestion').innerText = q.question;
+            const optionsHtml = q.options.map((opt, i) => `
+                <button onclick="checkAnswer(${i}, ${q.correctAnswerIndex})" class="w-full p-4 bg-gray-800 hover:bg-gray-700 border border-gray-600 rounded-2xl text-white font-bold transition-colors">${opt}</button>
+            `).join('');
+            document.getElementById('quizOptions').innerHTML = optionsHtml;
+        }
+
+        function checkAnswer(selectedIndex, correctIndex) {
+            document.getElementById('quizContent').classList.add('hidden');
+            const resContainer = document.getElementById('quizResult');
+            resContainer.classList.remove('hidden');
+            
+            const iconC = document.getElementById('quizResultIcon');
+            const msg = document.getElementById('quizResultMessage');
+            const nxt = document.getElementById('quizNextBtn');
+
+            if(selectedIndex === correctIndex) {
+                iconC.innerHTML = `<div class="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center border-2 border-green-500"><i data-lucide="check" class="w-10 h-10 text-green-500"></i></div>`;
+                msg.innerText = siteData.quiz.successMessage; msg.className = "text-2xl font-bold text-green-400";
+                fireConfetti();
+            } else {
+                iconC.innerHTML = `<div class="w-20 h-20 bg-red-500/20 rounded-full flex items-center justify-center border-2 border-red-500"><i data-lucide="x" class="w-10 h-10 text-red-500"></i></div>`;
+                msg.innerText = siteData.quiz.failMessage; msg.className = "text-2xl font-bold text-red-400";
+                resContainer.classList.add('shake'); setTimeout(()=> resContainer.classList.remove('shake'), 500);
+            }
+            lucide.createIcons();
+            if(currentQIndex < siteData.quiz.questions.length - 1) nxt.classList.remove('hidden');
+        }
+        function nextQuestion() {
+            currentQIndex++; document.getElementById('quizNextBtn').classList.add('hidden'); showQuestion(currentQIndex);
+        }
+        function fireConfetti() {
+            for(let i=0; i<50; i++) {
+                let c = document.createElement('div'); c.className = 'confetti';
+                c.style.left = Math.random() * 100 + 'vw';
+                c.style.backgroundColor = siteData.theme?.primaryColor ? siteData.theme.primaryColor : ['#e11d48', '#fbbf24', '#34d399', '#60a5fa'][Math.floor(Math.random()*4)];
+                c.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                document.body.appendChild(c); setTimeout(()=> c.remove(), 4000);
+            }
+        }
+
+        // --- Time Capsule ---
+        function tryUnlockCapsule() {
+            const unlockDate = new Date(siteData.timeCapsule.unlockDate).getTime();
+            const now = new Date().getTime();
+            if(now >= unlockDate) {
+                document.getElementById('capsuleLockedState').classList.add('hidden');
+                document.getElementById('capsuleUnlockedState').classList.remove('hidden'); fireConfetti();
+            } else {
+                const lock = document.querySelector('.capsule-lock');
+                const msg = document.getElementById('capsuleEarlyMsg');
+                lock.classList.add('shake-lock'); msg.innerText = siteData.timeCapsule.earlyClickMessage; msg.style.opacity = '1';
+                setTimeout(() => lock.classList.remove('shake-lock'), 400);
+            }
+        }
+
+        // --- Global Events & Handlers ---
+        function attachGlobalEvents() {
+            document.getElementById('startBtn').addEventListener('click', () => {
+                document.getElementById('loaderScreen').style.opacity = '0';
+                
+                setTimeout(() => {
+                    document.getElementById('loaderScreen').classList.add('hidden');
+                    document.body.classList.remove('no-scroll');
+                    
+                    const appWrapper = document.getElementById('appWrapper');
+                    appWrapper.style.display = 'block'; 
+                    
+                    if(siteData && siteData.gallery.enabled) {
+                        startPageFlip();
+                    }
+
+                    setTimeout(() => appWrapper.style.opacity = '1', 50);
+
+                    if(siteData.map.enabled) initMap();
+                }, 1000);
+
+                const bgm = document.getElementById('bgMusic');
+                if(bgm.src && !bgm.src.endsWith('undefined')) {
+                    let playPromise = bgm.play();
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => {
+                            document.getElementById('musicWidget').classList.remove('hidden');
+                            document.getElementById('musicDisk').classList.remove('spin-paused');
+                            document.getElementById('iconPlay').classList.add('hidden');
+                            document.getElementById('iconPause').classList.remove('hidden');
+                        }).catch(e => { });
+                    }
+                }
+            });
+
+            document.getElementById('playPauseBtn').addEventListener('click', () => {
+                const bgm = document.getElementById('bgMusic');
+                if(bgm.paused) {
+                    let p = bgm.play();
+                    if(p !== undefined) {
+                        p.then(() => {
+                            document.getElementById('musicDisk').classList.remove('spin-paused');
+                            document.getElementById('iconPlay').classList.add('hidden'); document.getElementById('iconPause').classList.remove('hidden');
+                        }).catch(e => {});
+                    }
+                } else {
+                    bgm.pause(); document.getElementById('musicDisk').classList.add('spin-paused');
+                    document.getElementById('iconPlay').classList.remove('hidden'); document.getElementById('iconPause').classList.add('hidden');
+                }
+            });
+
+            document.getElementById('muteBtn').addEventListener('click', () => {
+                const bgm = document.getElementById('bgMusic'); bgm.muted = !bgm.muted;
+                document.getElementById('iconUnmute').classList.toggle('hidden', bgm.muted);
+                document.getElementById('iconMute').classList.toggle('hidden', !bgm.muted);
+            });
+
+            document.querySelectorAll('.flip-card').forEach(card => card.addEventListener('click', () => card.classList.toggle('flipped')));
+
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+            }, { threshold: 0.15 });
+            setTimeout(() => document.querySelectorAll('.fade-up').forEach(el => observer.observe(el)), 1000);
+        }
+
+        // دالة لعمل تأثير التدرج في الصوت (Fade In / Fade Out) بنعومة
+        function fadeVolume(audio, targetVolume, duration) {
+            if (!audio) return;
+            const steps = 20;
+            const stepTime = duration / steps;
+            const volumeStep = (targetVolume - audio.volume) / steps;
+            
+            if (audio.fadeInterval) clearInterval(audio.fadeInterval);
+            
+            audio.fadeInterval = setInterval(() => {
+                let newVol = audio.volume + volumeStep;
+                if (newVol > 1) newVol = 1;
+                if (newVol < 0) newVol = 0;
+                audio.volume = newVol;
+                
+                if ((volumeStep > 0 && audio.volume >= targetVolume) || (volumeStep < 0 && audio.volume <= targetVolume)) {
+                    audio.volume = targetVolume;
+                    clearInterval(audio.fadeInterval);
+                }
+            }, stepTime);
+        }
+
+        function toggleVoiceNote(el) {
+            const src = el.getAttribute('data-audio');
+            const isPlaying = el.classList.contains('playing');
+            
+            if(activeVoiceNoteElement && activeVoiceNoteElement !== el) {
+                activeVoiceNoteElement.classList.remove('playing');
+                activeVoiceNoteElement.querySelector('.play-icon').classList.remove('hidden');
+                activeVoiceNoteElement.querySelector('.pause-icon').classList.add('hidden');
+            }
+            if(!isPlaying) {
+                el.classList.add('playing'); 
+                el.querySelector('.play-icon').classList.add('hidden'); 
+                el.querySelector('.pause-icon').classList.remove('hidden');
+                activeVoiceNoteElement = el;
+                if(src) { 
+                    globalAudioPlayer.src = src; 
+                    let playPromise = globalAudioPlayer.play(); 
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => {
+                            const bgm = document.getElementById('bgMusic');
+                            if(bgm) fadeVolume(bgm, 0.10, 500); 
+                        }).catch(e => {
+                            console.warn("ملف الصوت غير موجود، ولكن الكود شغال تمام.");
+                            el.classList.remove('playing'); 
+                            el.querySelector('.play-icon').classList.remove('hidden'); 
+                            el.querySelector('.pause-icon').classList.add('hidden');
+                            activeVoiceNoteElement = null;
+                        });
+                    }
+                }
+            } else {
+                el.classList.remove('playing'); el.querySelector('.play-icon').classList.remove('hidden'); el.querySelector('.pause-icon').classList.add('hidden');
+                activeVoiceNoteElement = null; globalAudioPlayer.pause(); 
+                const bgm = document.getElementById('bgMusic');
+                if(bgm) fadeVolume(bgm, 1.0, 1000);
+            }
+        }
+        globalAudioPlayer.addEventListener('ended', () => {
+            if(activeVoiceNoteElement) {
+                activeVoiceNoteElement.classList.remove('playing');
+                activeVoiceNoteElement.querySelector('.play-icon').classList.remove('hidden'); activeVoiceNoteElement.querySelector('.pause-icon').classList.add('hidden');
+                activeVoiceNoteElement = null; 
+                const bgm = document.getElementById('bgMusic');
+                if(bgm) fadeVolume(bgm, 1.0, 1000);
+            }
+        });
+
+        // Map
+        function initMap() {
+            if(map || !siteData.map.enabled) return;
+            const cLat = siteData.map.locations[0]?.lat || 30.0444; const cLng = siteData.map.locations[0]?.lng || 31.2357;
+            map = L.map('interactiveMap', { zoomControl: false, attributionControl: false }).setView([cLat, cLng], 12);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {}).addTo(map);
+            
+            // تلوين أيقونة الخريطة بلون الثيم
+            const iconHtml = `<div style="background-color: var(--primary); border-radius: 50%; width: 20px; height: 20px; border: 3px solid #fff; box-shadow: 0 0 15px var(--primary); animation: pulse-marker 2s infinite;"></div>`;
+            const icon = L.divIcon({ html: iconHtml, className: '', iconSize: [20, 20] });
+            
+            siteData.map.locations.forEach(loc => L.marker([loc.lat, loc.lng], { icon }).addTo(map).bindPopup(`<b>${loc.name}</b>`));
+        }
+        function flyToLocation(lat, lng) { if(map) map.flyTo([lat, lng], 16, { duration: 2 }); }
+
+        // Counters & Time math
+        function updateMessagesCountdown() {
+            const now = new Date().getTime();
+            const ui = siteData.messagesSection?.uiTexts || { opensAfter: "يفتح بعد:", d: "ي", h: "س", m: "د" };
+            
+            document.querySelectorAll('.msg-card').forEach(card => {
+                const tStr = card.getAttribute('data-target-date'); if(!tStr) return;
+                const target = new Date(tStr).getTime(); const diff = target - now;
+                const txt = card.querySelector('.countdown-text'); const unlocked = card.querySelector('.unlocked-layer');
+                if(diff <= 0) {
+                    if(txt) txt.style.display = 'none'; if(unlocked) unlocked.classList.remove('hidden');
+                    card.classList.remove('border-gray-700'); 
+                    card.style.borderColor = 'rgba(var(--primary-rgb), 0.5)';
+                } else {
+                    const d = Math.floor(diff / (1000 * 60 * 60 * 24)), h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)), m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    if(txt) txt.innerHTML = `${ui.opensAfter} ${d}${ui.d} ${h}${ui.h} ${m}${ui.m}`;
+                }
+            });
+        }
+        function calculateTimeDifference(startStr) {
+            const start = new Date(startStr), now = new Date();
+            if(now < start) return {years:0, months:0, days:0, hours:0, minutes:0, seconds:0};
+            let y = now.getFullYear() - start.getFullYear(), m = now.getMonth() - start.getMonth(), d = now.getDate() - start.getDate(), h = now.getHours() - start.getHours(), min = now.getMinutes() - start.getMinutes(), s = now.getSeconds() - start.getSeconds();
+            if(s < 0) { s += 60; min--; } if(min < 0) { min += 60; h--; } if(h < 0) { h += 24; d--; }
+            if(d < 0) { d += new Date(now.getFullYear(), now.getMonth(), 0).getDate(); m--; } if(m < 0) { m += 12; y--; }
+            return {years:y, months:m, days:d, hours:h, minutes:min, seconds:s};
+        }
+        function updateCounter() {
+            const diff = calculateTimeDifference(siteData.counterSection.startDate), lbl = siteData.counterSection.labels;
+            let html = ''; const makeBox = (val, txt) => `<div class="glass p-5 md:p-6 rounded-3xl w-24 md:w-32 shadow-[0_0_30px_rgba(var(--primary-rgb),0.1)] flex flex-col items-center justify-center"><span class="block text-3xl md:text-5xl font-extrabold text-[color:var(--primary)] mb-2">${val}</span><span class="text-sm md:text-base text-gray-300 font-bold">${txt}</span></div>`;
+            if(diff.years > 0) html += makeBox(diff.years, lbl.year); if(diff.months > 0 || diff.years > 0) html += makeBox(diff.months, lbl.month);
+            html += makeBox(diff.days, lbl.day) + makeBox(diff.hours.toString().padStart(2,'0'), lbl.hour) + makeBox(diff.minutes.toString().padStart(2,'0'), lbl.minute) + makeBox(diff.seconds.toString().padStart(2,'0'), lbl.second);
+            document.getElementById('counterBoxes').innerHTML = html;
+        }
+
+        function openEnvelope() { document.getElementById('envelope').classList.add('open'); setTimeout(() => { document.getElementById('letterFullscreenModal').classList.remove('hidden-modal'); document.body.classList.add('no-scroll'); }, 800); }
+        function closeLetter() { document.getElementById('letterFullscreenModal').classList.add('hidden-modal'); document.getElementById('envelope').classList.remove('open'); document.body.classList.remove('no-scroll'); }
+
+        window.addEventListener('DOMContentLoaded', fetchAndBuild);
+    </script>
+</body>
+</html>
